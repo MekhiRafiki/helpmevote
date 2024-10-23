@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TOPICS } from "@/constants/topics"
+import { IMMIGRATION_JOURNEY, TOPICS } from "@/constants/topics"
 import { Topic } from "@/types"
+import { getContextSupport } from "../../actions/context"
 
 interface TopicSelectorProps {
     selectedTopic: Topic | null
@@ -30,6 +31,11 @@ export default function TopicSelector({ selectedTopic, setSelectedTopic }: Topic
               <h2 className="text-lg font-bold">Currently Discussing: {selectedTopic.title}</h2>
               <Button onClick={handleClearTopic} variant="ghost" size="sm">
                 X
+              </Button>
+              <Button onClick={()=>{
+                void getContextSupport(IMMIGRATION_JOURNEY.plan.nodes[1].ai_prompt);
+              }} variant="ghost" size="sm">
+                Fetch Journey
               </Button>
             </div>
           ) : (
