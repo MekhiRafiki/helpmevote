@@ -6,6 +6,7 @@ import { MessageCircle } from "lucide-react"
 import TopicSelector from "@/components/TopicSelector"
 import ChatArea from "@/components/ChatArea"
 import { Topic } from "@/types"
+import { TOPICS } from "@/constants/topics"
 
 
 export default function PoliticalChat() {
@@ -15,11 +16,11 @@ export default function PoliticalChat() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-4">Political Chat Assistant</h1>
+      <h1 className="text-2xl font-bold mb-4">Help Me Vote</h1>
 
-      <TopicSelector selectedTopic={selectedTopic} setSelectedTopic={setSelectedTopic} />
+      <TopicSelector topics={TOPICS} selectedTopic={selectedTopic} setSelectedTopic={setSelectedTopic} />
 
-      <Card>
+      {selectedTopic ? (<Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <MessageCircle className="mr-2" />
@@ -27,15 +28,15 @@ export default function PoliticalChat() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {selectedTopic ? (
+          
            <ChatArea selectedTopic={selectedTopic} /> 
-          ) : (
-            <p className="text-center text-gray-500">
-              Please select a topic to start chatting.
-            </p>
-          )}
         </CardContent>
-      </Card>
+      </Card>)
+      : (
+        <p className="text-center text-gray-500">
+          Please select a topic to start chatting.
+        </p>
+      )}
     </div>
   )
 }

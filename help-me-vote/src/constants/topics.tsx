@@ -1,13 +1,38 @@
-import { ConversationPath, Topic } from "@/types";
+import { ConversationAgenda, Topic } from "@/types";
 
 
 export const TOPICS: Topic[] = [
-    { id: "immigration", title: "Immigration" },
+    {
+        id: "usa-presidential-race",
+        title: "USA Presidential Race 2024",
+        category: "platform",
+        level: 1,
+        children: [
+            { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform", level: 2 },
+            { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform", level: 2 },
+        ]
+    },
+    {
+        id: "policy-issues",
+        title: "Policy Issues",
+        category: "policy",
+        level: 1,
+        children: [
+            { id: "immigration", title: "Immigration", category: "policy", level: 2 },
+            { id: "abortion", title: "Abortion", category: "policy", level: 2 },
+            { id: "economy", title: "Economy", category: "policy", level: 2 },
+            { id: "healthcare", title: "Healthcare", category: "policy", level: 2 },
+            { id: "education", title: "Education", category: "policy", level: 2 },
+            { id: "climate", title: "Climate", category: "policy", level: 2 },
+            { id: "gun-control", title: "Gun Control", category: "policy", level: 2 },
+            { id: "voting-rights", title: "Voting Rights", category: "policy", level: 2 },
+        ]
+    },
 ]
 
-export const IMMIGRATION_JOURNEY: ConversationPath = {
-    id: "immigration-journey",
-    title: "Immigration Journey",
+export const IMMIGRATION_AGENDA: ConversationAgenda = {
+    id: "immigration-agenda",
+    title: "Immigration Agenda",
     plan: {
         nodes: [
             {
@@ -68,8 +93,8 @@ export const IMMIGRATION_JOURNEY: ConversationPath = {
         ],
         edges: [
             { from: "1", to: "2" },
-            { from: "2", to: "3", condition: "user wants to hear about Kamala Harris's platform" },
-            { from: "2", to: "4", condition: "user wants to hear about Donald Trump's platform" },
+            { from: "2", to: "3" },
+            { from: "2", to: "4" },
             { from: "3", to: "4" },
             { from: "4", to: "3" },
             { from: "3", to: "5" },

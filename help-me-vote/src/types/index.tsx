@@ -1,7 +1,10 @@
 export interface Topic {
-    id: string
-    title: string
-}
+  id: string;
+  title: string;
+  category: string;
+  level: number;
+  children?: Topic[];
+};
 
 export enum Sender {
     USER = "user",
@@ -20,7 +23,7 @@ export interface AIPrompt {
     notion_page_id?: string;
 }
 
-export interface ConversationPath {
+export interface ConversationAgenda {
     id: string;
     title: string;
     plan: {

@@ -7,7 +7,7 @@ import {  Topic } from "@/types"
 import { Send } from "lucide-react"
 import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
-import { IMMIGRATION_JOURNEY } from "@/constants/topics"
+import { IMMIGRATION_AGENDA } from "@/constants/topics"
 import Markdown from 'react-markdown'
 
 interface ChatAreaProps {
@@ -15,7 +15,7 @@ interface ChatAreaProps {
 }
 
 export default function ChatArea({ selectedTopic }: ChatAreaProps) {
-    const journey = IMMIGRATION_JOURNEY;
+    const agenda = IMMIGRATION_AGENDA;
     const [currentNodeId, setCurrentNodeId] = useState('1');
     const [currentGoal, setCurrentGoal] = useState("");
 
@@ -26,18 +26,18 @@ export default function ChatArea({ selectedTopic }: ChatAreaProps) {
     });
 
     const handleNextNode = () => {
-        const currentNodeIndex = journey.plan.nodes.findIndex(node => node.id === currentNodeId);
-        if (currentNodeIndex < journey.plan.nodes.length - 1) {
-            setCurrentNodeId(journey.plan.nodes[currentNodeIndex + 1].id);
+        const currentNodeIndex = agenda.plan.nodes.findIndex(node => node.id === currentNodeId);
+        if (currentNodeIndex < agenda.plan.nodes.length - 1) {
+            setCurrentNodeId(agenda.plan.nodes[currentNodeIndex + 1].id);
         }
     }
 
     useEffect(() => {
-        const currentNode = journey.plan.nodes.find(node => node.id === currentNodeId);
+        const currentNode = agenda.plan.nodes.find(node => node.id === currentNodeId);
         if (currentNode) {
             setCurrentGoal(currentNode.ai_prompt.guide);
         }
-    }, [currentNodeId, journey]);
+    }, [currentNodeId, agenda]);
       
     return (
         <>
