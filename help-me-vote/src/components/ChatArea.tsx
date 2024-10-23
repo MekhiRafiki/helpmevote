@@ -6,18 +6,42 @@ import { Input } from "@/components/ui/input"
 import {  Topic } from "@/types"
 import { Send } from "lucide-react"
 import { useChat } from 'ai/react';
-
+import { useEffect, useState } from "react"
+import { IMMIGRATION_JOURNEY } from "@/constants/topics"
+import Markdown from 'react-markdown'
 
 interface ChatAreaProps {
     selectedTopic: Topic
 }
 
 export default function ChatArea({ selectedTopic }: ChatAreaProps) {
-    const { messages, input, handleInputChange, handleSubmit } = useChat();
+    const journey = IMMIGRATION_JOURNEY;
+    const [currentNodeId, setCurrentNodeId] = useState('1');
+    const [currentGoal, setCurrentGoal] = useState("");
+
+    const { messages, input, handleInputChange, handleSubmit } = useChat({
+        body: {
+            currentGoal
+        }
+    });
+
+    const handleNextNode = () => {
+        const currentNodeIndex = journey.plan.nodes.findIndex(node => node.id === currentNodeId);
+        if (currentNodeIndex < journey.plan.nodes.length - 1) {
+            setCurrentNodeId(journey.plan.nodes[currentNodeIndex + 1].id);
+        }
+    }
+
+    useEffect(() => {
+        const currentNode = journey.plan.nodes.find(node => node.id === currentNodeId);
+        if (currentNode) {
+            setCurrentGoal(currentNode.ai_prompt.guide);
+        }
+    }, [currentNodeId, journey]);
       
     return (
         <>
-            <ScrollArea className="h-[400px] mb-4 p-4 border rounded-md">
+             <ScrollArea className="h-[400px] mb-4 p-4 border rounded-md">
                 {messages.map((message, index) => (
                 <div
                     key={index}
@@ -32,7 +56,7 @@ export default function ChatArea({ selectedTopic }: ChatAreaProps) {
                         : "bg-gray-200 text-gray-800"
                     }`}
                     >
-                        {message.content}
+                        <Markdown>{message.content}</Markdown>
                     </span>
                 </div>
                 ))}
@@ -52,6 +76,12 @@ export default function ChatArea({ selectedTopic }: ChatAreaProps) {
                 <Button onClick={handleSubmit}>
                     <Send className="h-4 w-4" />
                 </Button>
+            </div>
+            <div>
+                <Button onClick={handleNextNode}>
+                    Next Node
+                </Button>
+                <span>{currentGoal}</span>
             </div>
         </>
     )
