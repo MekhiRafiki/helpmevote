@@ -7,7 +7,7 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
         nodes: [
             {
                 id: "1",
-                title: "User's Thoughts on Immigration",
+                title: "Thoughts on Immigration",
                 description: "Gather the user's thoughts and feelings on immigration.",
                 ai_prompt: {
                     key: "user_immigration_stance",
@@ -53,23 +53,13 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
             },
             {
                 id: "6",
-                title: "AI Alignment Analysis",
+                title: "Alignment Analysis",
                 description: "Provide an analysis of which nominee the user seems to align with most.",
                 ai_prompt: {
                     key: "ai_alignment_analysis",
                     guide: "Based on the user's responses throughout the conversation, provide an analysis of which nominee the user seems to align with most on immigration issues. Explain the reasoning behind this assessment."
                 }
             }
-        ],
-        edges: [
-            { from: "1", to: "2" },
-            { from: "2", to: "3" },
-            { from: "2", to: "4" },
-            { from: "3", to: "4" },
-            { from: "4", to: "3" },
-            { from: "3", to: "5" },
-            { from: "4", to: "5" },
-            { from: "5", to: "6" }
         ]
     },
 }

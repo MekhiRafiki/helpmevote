@@ -9,11 +9,12 @@ import { useEffect, useState } from "react"
 import Markdown from 'react-markdown'
 import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { useAppSelector } from "@/lib/hooks"
+import { CheckIcon } from "lucide-react"
 
 
 export default function ChatArea() {
     const selectedTopic = useAppSelector(selectChosenTopic)
-    const [currentNodeId, setCurrentNodeId] = useState('1')
+    const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
     const [currentGoal, setCurrentGoal] = useState("")
     
     const agenda = selectedTopic?.agenda
@@ -25,22 +26,29 @@ export default function ChatArea() {
     });
 
     const handleNextNode = () => {
-        const currentNodeIndex = agenda?.plan.nodes.findIndex(node => node.id === currentNodeId);
-        if (currentNodeIndex && currentNodeIndex < (agenda?.plan.nodes.length ?? 0) - 1) {
-            setCurrentNodeId(agenda?.plan.nodes[currentNodeIndex + 1].id ?? '');
+        if (agenda?.plan.nodes && currentNodeIndex < agenda.plan.nodes.length - 1) {
+            setCurrentNodeIndex(prevIndex => prevIndex + 1);
         }
     }
 
     useEffect(() => {
-        const currentNode = agenda?.plan.nodes.find(node => node.id === currentNodeId);
-        if (currentNode) {
-            setCurrentGoal(currentNode.ai_prompt.guide);
+        if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
+            setCurrentGoal(agenda.plan.nodes[currentNodeIndex].ai_prompt.guide);
         }
-    }, [currentNodeId, agenda]);
+    }, [currentNodeIndex, agenda]);
       
+    const currentNode = agenda?.plan.nodes?.[currentNodeIndex]
+    
     return (
         <>
-             <ScrollArea className="h-[400px] mb-4 p-4 border rounded-md">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
+                <Button onClick={handleNextNode} variant="outline" size="sm">
+                    <CheckIcon className="h-4 w-4 mr-2" />
+                    Next
+                </Button>
+            </div>
+            <ScrollArea className="h-[400px] mb-4 p-4 border rounded-md">
                 {messages.map((message, index) => (
                 <div
                     key={index}
@@ -75,12 +83,6 @@ export default function ChatArea() {
                 <Button onClick={handleSubmit}>
                     <Send className="h-4 w-4" />
                 </Button>
-            </div>
-            <div>
-                <Button onClick={handleNextNode}>
-                    Next Node
-                </Button>
-                <span>{currentGoal}</span>
             </div>
         </>
     )

@@ -33,10 +33,5 @@ export interface ConversationAgenda {
         description: string;
         ai_prompt: AIPrompt;
       }>;
-      edges: Array<{
-        from: string;
-        to: string;
-        condition?: string;
-      }>;
     };
   }
