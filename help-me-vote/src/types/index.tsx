@@ -1,8 +1,7 @@
 export interface Topic {
   id: string;
   title: string;
-  category: string;
-  level: number;
+  category?: string;
   children?: Topic[];
 };
 

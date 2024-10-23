@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Topic } from "@/types"
-import { X, ChevronLeft } from "lucide-react"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
 interface TopicSelectorProps {
     topics: Topic[]
@@ -13,11 +13,7 @@ interface TopicSelectorProps {
 }
 
 export default function TopicSelector({ topics, selectedTopic, setSelectedTopic }: TopicSelectorProps) {
-    const [selectedCategory, setSelectedCategory] = useState<Topic | null>(null)
-
-    const handleCategorySelect = (category: Topic) => {
-        setSelectedCategory(category)
-    }
+    const [openCategory, setOpenCategory] = useState<string | null>("platform")
 
     const handleTopicSelect = (topic: Topic) => {
         setSelectedTopic(topic)
@@ -25,63 +21,57 @@ export default function TopicSelector({ topics, selectedTopic, setSelectedTopic 
 
     const handleClearSelection = () => {
         setSelectedTopic(null)
-        setSelectedCategory(null)
     }
 
-    const handleBackToCategories = () => {
-        setSelectedCategory(null)
+    const toggleCategory = (categoryId: string) => {
+        setOpenCategory(openCategory === categoryId ? null : categoryId)
     }
+
+    const presidentialRace = topics.find(topic => topic.id === "usa-presidential-race")
 
     return (
         <Card className="mb-4">
             <CardHeader>
-                {!selectedTopic ? (
-                    <CardTitle>
-                        {selectedCategory ? `Choose a topic in ${selectedCategory.title}` : "Choose a category"}
-                    </CardTitle>
-                ) : (
-                    <div className="flex items-center justify-between">
-                        <CardTitle>Currently Discussing: {selectedTopic.title}</CardTitle>
-                        <Button onClick={handleClearSelection} variant="ghost" size="sm">
-                            <X />
-                        </Button>
-                    </div>
-                )}
+                <CardTitle>
+                    {selectedTopic ? `Currently Discussing: ${selectedTopic.title}` : "Discuss the 2024 USA Presidential Race"}
+                </CardTitle>
             </CardHeader>
-            {!selectedTopic && (
-                <CardContent>
-                    {selectedCategory ? (
-                        <>
-                            <Button onClick={handleBackToCategories} variant="outline" size="sm" className="mb-4">
-                                <ChevronLeft className="mr-2 h-4 w-4" /> Back to Categories
+            <CardContent>
+                {selectedTopic ? (
+                    <Button onClick={handleClearSelection} variant="outline" size="sm">
+                        Clear Selection
+                    </Button>
+                ) : (
+                    presidentialRace?.children?.map((category) => (
+                        <div key={category.id} className="mb-4">
+                            <Button
+                                onClick={() => toggleCategory(category.id)}
+                                variant="outline"
+                                size="sm"
+                                className="w-full justify-between"
+                            >
+                                {category.title}
+                                {openCategory === category.id ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
                             </Button>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {selectedCategory.children?.map((topic) => (
-                                    <Button
-                                        key={topic.id}
-                                        onClick={() => handleTopicSelect(topic)}
-                                        className="text-left h-auto py-2"
-                                    >
-                                        {topic.title}
-                                    </Button>
-                                ))}
-                            </div>
-                        </>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {topics.map((category) => (
-                                <Button
-                                    key={category.id}
-                                    onClick={() => handleCategorySelect(category)}
-                                    className="text-left h-auto py-2"
-                                >
-                                    {category.title}
-                                </Button>
-                            ))}
+                            {openCategory === category.id && (
+                                <div className="mt-2 grid grid-cols-1 gap-2">
+                                    {category.children?.map((topic) => (
+                                        <Button
+                                            key={topic.id}
+                                            onClick={() => handleTopicSelect(topic)}
+                                            variant="ghost"
+                                            size="sm"
+                                            className="justify-start hover:bg-gray-100"
+                                        >
+                                            {topic.title}
+                                        </Button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </CardContent>
-            )}
+                    ))
+                )}
+            </CardContent>
         </Card>
     )
 }

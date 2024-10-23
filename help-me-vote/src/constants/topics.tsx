@@ -5,29 +5,35 @@ export const TOPICS: Topic[] = [
     {
         id: "usa-presidential-race",
         title: "USA Presidential Race 2024",
-        category: "platform",
-        level: 1,
         children: [
-            { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform", level: 2 },
-            { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform", level: 2 },
+            {
+                id: "platform",
+                title: "Party Platforms",
+                category: "platform",
+                children: [
+                    { id: "presidential-overview", title: "Candidate Comparison: Find Your Match", category: "platform" },
+                    { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform" },
+                    { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform" },
+                ]
+            },
+            {
+                id: "policy",
+                title: "Policy",
+                category: "policy",
+                children: [
+                    { id: "immigration", title: "Immigration", category: "policy" },
+                    { id: "abortion", title: "Abortion", category: "policy" },
+                    { id: "economy", title: "Economy", category: "policy" },
+                    { id: "healthcare", title: "Healthcare", category: "policy" },
+                    { id: "education", title: "Education", category: "policy" },
+                    { id: "climate", title: "Climate", category: "policy" },
+                    { id: "gun-control", title: "Gun Control", category: "policy" },
+                    { id: "voting-rights", title: "Voting Rights", category: "policy" },
+                ]
+            }
         ]
     },
-    {
-        id: "policy-issues",
-        title: "Policy Issues",
-        category: "policy",
-        level: 1,
-        children: [
-            { id: "immigration", title: "Immigration", category: "policy", level: 2 },
-            { id: "abortion", title: "Abortion", category: "policy", level: 2 },
-            { id: "economy", title: "Economy", category: "policy", level: 2 },
-            { id: "healthcare", title: "Healthcare", category: "policy", level: 2 },
-            { id: "education", title: "Education", category: "policy", level: 2 },
-            { id: "climate", title: "Climate", category: "policy", level: 2 },
-            { id: "gun-control", title: "Gun Control", category: "policy", level: 2 },
-            { id: "voting-rights", title: "Voting Rights", category: "policy", level: 2 },
-        ]
-    },
+    // You can add more high-level categories here if needed
 ]
 
 export const IMMIGRATION_AGENDA: ConversationAgenda = {
