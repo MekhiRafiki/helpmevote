@@ -3,6 +3,7 @@ export interface Topic {
   title: string;
   category?: string;
   children?: Topic[];
+  agenda?: ConversationAgenda;
 };
 
 export enum Sender {

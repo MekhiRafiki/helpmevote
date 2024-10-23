@@ -5,22 +5,22 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Topic } from "@/types"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
+import { selectChosenTopic, selectTopics, setChosenTopic } from "@/lib/features/topics/topicsSlice"
 
-interface TopicSelectorProps {
-    topics: Topic[]
-    selectedTopic: Topic | null
-    setSelectedTopic: (topic: Topic | null) => void
-}
+export default function TopicSelector() {
+    const dispatch = useAppDispatch()
+    const topics = useAppSelector(selectTopics)
+    const selectedTopic = useAppSelector(selectChosenTopic)
 
-export default function TopicSelector({ topics, selectedTopic, setSelectedTopic }: TopicSelectorProps) {
     const [openCategory, setOpenCategory] = useState<string | null>("platform")
 
     const handleTopicSelect = (topic: Topic) => {
-        setSelectedTopic(topic)
+        dispatch(setChosenTopic(topic))
     }
 
     const handleClearSelection = () => {
-        setSelectedTopic(null)
+        dispatch(setChosenTopic(null))
     }
 
     const toggleCategory = (categoryId: string) => {

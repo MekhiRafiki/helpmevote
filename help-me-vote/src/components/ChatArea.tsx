@@ -3,21 +3,20 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
-import {  Topic } from "@/types"
 import { Send } from "lucide-react"
 import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
-import { IMMIGRATION_AGENDA } from "@/constants/topics"
 import Markdown from 'react-markdown'
+import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
+import { useAppSelector } from "@/lib/hooks"
 
-interface ChatAreaProps {
-    selectedTopic: Topic
-}
 
-export default function ChatArea({ selectedTopic }: ChatAreaProps) {
-    const agenda = IMMIGRATION_AGENDA;
-    const [currentNodeId, setCurrentNodeId] = useState('1');
-    const [currentGoal, setCurrentGoal] = useState("");
+export default function ChatArea() {
+    const selectedTopic = useAppSelector(selectChosenTopic)
+    const [currentNodeId, setCurrentNodeId] = useState('1')
+    const [currentGoal, setCurrentGoal] = useState("")
+    
+    const agenda = selectedTopic?.agenda
 
     const { messages, input, handleInputChange, handleSubmit } = useChat({
         body: {
@@ -26,14 +25,14 @@ export default function ChatArea({ selectedTopic }: ChatAreaProps) {
     });
 
     const handleNextNode = () => {
-        const currentNodeIndex = agenda.plan.nodes.findIndex(node => node.id === currentNodeId);
-        if (currentNodeIndex < agenda.plan.nodes.length - 1) {
-            setCurrentNodeId(agenda.plan.nodes[currentNodeIndex + 1].id);
+        const currentNodeIndex = agenda?.plan.nodes.findIndex(node => node.id === currentNodeId);
+        if (currentNodeIndex && currentNodeIndex < (agenda?.plan.nodes.length ?? 0) - 1) {
+            setCurrentNodeId(agenda?.plan.nodes[currentNodeIndex + 1].id ?? '');
         }
     }
 
     useEffect(() => {
-        const currentNode = agenda.plan.nodes.find(node => node.id === currentNodeId);
+        const currentNode = agenda?.plan.nodes.find(node => node.id === currentNodeId);
         if (currentNode) {
             setCurrentGoal(currentNode.ai_prompt.guide);
         }
