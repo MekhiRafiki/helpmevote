@@ -21,7 +21,7 @@ export default function PlanDisplay({ agenda, currentNodeIndex }: PlanDisplayPro
             <Button onClick={handlePlanModalOpen} variant="outline" size="sm">
                 <Workflow />
             </Button>
-            <dialog id="plan_modal" className="modal" style={{ backgroundColor: 'white', color: 'black' }}>
+            <dialog id="plan_modal" className="modal" style={{ backgroundColor: 'var(--modal-bg-color)', color: 'var(--modal-text-color)' }}>
                 <div className="modal-box flex flex-col gap-2">
                     <h3 className="font-bold text-lg">{agenda.title}</h3>
                     <ul>

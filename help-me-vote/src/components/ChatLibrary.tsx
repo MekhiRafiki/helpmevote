@@ -20,7 +20,7 @@ export default function ChatLibrary() {
                     <Library />
                 </Button>
             </div>
-            <dialog id="library_modal" className="modal">
+            <dialog id="library_modal" className="modal" style={{ backgroundColor: 'var(--modal-bg-color)', color: 'var(--modal-text-color)' }}>
                 <div className="modal-box flex flex-col gap-2">
                     <h3 className="font-bold text-lg">Supporting Information</h3>
                     <ul>
