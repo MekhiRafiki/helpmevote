@@ -1,5 +1,4 @@
 "use client"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DoorOpen } from "lucide-react"
 import TopicSelector from "@/components/TopicSelector"
 import ChatArea from "@/components/ChatArea"
@@ -20,39 +19,35 @@ export default function PoliticalChat() {
   const handleClearSelection = () => {
     dispatch(setChosenTopic(null))
     posthog.capture('conversation_exited')
-}
+  }
 
-return (
-  <div className="container mx-auto p-4 max-w-4xl h-screen w-screen flex flex-col overflow-hidden bg-base-300">
-    <h1 className="text-2xl font-bold mb-4 text-base-content">🗳️ Help Me Vote</h1>
+  return (
+    <div className="container mx-auto px-4 pt-4 pb-1 max-w-4xl h-screen w-screen flex flex-col overflow-hidden bg-base-300">
+      <h1 className="text-2xl font-bold mb-2 text-base-content">🗳️ Help Me Vote</h1>
 
-    <TopicSelector />
-    {selectedTopic ? (
-      <Card className="flex-grow flex flex-col overflow-hidden bg-base-100">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center mr-2 text-base-content">
-              {selectedTopic.title}
-            </div>
+      <TopicSelector />
+      {selectedTopic ? (
+        <div className="flex-grow flex flex-col overflow-hidden bg-base-200 rounded-md">
+          <div className="flex items-center justify-between px-4 py-2">
+            <h2 className="text-md font-semibold sm:text-sm md:text-md text-base-content">{selectedTopic.title}</h2>
             <div className="flex flex-row items-center gap-2">
               {usedNotionUrls.length > 0 && (
                 <ChatLibrary />
-              ) }
+              )}
               <Button onClick={handleClearSelection} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
                 <DoorOpen />
               </Button>
             </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex-grow overflow-auto">
-          <ChatArea />
-        </CardContent>
-      </Card>
-    ) : (
-      <p className="text-center text-gray-500">
-        Please select a topic to start chatting.
-      </p>
-    )}
-  </div>
-)
+          </div>
+          <div className="flex-grow overflow-auto px-4">
+            <ChatArea />
+          </div>
+        </div>
+      ) : (
+        <p className="text-center text-gray-500">
+          Please select a topic to start chatting.
+        </p>
+      )}
+    </div>
+  )
 }

@@ -26,7 +26,7 @@ export default function PlanDisplay({ agenda, currentNodeIndex }: PlanDisplayPro
                     <h3 className="font-bold text-lg text-base-content">{agenda.title}</h3>
                     <ul>
                         {agenda.plan.nodes.map((node, index) => (
-                            <li key={index} className="mb-2">
+                            <li key={index} className="mb-2 pb-1 border-b border-base-content">
                                 <div className="flex flex-row justify-between items-center">
                                     <h4 className="font-semibold text-base-content">{node.title}</h4>
                                     {index === currentNodeIndex && (<span className={`indicator-item indicator-start badge badge-primary badge-sm`}>Current</span>)}

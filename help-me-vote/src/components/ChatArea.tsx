@@ -111,9 +111,9 @@ export default function ChatArea() {
         <div className="flex flex-col h-full">
            {currentGoal && (
             <div className="flex-shrink-0 flex flex-row items-center justify-between mb-4">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 items-center">
                     <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                    <h2 className="text-md font-semibold sm:text-sm md:text-md text-base-content">
+                    <h2 className="text-sm font-semibold sm:text-sm md:text-md text-base-content">
                         {currentNode?.title || "Current Goal"}
                     </h2>
                 </div>
@@ -129,19 +129,17 @@ export default function ChatArea() {
                 </div>
             </div>
             )}
-            <ScrollArea className="flex-grow overflow-auto mb-4 p-4 border rounded-md">
+            <ScrollArea className="flex-grow overflow-auto mb-2 rounded-md">
             {messages.length === 0 ? (
                 <QuickStartGuide />
             ) : (
                 messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`mb-4 ${
-                            message.role === "user" ? "text-right" : "text-left"
-                        }`}
+                        className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}
                     >
-                        <span
-                            className={`inline-block p-2 rounded-lg ${
+                        <div
+                            className={`chat-bubble ${
                                 message.role === "user"
                                     ? "bg-info text-info-content"
                                     : "bg-base-300 text-base-content"
@@ -149,7 +147,6 @@ export default function ChatArea() {
                         >
                             <Markdown>{message.content}</Markdown>
                             {message.toolInvocations?.map(toolInvocation => {
-                                console.log(toolInvocation)
                                 const { toolName, toolCallId, state } = toolInvocation;
                                 if (state === 'result'){
                                     if (toolName === "displayCandidateSpectrum") {
@@ -167,12 +164,12 @@ export default function ChatArea() {
                                     </div>
                                 )
                             })}
-                        </span>
+                        </div>
                     </div>
                 ))
             )}
             </ScrollArea>
-            <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end">
+            <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end mb-2">
              <TextareaAutosize
                     className="flex-grow p-2 rounded-md border border-base-300 resize-y max-h-40 bg-base-100 text-base-content focus:bg-base-100 focus:text-base-content"
                     placeholder="Type your message..."

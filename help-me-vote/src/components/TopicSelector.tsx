@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Topic } from "@/types"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
@@ -35,13 +34,13 @@ export default function TopicSelector() {
     }
 
     return (
-        <Card className="mb-4 bg-base-100">
-            <CardHeader>
-                <CardTitle className="text-base-content">
+        <div className="mb-4 bg-base-100">
+            <header>
+                <h2 className="text-base-content">
                     Discuss the 2024 USA Presidential Race with AI
-                </CardTitle>
-            </CardHeader>
-            <CardContent> 
+                </h2>
+            </header>
+            <div> 
               {presidentialRace?.children?.map((category) => (
                   <div key={category.id} className="mb-4">
                       <Button
@@ -70,7 +69,7 @@ export default function TopicSelector() {
                       )}
                   </div>
               ))}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     )
 }
