@@ -173,8 +173,8 @@ export default function ChatArea() {
             )}
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end">
-                <TextareaAutosize
-                    className="flex-grow p-2 rounded-md border border-gray-300 resize-y max-h-40"
+             <TextareaAutosize
+                    className="flex-grow p-2 rounded-md border border-gray-300 resize-y max-h-40 bg-white text-black focus:bg-white focus:text-black"
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
