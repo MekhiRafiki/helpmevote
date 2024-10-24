@@ -7,16 +7,21 @@ import { Topic } from "@/types"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { selectChosenTopic, selectTopics, setChosenTopic } from "@/lib/features/topics/topicsSlice"
+import { usePostHog } from "posthog-js/react"
 
 export default function TopicSelector() {
     const dispatch = useAppDispatch()
     const topics = useAppSelector(selectTopics)
     const selectedTopic = useAppSelector(selectChosenTopic)
+    const posthog = usePostHog();
 
     const [openCategory, setOpenCategory] = useState<string | null>("platform")
 
     const handleTopicSelect = (topic: Topic) => {
         dispatch(setChosenTopic(topic))
+        posthog.capture('topic_selected', {
+            topic: topic.title
+        })
     }
 
     const toggleCategory = (categoryId: string) => {

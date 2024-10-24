@@ -1,6 +1,7 @@
 import { Workflow } from "lucide-react";
 import { Button } from "./ui/button";
 import { ConversationAgenda } from "@/types";
+import { usePostHog } from "posthog-js/react";
 
 interface PlanDisplayProps {
     agenda: ConversationAgenda | undefined
@@ -8,10 +9,16 @@ interface PlanDisplayProps {
 }
 
 export default function PlanDisplay({ agenda, currentNodeIndex }: PlanDisplayProps) {
+    const posthog = usePostHog();
+
+    const handlePlanModalOpen = () => {
+        (document.getElementById('plan_modal') as HTMLDialogElement)?.showModal()
+        posthog.capture('conversation_plan_modal_opened')
+    }
     if (!agenda) return null;
     return (
         <>
-            <Button onClick={() => (document.getElementById('plan_modal') as HTMLDialogElement)?.showModal()} variant="outline" size="sm">
+            <Button onClick={handlePlanModalOpen} variant="outline" size="sm">
                 <Workflow />
             </Button>
             <dialog id="plan_modal" className="modal">
