@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ConversationAgendaNode } from "@/types"
 import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import SpectrumDisplay from "./ui/spectrumDisplay"
+import QuickStartGuide from "./QuickStartGuide"
 
 
 export default function ChatArea() {
@@ -110,44 +111,47 @@ export default function ChatArea() {
             </div>
             )}
             <ScrollArea className="flex-grow overflow-auto mb-4 p-4 border rounded-md">
-                {messages.map((message, index) => (
-                <div
-                    key={index}
-                    className={`mb-4 ${
-                    message.role === "user" ? "text-right" : "text-left"
-                    }`}
-                >
-                    <span
-                    className={`inline-block p-2 rounded-lg ${
-                        message.role === "user"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-800"
-                    }`}
+            {messages.length === 0 ? (
+                <QuickStartGuide />
+            ) : (
+                messages.map((message, index) => (
+                    <div
+                        key={index}
+                        className={`mb-4 ${
+                            message.role === "user" ? "text-right" : "text-left"
+                        }`}
                     >
-                        <Markdown>{message.content}</Markdown>
-                        {message.toolInvocations?.map(toolInvocation => {
-                            console.log(toolInvocation)
-                            const { toolName, toolCallId, state } = toolInvocation;
-                            if (state === 'result'){
-                                if (toolName === "displayCandidateSpectrum") {
-                                    const { result } = toolInvocation;
-                                    return (
-                                        <div key={toolCallId}>
-                                            <SpectrumDisplay  {...result} />
-                                        </div>
-                                    )
+                        <span
+                            className={`inline-block p-2 rounded-lg ${
+                                message.role === "user"
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-gray-200 text-gray-800"
+                            }`}
+                        >
+                            <Markdown>{message.content}</Markdown>
+                            {message.toolInvocations?.map(toolInvocation => {
+                                console.log(toolInvocation)
+                                const { toolName, toolCallId, state } = toolInvocation;
+                                if (state === 'result'){
+                                    if (toolName === "displayCandidateSpectrum") {
+                                        const { result } = toolInvocation;
+                                        return (
+                                            <div key={toolCallId}>
+                                                <SpectrumDisplay  {...result} />
+                                            </div>
+                                        )
+                                    }
                                 }
-                            }
-                            return (
-                                <div key={index}>
-                                    <p>{JSON.stringify(toolInvocation)}</p>
-                                </div>
-                            )
-                        })}
-                    </span>
-                </div>
-                ))}
-                {/* <SpectrumDisplay position={.58} /> */}
+                                return (
+                                    <div key={index}>
+                                        <p>{JSON.stringify(toolInvocation)}</p>
+                                    </div>
+                                )
+                            })}
+                        </span>
+                    </div>
+                ))
+            )}
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full">
                 <Input
