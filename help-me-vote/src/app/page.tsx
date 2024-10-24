@@ -8,15 +8,18 @@ import { selectChosenTopic, setChosenTopic } from "@/lib/features/topics/topicsS
 import { Button } from "@/components/ui/button"
 import { selectUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import ChatLibrary from "@/components/ChatLibrary"
+import { usePostHog } from "posthog-js/react"
 
 
 export default function PoliticalChat() {
   const dispatch = useAppDispatch()
   const selectedTopic = useAppSelector(selectChosenTopic)
   const usedNotionUrls = useAppSelector(selectUsedNotionUrls)
+  const posthog = usePostHog();
 
   const handleClearSelection = () => {
     dispatch(setChosenTopic(null))
+    posthog.capture('conversation_exited')
 }
 
 return (

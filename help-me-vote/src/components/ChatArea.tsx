@@ -14,6 +14,7 @@ import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSli
 import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
 import PlanDisplay from "./PlanDisplay"
+import { usePostHog } from "posthog-js/react"
 
 
 export default function ChatArea() {
@@ -23,6 +24,8 @@ export default function ChatArea() {
     const [currentNode, setCurrentNode] = useState<ConversationAgendaNode | null>(null)
     const [currentGoal, setCurrentGoal] = useState("")
     const [hasMessageForCurrentGoal, setHasMessageForCurrentGoal] = useState(false)
+    const posthog = usePostHog();
+
 
 
     const agenda = selectedTopic?.agenda
@@ -37,13 +40,24 @@ export default function ChatArea() {
     const handleNextNode = () => {
         if (agenda?.plan.nodes && currentNodeIndex < agenda.plan.nodes.length - 1) {
             setCurrentNodeIndex(prevIndex => prevIndex + 1);
+            posthog.capture('conversation_next_node', {
+                topic: selectedTopic?.id,
+            })
         } else {
             setCurrentNodeIndex(-1);
+            posthog.capture('conversation_completed', {
+                topic: selectedTopic?.id,
+            })
         }
     }
 
     const handleKickMeOff = () => {
         handleInputChange({ target: { value: currentGoal } } as React.ChangeEvent<HTMLInputElement>);
+        posthog.capture('conversation_kicked_off', {
+            topic: selectedTopic?.id,
+            current_goal: currentGoal,
+            current_node: currentNode?.title,
+        })
         // handleSubmit();
     };
 
@@ -58,6 +72,12 @@ export default function ChatArea() {
                 notion_url: currentNode?.ai_prompt.notion_url
             }
         });
+        posthog.capture('message_sent', {
+            topic: selectedTopic?.id,
+            current_goal: currentGoal,
+            current_node: currentNode?.title,
+            chat_length: messages.length
+        })
     }
 
     useEffect(() => {
