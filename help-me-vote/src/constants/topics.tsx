@@ -1,5 +1,6 @@
 import { Topic } from "@/types";
 import { IMMIGRATION_AGENDA } from "./agendas/policy/immigration";
+import { PRESIDENTIAL_OVERVIEW_AGENDA } from "./agendas/platform/overview";
 
 
 export const TOPICS: Topic[] = [
@@ -12,7 +13,7 @@ export const TOPICS: Topic[] = [
                 title: "Party Platforms",
                 category: "platform",
                 children: [
-                    { id: "presidential-overview", title: "Candidate Comparison: Find Your Match", category: "platform" },
+                    { id: "presidential-overview", title: "Candidate Comparison: Find Your Match", category: "platform", agenda: PRESIDENTIAL_OVERVIEW_AGENDA },
                     { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform" },
                     { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform" },
                 ]
@@ -23,13 +24,13 @@ export const TOPICS: Topic[] = [
                 category: "policy",
                 children: [
                     { id: "immigration", title: "Immigration", category: "policy", agenda: IMMIGRATION_AGENDA },
-                    { id: "abortion", title: "Abortion", category: "policy" },
-                    { id: "economy", title: "Economy", category: "policy" },
-                    { id: "healthcare", title: "Healthcare", category: "policy" },
-                    { id: "education", title: "Education", category: "policy" },
-                    { id: "climate", title: "Climate", category: "policy" },
-                    { id: "gun-control", title: "Gun Control", category: "policy" },
-                    { id: "voting-rights", title: "Voting Rights", category: "policy" },
+                    // { id: "abortion", title: "Abortion", category: "policy" },
+                    // { id: "economy", title: "Economy", category: "policy" },
+                    // { id: "healthcare", title: "Healthcare", category: "policy" },
+                    // { id: "education", title: "Education", category: "policy" },
+                    // { id: "climate", title: "Climate", category: "policy" },
+                    // { id: "gun-control", title: "Gun Control", category: "policy" },
+                    // { id: "voting-rights", title: "Voting Rights", category: "policy" },
                 ]
             }
         ]
