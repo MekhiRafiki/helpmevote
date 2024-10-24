@@ -18,20 +18,20 @@ export default function PlanDisplay({ agenda, currentNodeIndex }: PlanDisplayPro
     if (!agenda) return null;
     return (
         <>
-            <Button onClick={handlePlanModalOpen} variant="outline" size="sm">
+            <Button onClick={handlePlanModalOpen} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
                 <Workflow />
             </Button>
-            <dialog id="plan_modal" className="modal" style={{ backgroundColor: 'var(--modal-bg-color)', color: 'var(--modal-text-color)' }}>
+            <dialog id="plan_modal" className="modal">
                 <div className="modal-box flex flex-col gap-2">
-                    <h3 className="font-bold text-lg">{agenda.title}</h3>
+                    <h3 className="font-bold text-lg text-base-content">{agenda.title}</h3>
                     <ul>
                         {agenda.plan.nodes.map((node, index) => (
                             <li key={index} className="mb-2">
                                 <div className="flex flex-row justify-between items-center">
-                                    <h4 className="font-semibold">{node.title}</h4>
+                                    <h4 className="font-semibold text-base-content">{node.title}</h4>
                                     {index === currentNodeIndex && (<span className={`indicator-item indicator-start badge badge-primary badge-sm`}>Current</span>)}
                                 </div>
-                                <p>{node.description}</p>
+                                <p className="text-base-content">{node.description}</p>
                             </li>
                         ))}
                     </ul>

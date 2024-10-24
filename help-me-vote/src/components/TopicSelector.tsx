@@ -35,9 +35,9 @@ export default function TopicSelector() {
     }
 
     return (
-        <Card className="mb-4">
+        <Card className="mb-4 bg-base-100">
             <CardHeader>
-                <CardTitle>
+                <CardTitle className="text-base-content">
                     Discuss the 2024 USA Presidential Race with AI
                 </CardTitle>
             </CardHeader>
@@ -48,10 +48,10 @@ export default function TopicSelector() {
                           onClick={() => toggleCategory(category.id)}
                           variant="outline"
                           size="sm"
-                          className="w-full justify-between"
+                          className="w-full justify-between bg-base-100 text-base-content border-base-300"
                       >
                           {category.title}
-                          {openCategory === category.id ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
+                          {openCategory === category.id ? <ChevronUp className="ml-2 h-4 w-4 text-base-content" /> : <ChevronDown className="ml-2 h-4 w-4 text-base-content" />}
                       </Button>
                       {openCategory === category.id && (
                           <div className="mt-2 grid grid-cols-1 gap-2">
@@ -61,7 +61,7 @@ export default function TopicSelector() {
                                       onClick={() => handleTopicSelect(topic)}
                                       variant="ghost"
                                       size="sm"
-                                      className="justify-start hover:bg-gray-100"
+                                      className="justify-start hover:bg-base-200 text-base-content"
                                   >
                                       {topic.title}
                                   </Button>

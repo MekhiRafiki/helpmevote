@@ -113,17 +113,17 @@ export default function ChatArea() {
             <div className="flex-shrink-0 flex flex-row items-center justify-between mb-4">
                 <div className="flex flex-row gap-2">
                     <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                    <h2 className="text-md font-semibold sm:text-sm md:text-md">
+                    <h2 className="text-md font-semibold sm:text-sm md:text-md text-base-content">
                         {currentNode?.title || "Current Goal"}
                     </h2>
                 </div>
                 <div className="flex flex-row gap-2 justify-end">
                     {!hasMessageForCurrentGoal && (
-                        <Button onClick={handleKickMeOff} variant="outline" size="sm">
+                        <Button onClick={handleKickMeOff} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
                             <Play className="h-4 w-4" />
                         </Button>
                     )}
-                    <Button onClick={handleNextNode} variant="outline" size="sm">
+                    <Button onClick={handleNextNode} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
                         <SkipForward className="h-4 w-4" />
                     </Button>
                 </div>
@@ -143,8 +143,8 @@ export default function ChatArea() {
                         <span
                             className={`inline-block p-2 rounded-lg ${
                                 message.role === "user"
-                                    ? "bg-blue-500 text-white"
-                                    : "bg-gray-200 text-gray-800"
+                                    ? "bg-info text-info-content"
+                                    : "bg-base-300 text-base-content"
                             }`}
                         >
                             <Markdown>{message.content}</Markdown>
@@ -174,7 +174,7 @@ export default function ChatArea() {
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end">
              <TextareaAutosize
-                    className="flex-grow p-2 rounded-md border border-gray-300 resize-y max-h-40 bg-white text-black focus:bg-white focus:text-black"
+                    className="flex-grow p-2 rounded-md border border-base-300 resize-y max-h-40 bg-base-100 text-base-content focus:bg-base-100 focus:text-base-content"
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
@@ -185,7 +185,7 @@ export default function ChatArea() {
                     }}
                     minRows={1} // Start with a single row
                 />
-                <Button onClick={handleSubmitWithContext} className="">
+                <Button onClick={handleSubmitWithContext} className="bg-base-100 text-base-content border-base-300" variant="outline">
                     <Send className="h-4 w-4" />
                 </Button>
             </div>

@@ -15,23 +15,28 @@ export default function ChatLibrary() {
     return (
         <>
             <div className="indicator">
-                <span className="indicator-item indicator-start badge badge-primary badge-sm">{usedNotionUrls.length}</span>
-                <Button onClick={() => (document.getElementById('library_modal') as HTMLDialogElement)?.showModal()} variant="outline" size="sm">
-                    <Library />
+                <span className="indicator-item indicator-start badge badge-primary badge-sm text-primary-content">{usedNotionUrls.length}</span>
+                <Button 
+                    onClick={() => (document.getElementById('library_modal') as HTMLDialogElement)?.showModal()} 
+                    variant="outline" 
+                    size="sm"
+                    className="bg-base-100 text-base-content border-base-300"
+                >
+                    <Library className="text-base-content"/>
                 </Button>
             </div>
-            <dialog id="library_modal" className="modal" style={{ backgroundColor: 'var(--modal-bg-color)', color: 'var(--modal-text-color)' }}>
+            <dialog id="library_modal" className="modal">
                 <div className="modal-box flex flex-col gap-2">
-                    <h3 className="font-bold text-lg">Supporting Information</h3>
+                    <h3 className="font-bold text-lg text-base-content">Supporting Information</h3>
                     <ul>
                         {usedNotionUrls.map((url, index) => (
                             <li key={index} className="mb-2 flex items-center">
-                                <Link className="h-4 w-4 mr-2" />
+                                <Link className="h-4 w-4 mr-2 text-base-content" />
                                 <a
                                     href={url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-blue-500 underline"
+                                    className="text-info underline"
                                 >
                                     {extractTitleFromUrl(url)}
                                 </a>

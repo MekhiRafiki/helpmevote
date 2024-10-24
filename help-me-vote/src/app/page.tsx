@@ -23,22 +23,22 @@ export default function PoliticalChat() {
 }
 
 return (
-  <div className="container mx-auto p-4 max-w-4xl h-screen w-screen flex flex-col overflow-hidden">
-    <h1 className="text-2xl font-bold mb-4">🗳️ Help Me Vote</h1>
+  <div className="container mx-auto p-4 max-w-4xl h-screen w-screen flex flex-col overflow-hidden bg-base-300">
+    <h1 className="text-2xl font-bold mb-4 text-base-content">🗳️ Help Me Vote</h1>
 
     <TopicSelector />
     {selectedTopic ? (
-      <Card className="flex-grow flex flex-col overflow-hidden">
+      <Card className="flex-grow flex flex-col overflow-hidden bg-base-100">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center mr-2">
+            <div className="flex items-center mr-2 text-base-content">
               {selectedTopic.title}
             </div>
             <div className="flex flex-row items-center gap-2">
               {usedNotionUrls.length > 0 && (
                 <ChatLibrary />
               ) }
-              <Button onClick={handleClearSelection} variant="outline" size="sm">
+              <Button onClick={handleClearSelection} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
                 <DoorOpen />
               </Button>
             </div>
