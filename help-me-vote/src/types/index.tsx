@@ -19,19 +19,21 @@ export interface Message {
 export interface AIPrompt {
     key: string;
     guide: string;
+    notion_url?: string;
     context_support_url?: string;
-    notion_page_id?: string;
+}
+
+export interface ConversationAgendaNode {
+    id: string;
+    title: string;
+    description: string;
+    ai_prompt: AIPrompt;
 }
 
 export interface ConversationAgenda {
     id: string;
     title: string;
     plan: {
-      nodes: Array<{
-        id: string;
-        title: string;
-        description: string;
-        ai_prompt: AIPrompt;
-      }>;
+      nodes: Array<ConversationAgendaNode>;
     };
   }

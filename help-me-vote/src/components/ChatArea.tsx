@@ -9,11 +9,13 @@ import { useEffect, useState } from "react"
 import Markdown from 'react-markdown'
 import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { useAppSelector } from "@/lib/hooks"
+import { ConversationAgendaNode } from "@/types"
 
 
 export default function ChatArea() {
     const selectedTopic = useAppSelector(selectChosenTopic)
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
+    const [currentNode, setCurrentNode] = useState<ConversationAgendaNode | null>(null)
     const [currentGoal, setCurrentGoal] = useState("")
     const [hasMessageForCurrentGoal, setHasMessageForCurrentGoal] = useState(false)
 
@@ -21,6 +23,7 @@ export default function ChatArea() {
     const agenda = selectedTopic?.agenda
 
     const { messages, input, handleInputChange, handleSubmit } = useChat({
+        maxSteps: 4,
         body: {
             currentGoal
         }
@@ -33,6 +36,32 @@ export default function ChatArea() {
             setCurrentNodeIndex(-1);
         }
     }
+
+    const handleKickMeOff = () => {
+        handleInputChange({ target: { value: currentGoal } } as React.ChangeEvent<HTMLInputElement>);
+        // handleSubmit();
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleSubmitWithContext = (e: any) => {
+        console.log("Current Node", currentNode);
+        console.log(hasMessageForCurrentGoal, currentNode?.ai_prompt.notion_url);
+        handleSubmit(e, {
+            body: {
+                forceContext: !hasMessageForCurrentGoal,
+                notion_url: currentNode?.ai_prompt.notion_url
+            }
+        });
+    }
+
+    useEffect(() => {
+        if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
+            setCurrentNode(agenda.plan.nodes[currentNodeIndex]);
+        } else {
+            setCurrentNode(null);
+        }
+    }, [currentNodeIndex, agenda]);
+
 
     useEffect(() => {
         if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
@@ -49,13 +78,6 @@ export default function ChatArea() {
         }
     }, [messages]);
 
-    const handleKickMeOff = () => {
-        handleInputChange({ target: { value: currentGoal } } as React.ChangeEvent<HTMLInputElement>);
-        // handleSubmit();
-    };
-      
-    const currentNode = agenda?.plan.nodes?.[currentNodeIndex]
-    
     return (
         <div className="flex flex-col h-full">
            {currentGoal && (
@@ -94,6 +116,11 @@ export default function ChatArea() {
                     }`}
                     >
                         <Markdown>{message.content}</Markdown>
+                        {message.toolInvocations?.map((toolInvocation, index) => (
+                            <div key={index}>
+                                <p>{JSON.stringify(toolInvocation)}</p>
+                            </div>
+                        ))}
                     </span>
                 </div>
                 ))}
@@ -104,13 +131,13 @@ export default function ChatArea() {
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                        handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+                        handleSubmitWithContext(e)
                     }
                     }}
                 />
-                <Button onClick={(e) => handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)}>
+                <Button onClick={handleSubmitWithContext}>
                     <Send className="h-4 w-4" />
                 </Button>
             </div>

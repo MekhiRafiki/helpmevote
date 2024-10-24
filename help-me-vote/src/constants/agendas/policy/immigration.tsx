@@ -21,7 +21,7 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
                 ai_prompt: {
                     key: "nominees_overview",
                     guide: "Briefly introduce the immigration stances of both Kamala Harris and Donald Trump's campaigns",
-                    notion_page_id: "128f7f9c7c7080649f7eee51d9eebd53"
+                    notion_url: "https://www.notion.so/Immigration-128f7f9c7c7080649f7eee51d9eebd53"
                 }
             },
             {
