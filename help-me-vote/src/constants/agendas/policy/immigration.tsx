@@ -48,7 +48,7 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
                 description: "Provide an analysis of which nominee the user seems to align with most.",
                 ai_prompt: {
                     key: "ai_alignment_analysis",
-                    guide: "Based on my responses throughout the conversation, provide an analysis of which nominee I seem to align with most on immigration issues. Explain the reasoning behind this assessment."
+                    guide: "Based on my responses throughout the conversation, provide an analysis of which nominee I seem to align with most on immigration issues. Explain the reasoning behind this assessment. Display this analysis using the spectrum display tool to show me where I fall on the spectrum between the two nominees." 
                 }
             }
         ]

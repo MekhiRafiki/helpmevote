@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     10. Encourage respectful dialogue and understanding of diverse opinions.
     
     Tailor your responses to help the user achieve their current goal: ${currentGoal}. Ask probing questions to understand their needs better and provide relevant, actionable information to enhance their civic knowledge and engagement.`,
-    model: google('gemini-1.5-flash'),
+    model: google('gemini-1.5-flash-002'),
     messages: convertToCoreMessages(messages),
     tools : {
       getContext: {
@@ -48,6 +48,15 @@ export async function POST(req: Request) {
         execute: async ({ query }: { query?: string }) => {
           const contextSupport = await getContextSupport({ notion_url, query });
           return contextSupport;
+        }
+      },
+      displayCandidateSpectrum: {
+        description: "Display where the user falls on a spectrum of between Kamala Harris and Donald Trump on their stances on the issues/platforms. Provide a positon number between -1 and 1, where -1 is the furthest left (democrat/Harris agreement) and 1 is the furthest right (republican/Trump agreement). You, the AI assistant are to come up with the position based on the conversation.",
+        parameters: z.object({
+          position: z.number()
+        }),
+        execute: async ({ position }: { position: number }) => {
+          return { position }
         }
       }
     }

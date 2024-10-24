@@ -11,6 +11,7 @@ import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ConversationAgendaNode } from "@/types"
 import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
+import SpectrumDisplay from "./ui/spectrumDisplay"
 
 
 export default function ChatArea() {
@@ -124,14 +125,29 @@ export default function ChatArea() {
                     }`}
                     >
                         <Markdown>{message.content}</Markdown>
-                        {message.toolInvocations?.map((toolInvocation, index) => (
-                            <div key={index}>
-                                <p>{JSON.stringify(toolInvocation)}</p>
-                            </div>
-                        ))}
+                        {message.toolInvocations?.map(toolInvocation => {
+                            console.log(toolInvocation)
+                            const { toolName, toolCallId, state } = toolInvocation;
+                            if (state === 'result'){
+                                if (toolName === "displayCandidateSpectrum") {
+                                    const { result } = toolInvocation;
+                                    return (
+                                        <div key={toolCallId}>
+                                            <SpectrumDisplay  {...result} />
+                                        </div>
+                                    )
+                                }
+                            }
+                            return (
+                                <div key={index}>
+                                    <p>{JSON.stringify(toolInvocation)}</p>
+                                </div>
+                            )
+                        })}
                     </span>
                 </div>
                 ))}
+                {/* <SpectrumDisplay position={.58} /> */}
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full">
                 <Input
