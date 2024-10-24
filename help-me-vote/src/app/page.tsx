@@ -3,37 +3,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MessageCircle } from "lucide-react"
 import TopicSelector from "@/components/TopicSelector"
 import ChatArea from "@/components/ChatArea"
-import { useAppSelector } from "@/lib/hooks"
-import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
+import { selectChosenTopic, setChosenTopic } from "@/lib/features/topics/topicsSlice"
+import { Button } from "@/components/ui/button"
 
 
 export default function PoliticalChat() {
+  const dispatch = useAppDispatch()
   const selectedTopic = useAppSelector(selectChosenTopic)
+
+  const handleClearSelection = () => {
+    dispatch(setChosenTopic(null))
+}
   
 
 
-  return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-4">Help Me Vote</h1>
+return (
+  <div className="container mx-auto p-4 max-w-4xl h-screen flex flex-col">
+    <h1 className="text-2xl font-bold mb-4">🗳️ Help Me Vote</h1>
 
-      <TopicSelector  />
-      {selectedTopic ? (<Card>
+    <TopicSelector />
+    {selectedTopic ? (
+      <Card className="flex-grow flex flex-col overflow-hidden">
         <CardHeader>
-          <CardTitle className="flex items-center">
-            <MessageCircle className="mr-2" />
-            {selectedTopic ? selectedTopic.title : 'Chat'}
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center">
+              <MessageCircle className="mr-2" />
+              {selectedTopic.title}
+            </div>
+            <Button onClick={handleClearSelection} variant="outline" size="sm">
+              Exit
+            </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          
-           <ChatArea /> 
+        <CardContent className="flex-grow overflow-auto">
+          <ChatArea />
         </CardContent>
-      </Card>)
-      : (
-        <p className="text-center text-gray-500">
-          Please select a topic to start chatting.
-        </p>
-      )}
-    </div>
-  )
+      </Card>
+    ) : (
+      <p className="text-center text-gray-500">
+        Please select a topic to start chatting.
+      </p>
+    )}
+  </div>
+)
 }

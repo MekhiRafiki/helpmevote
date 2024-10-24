@@ -19,58 +19,52 @@ export default function TopicSelector() {
         dispatch(setChosenTopic(topic))
     }
 
-    const handleClearSelection = () => {
-        dispatch(setChosenTopic(null))
-    }
-
     const toggleCategory = (categoryId: string) => {
         setOpenCategory(openCategory === categoryId ? null : categoryId)
     }
 
     const presidentialRace = topics.find(topic => topic.id === "usa-presidential-race")
 
+    if (selectedTopic) {
+      return null
+    }
+
     return (
         <Card className="mb-4">
             <CardHeader>
                 <CardTitle>
-                    {selectedTopic ? `Currently Discussing: ${selectedTopic.title}` : "Discuss the 2024 USA Presidential Race"}
+                    Discuss the 2024 USA Presidential Race with AI
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                {selectedTopic ? (
-                    <Button onClick={handleClearSelection} variant="outline" size="sm">
-                        Clear Selection
-                    </Button>
-                ) : (
-                    presidentialRace?.children?.map((category) => (
-                        <div key={category.id} className="mb-4">
-                            <Button
-                                onClick={() => toggleCategory(category.id)}
-                                variant="outline"
-                                size="sm"
-                                className="w-full justify-between"
-                            >
-                                {category.title}
-                                {openCategory === category.id ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
-                            </Button>
-                            {openCategory === category.id && (
-                                <div className="mt-2 grid grid-cols-1 gap-2">
-                                    {category.children?.map((topic) => (
-                                        <Button
-                                            key={topic.id}
-                                            onClick={() => handleTopicSelect(topic)}
-                                            variant="ghost"
-                                            size="sm"
-                                            className="justify-start hover:bg-gray-100"
-                                        >
-                                            {topic.title}
-                                        </Button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    ))
-                )}
+            <CardContent> 
+              {presidentialRace?.children?.map((category) => (
+                  <div key={category.id} className="mb-4">
+                      <Button
+                          onClick={() => toggleCategory(category.id)}
+                          variant="outline"
+                          size="sm"
+                          className="w-full justify-between"
+                      >
+                          {category.title}
+                          {openCategory === category.id ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
+                      </Button>
+                      {openCategory === category.id && (
+                          <div className="mt-2 grid grid-cols-1 gap-2">
+                              {category.children?.map((topic) => (
+                                  <Button
+                                      key={topic.id}
+                                      onClick={() => handleTopicSelect(topic)}
+                                      variant="ghost"
+                                      size="sm"
+                                      className="justify-start hover:bg-gray-100"
+                                  >
+                                      {topic.title}
+                                  </Button>
+                              ))}
+                          </div>
+                      )}
+                  </div>
+              ))}
             </CardContent>
         </Card>
     )

@@ -57,21 +57,28 @@ export default function ChatArea() {
     const currentNode = agenda?.plan.nodes?.[currentNodeIndex]
     
     return (
-        <>
+        <div className="flex flex-col h-full">
            {currentGoal && (
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
-                    <div className="flex gap-2">
-                        {!hasMessageForCurrentGoal && (<Button onClick={handleKickMeOff} variant="outline" size="sm">
-                            <Play className="h-4 w-4 mr-1" />
-                        </Button>)}
-                        <Button onClick={handleNextNode} variant="outline" size="sm">
-                            <SkipForward className="h-4 w-4" />
-                        </Button>
+            <div className="flex-shrink-0">
+                <div className="flex flex-col">
+                    <p className="text-left text-gray-500 text-sm">
+                            Current Focus
+                    </p>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
+                        <div className="flex gap-2">
+                            {!hasMessageForCurrentGoal && (<Button onClick={handleKickMeOff} variant="outline" size="sm">
+                                <Play className="h-4 w-4 mr-1" />
+                            </Button>)}
+                            <Button onClick={handleNextNode} variant="outline" size="sm">
+                                <SkipForward className="h-4 w-4" />
+                            </Button>
+                        </div>
                     </div>
                 </div>
+            </div>
             )}
-            <ScrollArea className="h-[400px] mb-4 p-4 border rounded-md">
+            <ScrollArea className="flex-grow overflow-auto mb-4 p-4 border rounded-md">
                 {messages.map((message, index) => (
                 <div
                     key={index}
@@ -91,7 +98,7 @@ export default function ChatArea() {
                 </div>
                 ))}
             </ScrollArea>
-            <div className="flex gap-2">
+            <div className="flex-shrink-0 flex gap-2 w-full">
                 <Input
                     type="text"
                     placeholder="Type your message..."
@@ -107,6 +114,6 @@ export default function ChatArea() {
                     <Send className="h-4 w-4" />
                 </Button>
             </div>
-        </>
+        </div>
     )
 }
