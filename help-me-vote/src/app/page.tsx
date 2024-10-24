@@ -1,22 +1,23 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { MessageCircle } from "lucide-react"
+import { DoorOpen, Library, MessageCircle } from "lucide-react"
 import TopicSelector from "@/components/TopicSelector"
 import ChatArea from "@/components/ChatArea"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { selectChosenTopic, setChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { Button } from "@/components/ui/button"
+import { setViewLibrary, selectUsedNotionUrls, selectViewLibrary } from "@/lib/features/chat/chatSlice"
 
 
 export default function PoliticalChat() {
   const dispatch = useAppDispatch()
   const selectedTopic = useAppSelector(selectChosenTopic)
+  const usedNotionUrls = useAppSelector(selectUsedNotionUrls)
+  const viewLibrary = useAppSelector(selectViewLibrary)
 
   const handleClearSelection = () => {
     dispatch(setChosenTopic(null))
 }
-  
-
 
 return (
   <div className="container mx-auto p-4 max-w-4xl h-screen flex flex-col">
@@ -31,9 +32,16 @@ return (
               <MessageCircle className="mr-2" />
               {selectedTopic.title}
             </div>
-            <Button onClick={handleClearSelection} variant="outline" size="sm">
-              Exit
-            </Button>
+            <div className="flex flex-row items-center gap-2">
+              {usedNotionUrls.length > 0 && (
+                <Button onClick={() => dispatch(setViewLibrary(!viewLibrary))} variant="outline" size="sm">
+                  <Library />
+                </Button>
+              ) }
+              <Button onClick={handleClearSelection} variant="outline" size="sm">
+                <DoorOpen />
+              </Button>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent className="flex-grow overflow-auto">

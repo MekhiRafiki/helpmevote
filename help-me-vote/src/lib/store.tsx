@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import topicsReducer from './features/topics/topicsSlice'
+import chatReducer from './features/chat/chatSlice'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-        topics: topicsReducer
+        topics: topicsReducer,
+        chat: chatReducer
     }
   })
 }

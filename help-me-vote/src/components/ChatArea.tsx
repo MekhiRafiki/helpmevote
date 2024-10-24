@@ -8,18 +8,21 @@ import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
 import Markdown from 'react-markdown'
 import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
-import { useAppSelector } from "@/lib/hooks"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ConversationAgendaNode } from "@/types"
+import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
+import ChatLibrary from "./ChatLibrary"
 
 
 export default function ChatArea() {
+    const dispatch = useAppDispatch()
     const selectedTopic = useAppSelector(selectChosenTopic)
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
     const [currentNode, setCurrentNode] = useState<ConversationAgendaNode | null>(null)
     const [currentGoal, setCurrentGoal] = useState("")
     const [hasMessageForCurrentGoal, setHasMessageForCurrentGoal] = useState(false)
 
-    
+
     const agenda = selectedTopic?.agenda
 
     const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -44,8 +47,9 @@ export default function ChatArea() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmitWithContext = (e: any) => {
-        console.log("Current Node", currentNode);
-        console.log(hasMessageForCurrentGoal, currentNode?.ai_prompt.notion_url);
+        if (!hasMessageForCurrentGoal && currentNode?.ai_prompt.notion_url) {
+            dispatch(addUsedNotionUrl(currentNode.ai_prompt.notion_url!))
+        }
         handleSubmit(e, {
             body: {
                 forceContext: !hasMessageForCurrentGoal,
@@ -76,10 +80,14 @@ export default function ChatArea() {
         if (messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
             setHasMessageForCurrentGoal(true);
         }
-    }, [messages]);
+        if (messages.length === 0) {
+            dispatch(setUsedNotionUrls([]))
+        }
+    }, [messages, dispatch]);
 
     return (
         <div className="flex flex-col h-full">
+            <ChatLibrary />
            {currentGoal && (
             <div className="flex-shrink-0">
                 <div className="flex flex-col">
