@@ -11,7 +11,8 @@ export const KAMALA_HARRIS_DEEP_DIVE: ConversationAgenda = {
                 description: "Set the stage for the deep dive into Kamala Harris's platform.",
                 ai_prompt: {
                     key: "introduction",
-                    guide: "Let's take a close look at Kamala Harris's platform for the upcoming Presidential Election. We'll cover a variety of key policy areas. Before we begin, lets get to know any thoughts or stances about her campaign that may help this conversation be productive?"
+                    guide: "Let's take a close look at Kamala Harris's platform for the upcoming Presidential Election. We'll cover a variety of key policy areas. Before we begin, lets get to know any thoughts or stances about her campaign that may help this conversation be productive?",
+                    notion_url: "https://prism-production-04c.notion.site/Kamala-Harris-s-New-Way-Forward-128f7f9c7c70809197def39ee93132b1"                    
                 }
             },
             {
@@ -43,6 +44,16 @@ export const KAMALA_HARRIS_DEEP_DIVE: ConversationAgenda = {
             },
             {
                 id: "5",
+                title: "Recent Debate Performance",
+                description: "Lets take a look at Kamala Harris's recent debate performance and how it compares to other campaigns.",
+                ai_prompt: {
+                    key: "debate_performance",
+                    guide: "Lets take a look at Kamala Harris's recent debate performance, what did she emphasize in her policy? and how did she compare to other candidates?",
+                    notion_url: "https://prism-production-04c.notion.site/Kamala-Debate-Recap-129f7f9c7c708088bcdcf99253c3d6e1?pvs=4"
+                }
+            },
+            {
+                id: "6",
                 title: "Synthesis and Reflection",
                 description: "Encourage the user to reflect on Harris's platform and how it aligns with their values.",
                 ai_prompt: {
