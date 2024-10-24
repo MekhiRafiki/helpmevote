@@ -1,4 +1,4 @@
-import { DoorOpen, Library, Play, SkipForward } from "lucide-react";
+import { DoorOpen, Library, Play, SkipForward, Workflow } from "lucide-react";
 
 export default function QuickStartGuide() {
     return (
@@ -6,6 +6,10 @@ export default function QuickStartGuide() {
             <h3 className="font-semibold mb-2">So you know...</h3>
             <p>We&apos;ve planned out an agenda on this topic.</p>
             <ul className="list-disc pl-5 space-y-2">
+                <li className="flex items-center">
+                    <Workflow className="h-4 w-4 mr-2" />
+                    <span>Use to view the current topic and the agenda.</span>
+                </li>
                 <li className="flex items-center">
                     <Play className="h-4 w-4 mr-2" />
                     <span>Use to get starter prompts for the current topic.</span>

@@ -13,6 +13,7 @@ import { ConversationAgendaNode } from "@/types"
 import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
+import PlanDisplay from "./PlanDisplay"
 
 
 export default function ChatArea() {
@@ -89,24 +90,27 @@ export default function ChatArea() {
     return (
         <div className="flex flex-col h-full">
            {currentGoal && (
-            <div className="flex-shrink-0">
-                <div className="flex flex-col">
-                    <p className="text-left text-gray-500 text-sm">
-                            Current Focus
-                    </p>
-                    <div className="flex flex-row gap-2 justify-between items-center mb-4">
-                        <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
-                        <div className="flex gap-2">
-                            {!hasMessageForCurrentGoal && (
-                                <Button onClick={handleKickMeOff} variant="outline" size="sm">
-                                    <Play className="h-4 w-4" />
-                                </Button>
-                            )}
-                            <Button onClick={handleNextNode} variant="outline" size="sm">
-                                <SkipForward className="h-4 w-4" />
-                            </Button>
+            <div className="flex-shrink-0 flex flex-row items-center justify-between">
+                <div className="flex flex-row gap-2 ">
+                    <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
+                    <div className="flex flex-col">
+                        <p className="text-left text-gray-500 text-sm">
+                                Current Focus
+                        </p>
+                        <div className="flex flex-row gap-2 justify-between items-center mb-4">
+                            <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
                         </div>
                     </div>
+                </div>
+                <div className="flex flex-row gap-2 justify-end">
+                    {!hasMessageForCurrentGoal && (
+                        <Button onClick={handleKickMeOff} variant="outline" size="sm">
+                            <Play className="h-4 w-4" />
+                        </Button>
+                    )}
+                    <Button onClick={handleNextNode} variant="outline" size="sm">
+                        <SkipForward className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
             )}
