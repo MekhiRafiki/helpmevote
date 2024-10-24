@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Input } from "@/components/ui/input"
+import TextareaAutosize from 'react-textarea-autosize';
 import { Play, Send, SkipForward } from "lucide-react"
 import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
@@ -110,17 +110,12 @@ export default function ChatArea() {
     return (
         <div className="flex flex-col h-full">
            {currentGoal && (
-            <div className="flex-shrink-0 flex flex-row items-center justify-between">
-                <div className="flex flex-row gap-2 ">
+            <div className="flex-shrink-0 flex flex-row items-center justify-between mb-4">
+                <div className="flex flex-row gap-2">
                     <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                    <div className="flex flex-col">
-                        <p className="text-left text-gray-500 text-sm">
-                                Current Focus
-                        </p>
-                        <div className="flex flex-row gap-2 justify-between items-center mb-4">
-                            <h2 className="text-md font-semibold">{currentNode?.title || "Current Goal"}</h2>
-                        </div>
-                    </div>
+                    <h2 className="text-md font-semibold sm:text-sm md:text-md">
+                        {currentNode?.title || "Current Goal"}
+                    </h2>
                 </div>
                 <div className="flex flex-row gap-2 justify-end">
                     {!hasMessageForCurrentGoal && (
@@ -177,19 +172,20 @@ export default function ChatArea() {
                 ))
             )}
             </ScrollArea>
-            <div className="flex-shrink-0 flex gap-2 w-full">
-                <Input
-                    type="text"
+            <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end">
+                <TextareaAutosize
+                    className="flex-grow p-2 rounded-md border border-gray-300 resize-y max-h-40"
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleSubmitWithContext(e)
-                    }
+                        if (e.key === "Enter") {
+                            handleSubmitWithContext(e)
+                        }
                     }}
+                    minRows={1} // Start with a single row
                 />
-                <Button onClick={handleSubmitWithContext}>
+                <Button onClick={handleSubmitWithContext} className="">
                     <Send className="h-4 w-4" />
                 </Button>
             </div>
