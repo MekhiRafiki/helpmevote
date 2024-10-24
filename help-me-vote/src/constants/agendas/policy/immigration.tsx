@@ -11,7 +11,7 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
                 description: "Gather the user's thoughts and feelings on immigration.",
                 ai_prompt: {
                     key: "user_immigration_stance",
-                    guide: "Ask the user about their thoughts and feelings on immigration. What are their main concerns or hopes regarding immigration policy?"
+                    guide: "Lets talk about the issue of immigration in the United States Presidential Election. Probe to get my thoughts and feelings on immigration policy but I am here to learn about the candidates paltforms"
                 }
             },
             {
@@ -20,44 +20,35 @@ export const IMMIGRATION_AGENDA: ConversationAgenda = {
                 description: "Provide a brief overview of both nominees' stances on immigration.",
                 ai_prompt: {
                     key: "nominees_overview",
-                    guide: "Briefly introduce the immigration stances of both Kamala Harris and Donald Trump. Ask the user if they'd like to go deeper on either candidate's platform.",
+                    guide: "Briefly introduce the immigration stances of both Kamala Harris and Donald Trump's campaigns",
                     notion_page_id: "128f7f9c7c7080649f7eee51d9eebd53"
                 }
             },
             {
                 id: "3",
-                title: "Kamala Harris's Immigration Platform",
+                title: "Harris | Walz Immigration Platform",
                 description: "Detailed discussion of Kamala Harris's immigration platform and work.",
                 ai_prompt: {
                     key: "harris_platform",
-                    guide: "Discuss Kamala Harris's immigration platform in detail, including her past work and current proposals."
+                    guide: "Lets deep dive into Kamala Harris's immigration platform in detail, including her past work and current proposals."
                 }
             },
             {
                 id: "4",
-                title: "Donald Trump's Immigration Platform",
+                title: "Trump | Vance Immigration Platform",
                 description: "Detailed discussion of Donald Trump's immigration platform and work.",
                 ai_prompt: {
                     key: "trump_platform",
-                    guide: "Discuss Donald Trump's immigration platform in detail, including his past work and current proposals."
+                    guide: "Lets deep dive into Donald Trump's immigration platform in detail, including his past work and current proposals."
                 }
             },
             {
                 id: "5",
-                title: "User Alignment Reflection",
-                description: "Ask the user who they think they align with most.",
-                ai_prompt: {
-                    key: "user_alignment_reflection",
-                    guide: "Based on the information provided, ask the user which nominee they think they align with most on immigration issues and why."
-                }
-            },
-            {
-                id: "6",
                 title: "Alignment Analysis",
                 description: "Provide an analysis of which nominee the user seems to align with most.",
                 ai_prompt: {
                     key: "ai_alignment_analysis",
-                    guide: "Based on the user's responses throughout the conversation, provide an analysis of which nominee the user seems to align with most on immigration issues. Explain the reasoning behind this assessment."
+                    guide: "Based on my responses throughout the conversation, provide an analysis of which nominee I seem to align with most on immigration issues. Explain the reasoning behind this assessment."
                 }
             }
         ]
