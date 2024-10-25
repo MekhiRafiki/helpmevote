@@ -21,10 +21,10 @@ export default function PoliticalChat() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-4 pb-1 h-screen w-screen flex flex-col overflow-hidden bg-base-300">
+    <div className="min-w-screen min-h-screen px-4 pt-4 pb-1 flex flex-col overflow-hidden bg-base-300">
       <TopicSelector />
       {selectedTopic ? (
-        <div className="flex-grow flex flex-col overflow-hidden w-full h-full rounded-md">
+        <>
             <div className="flex flex-row items-center justify-between w-full mb-2">
               <div className="w-1/6 flex justify-start">
                 <button onClick={handleClearSelection} className="rounded-full text-base-content">
@@ -38,10 +38,8 @@ export default function PoliticalChat() {
                 )}
               </div>
             </div>
-          <div className="flex-grow overflow-auto px-4">
             <ChatArea />
-          </div>
-        </div>
+          </>
       ) : (
         <p className="text-center text-gray-500">
           Please select a topic to start chatting.

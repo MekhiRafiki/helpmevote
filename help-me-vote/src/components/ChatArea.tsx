@@ -124,7 +124,7 @@ export default function ChatArea() {
     }, [selectedTopic, dispatch]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full flex-grow">
             {currentGoal && (
                 <div className="flex-shrink-0 flex items-center justify-between mb-4 mt-2 bg-base-100 rounded-full p-2 w-full h-12 overflow-hidden">
                     <div className="flex items-center gap-2 flex-grow min-w-0">
@@ -192,7 +192,7 @@ export default function ChatArea() {
                 ))
             )}
             </ScrollArea>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 mt-auto">
                 <div className="flex items-center gap-2 justify-end">
                     {position !== null ? (
                         <Button onClick={() => (document.getElementById("spectrum_modal") as HTMLDialogElement).showModal()}
