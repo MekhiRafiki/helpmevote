@@ -109,25 +109,25 @@ export default function ChatArea() {
 
     return (
         <div className="flex flex-col h-full">
-           {currentGoal && (
-            <div className="flex-shrink-0 flex flex-row items-center justify-between mb-4">
-                <div className="flex flex-row gap-2 items-center">
-                    <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                    <h2 className="text-sm font-semibold sm:text-sm md:text-md text-base-content">
-                        {currentNode?.title || "Current Goal"}
-                    </h2>
-                </div>
-                <div className="flex flex-row gap-2 justify-end">
-                    {!hasMessageForCurrentGoal && (
-                        <Button onClick={handleKickMeOff} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
-                            <Play className="h-4 w-4" />
+            {currentGoal && (
+                <div className="flex-shrink-0 flex items-center justify-between mb-4 mt-2 bg-primary rounded-full p-2 w-full h-12 overflow-hidden">
+                    <div className="flex items-center gap-1 flex-grow min-w-0">
+                        <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
+                        <h2 className="text-sm font-semibold text-primary-content whitespace-nowrap overflow-x-auto truncate">
+                            {currentNode?.title || "Current Goal"}
+                        </h2>
+                    </div>
+                    <div className="flex-shrink-0 flex gap-2 ml-2">
+                        {!hasMessageForCurrentGoal && (
+                            <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300 p-1">
+                                <Play className="h-4 w-4" />
+                            </Button>
+                        )}
+                        <Button onClick={handleNextNode} variant="ghost" size="sm" className="rounded-full bg-primary text-primary-content p-1">
+                            <SkipForward className="h-4 w-4" />
                         </Button>
-                    )}
-                    <Button onClick={handleNextNode} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
-                        <SkipForward className="h-4 w-4" />
-                    </Button>
+                    </div>
                 </div>
-            </div>
             )}
             <ScrollArea className="flex-grow overflow-auto mb-2 rounded-md">
             {messages.length === 0 ? (
@@ -142,7 +142,7 @@ export default function ChatArea() {
                             className={`chat-bubble ${
                                 message.role === "user"
                                     ? "bg-info text-info-content"
-                                    : "bg-base-300 text-base-content"
+                                    : "bg-base-100 text-base-content"
                             }`}
                         >
                             <Markdown>{message.content}</Markdown>
@@ -171,7 +171,7 @@ export default function ChatArea() {
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end mb-2">
              <TextareaAutosize
-                    className="flex-grow p-2 rounded-md border border-base-300 resize-y max-h-40 bg-base-100 text-base-content focus:bg-base-100 focus:text-base-content"
+                    className="flex-grow p-2 rounded-md border resize-y max-h-40 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
@@ -180,12 +180,13 @@ export default function ChatArea() {
                             handleSubmitWithContext(e)
                         }
                     }}
-                    minRows={1} // Start with a single row
+                    minRows={1}
                 />
-                <Button onClick={handleSubmitWithContext} className="bg-base-100 text-base-content border-base-300" variant="outline">
+                <Button onClick={handleSubmitWithContext} className="text-primary-content rounded-full bg-primary" variant="ghost" disabled={!input}>
                     <Send className="h-4 w-4" />
                 </Button>
             </div>
         </div>
     )
 }
+

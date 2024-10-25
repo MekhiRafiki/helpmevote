@@ -18,7 +18,7 @@ export default function PlanDisplay({ agenda, currentNodeIndex }: PlanDisplayPro
     if (!agenda) return null;
     return (
         <>
-            <Button onClick={handlePlanModalOpen} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
+            <Button onClick={handlePlanModalOpen} variant="ghost" size="sm" className="rounded-full bg-primary text-primary-content">
                 <Workflow />
             </Button>
             <dialog id="plan_modal" className="modal">
