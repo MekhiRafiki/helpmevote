@@ -69,6 +69,7 @@ export const GOP_2024_DEEP_DIVE: ConversationAgenda = {
                     key: "synthesis_reflection",
                     guide: "We've now covered the core elements of the 2024 GOP Platform.  What is my overall impression? Does its vision resonate with my values and priorities?  Let's analyze how this platform aligns with my political perspectives and what aspects I find most compelling or concerning."
                 },
+                canPlotSpectrum: true
             },
         ],
     },

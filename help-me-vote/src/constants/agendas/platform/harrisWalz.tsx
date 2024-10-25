@@ -59,7 +59,8 @@ export const KAMALA_HARRIS_DEEP_DIVE: ConversationAgenda = {
                 ai_prompt: {
                     key: "synthesis_reflection",
                     guide: "We've now explored the major elements of Kamala Harris's platform. Lets get into my overall impression and see if her vision resonates with my values and priorities? Based on my responses, provide me with an analysis of her vision and how it aligns with my values and priorities."
-                }
+                },
+                canPlotSpectrum: true
             }
         ]
     },
