@@ -93,6 +93,10 @@ export default function ChatArea() {
             const position = await getSpectrumPosition(messages);
             setPosition(position);
             (document.getElementById("spectrum_modal") as HTMLDialogElement).showModal();
+            posthog.capture('spectrum_conversation_determined', {
+                topic: selectedTopic?.id,
+                position: position,
+            })
         }
     }
 
