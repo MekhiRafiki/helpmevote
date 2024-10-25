@@ -171,7 +171,7 @@ export default function ChatArea() {
             </ScrollArea>
             <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end mb-2">
              <TextareaAutosize
-                    className="flex-grow p-2 rounded-md border border-base-300 resize-y max-h-40 bg-base-100 text-base-content focus:bg-base-100 focus:text-base-content"
+                    className="flex-grow p-2 rounded-md border resize-y max-h-40 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Type your message..."
                     value={input}
                     onChange={handleInputChange}
@@ -180,9 +180,9 @@ export default function ChatArea() {
                             handleSubmitWithContext(e)
                         }
                     }}
-                    minRows={1} // Start with a single row
+                    minRows={1}
                 />
-                <Button onClick={handleSubmitWithContext} className="bg-base-100 text-base-content border-base-300" variant="outline">
+                <Button onClick={handleSubmitWithContext} className="text-primary-content rounded-full bg-primary" variant="ghost" disabled={!input}>
                     <Send className="h-4 w-4" />
                 </Button>
             </div>
