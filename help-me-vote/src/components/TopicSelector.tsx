@@ -50,12 +50,12 @@ export default function TopicSelector() {
                             <ChevronLeft className="h-4 w-4" />
                         </Button>
                     )} */}
-                <div className="breadcrumbs text-sm">
+                <div className="breadcrumbs text-sm text-base-content">
                     <ul>
-                        <li><a onClick={() => setBreadcrumbs([])}>Topics</a></li>
+                        <li><a onClick={() => setBreadcrumbs([])} className="text-base-content">Topics</a></li>
                         {breadcrumbs.map((crumb, index) => (
                             <li key={crumb.id}>
-                                <a onClick={() => navigateToBreadcrumb(index)}>{crumb.title}</a>
+                                <a onClick={() => navigateToBreadcrumb(index)} className="text-base-content">{crumb.title}</a>
                             </li>
                         ))}
                     </ul>
@@ -66,7 +66,7 @@ export default function TopicSelector() {
                     <Button
                         key={topic.id}
                         onClick={() => handleTopicSelect(topic)}
-                        variant="ghost"
+                        variant="default"
                         size="sm"
                         className="justify-start bg-base-200 text-base-content"
                     >
