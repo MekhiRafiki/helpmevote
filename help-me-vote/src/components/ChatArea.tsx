@@ -109,25 +109,25 @@ export default function ChatArea() {
 
     return (
         <div className="flex flex-col h-full">
-           {currentGoal && (
-            <div className="flex-shrink-0 flex flex-row items-center justify-between mb-4">
-                <div className="flex flex-row gap-2 items-center">
-                    <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                    <h2 className="text-sm font-semibold sm:text-sm md:text-md text-base-content">
-                        {currentNode?.title || "Current Goal"}
-                    </h2>
-                </div>
-                <div className="flex flex-row gap-2 justify-end">
-                    {!hasMessageForCurrentGoal && (
-                        <Button onClick={handleKickMeOff} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
-                            <Play className="h-4 w-4" />
+            {currentGoal && (
+                <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between mb-4 mt-2 bg-primary rounded-full p-2">
+                    <div className="flex flex-row items-center gap-4 w-full sm:w-auto mb-2 sm:mb-0">
+                        <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
+                        <h2 className="text-sm font-semibold sm:text-sm md:text-md text-primary-content truncate">
+                            {currentNode?.title || "Current Goal"}
+                        </h2>
+                    </div>
+                    <div className="flex flex-row gap-2 justify-center sm:justify-end w-full sm:w-auto">
+                        {!hasMessageForCurrentGoal && (
+                            <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300">
+                                <Play className="h-5 w-5" />
+                            </Button>
+                        )}
+                        <Button onClick={handleNextNode} variant="ghost" size="sm" className="rounded-full bg-primary text-primary-content">
+                            <SkipForward className="h-5 w-5" />
                         </Button>
-                    )}
-                    <Button onClick={handleNextNode} variant="outline" size="sm" className="bg-base-100 text-base-content border-base-300">
-                        <SkipForward className="h-4 w-4" />
-                    </Button>
+                    </div>
                 </div>
-            </div>
             )}
             <ScrollArea className="flex-grow overflow-auto mb-2 rounded-md">
             {messages.length === 0 ? (
@@ -142,7 +142,7 @@ export default function ChatArea() {
                             className={`chat-bubble ${
                                 message.role === "user"
                                     ? "bg-info text-info-content"
-                                    : "bg-base-300 text-base-content"
+                                    : "bg-base-100 text-base-content"
                             }`}
                         >
                             <Markdown>{message.content}</Markdown>
@@ -189,3 +189,4 @@ export default function ChatArea() {
         </div>
     )
 }
+
