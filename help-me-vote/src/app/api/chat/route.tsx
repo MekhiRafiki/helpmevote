@@ -37,7 +37,9 @@ export async function POST(req: Request) {
     10. Encourage respectful dialogue and understanding of diverse opinions.
     
     Tailor your responses to help the user achieve their current goal: ${currentGoal}. Ask probing questions to understand their needs better and provide relevant, actionable information to enhance their civic knowledge and engagement.
-    Be brief and semi-casual in your responses, this should feel like a thread with an informed political expert.`,
+    Be brief and semi-casual in your responses, this should feel like a thread with an informed political expert.
+    Proactively move the conversation along. If you have enough information in the current topic, or if the user says they'd like to move on, or begins to change topics, move onto the next goal using the markGoalAsComplete tool.  
+    `,
     model: google('gemini-1.5-flash-002'),
     messages: convertToCoreMessages(messages),
     tools : {
@@ -59,6 +61,12 @@ export async function POST(req: Request) {
         execute: async ({ position }: { position: number }) => {
           return { position }
         }
+      },
+      markGoalAsComplete: {
+        description: "Mark this current part of the conversation as complete. Lets move to next topic",
+        parameters: z.object({
+          topic: z.string().optional().describe("The previous topic that the user was discussing")
+        }),
       }
     }
   });

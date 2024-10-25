@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import TextareaAutosize from 'react-textarea-autosize';
-import { Play, Send, SkipForward } from "lucide-react"
+import { Check, Play, Send, SkipForward } from "lucide-react"
 import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
 import Markdown from 'react-markdown'
 import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ConversationAgendaNode } from "@/types"
-import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
+import { setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
 import PlanDisplay from "./PlanDisplay"
@@ -23,7 +23,7 @@ export default function ChatArea() {
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
     const [currentNode, setCurrentNode] = useState<ConversationAgendaNode | null>(null)
     const [currentGoal, setCurrentGoal] = useState("")
-    const [hasMessageForCurrentGoal, setHasMessageForCurrentGoal] = useState(false)
+    const [hasSentTopicContext, setHasSentTopicContext] = useState(false)
     const posthog = usePostHog();
 
 
@@ -31,9 +31,17 @@ export default function ChatArea() {
     const agenda = selectedTopic?.agenda
 
     const { messages, input, handleInputChange, handleSubmit } = useChat({
-        maxSteps: 4,
+        maxSteps: 1,
         body: {
             currentGoal
+        },
+        async onToolCall(toolCall) {
+            if (toolCall.toolCall.toolName === "markGoalAsComplete") {
+                handleNextNode()
+                return {
+                    success: true
+                }
+            }
         }
     });
 
@@ -63,12 +71,9 @@ export default function ChatArea() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmitWithContext = (e: any) => {
-        if (!hasMessageForCurrentGoal && currentNode?.ai_prompt.notion_url) {
-            dispatch(addUsedNotionUrl(currentNode.ai_prompt.notion_url!))
-        }
         handleSubmit(e, {
             body: {
-                forceContext: !hasMessageForCurrentGoal,
+                forceContext: !hasSentTopicContext,
                 notion_url: currentNode?.ai_prompt.notion_url
             }
         });
@@ -80,32 +85,25 @@ export default function ChatArea() {
         })
     }
 
-    useEffect(() => {
-        if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
-            setCurrentNode(agenda.plan.nodes[currentNodeIndex]);
-        } else {
-            setCurrentNode(null);
-        }
-    }, [currentNodeIndex, agenda]);
-
-
+    // Set the current goal and node
     useEffect(() => {
         if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
             setCurrentGoal(agenda.plan.nodes[currentNodeIndex].ai_prompt.guide);
-            setHasMessageForCurrentGoal(false);
+            setCurrentNode(agenda.plan.nodes[currentNodeIndex]);
         } else {
             setCurrentGoal("");
+            setCurrentNode(null);
         }
+        setHasSentTopicContext(false);
     }, [currentNodeIndex, agenda]);
 
+    // Display the used notion urls in the agenda
     useEffect(() => {
-        if (messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
-            setHasMessageForCurrentGoal(true);
+        if (selectedTopic?.agenda) {
+            const urls = selectedTopic.agenda.plan.nodes.map(node => node.ai_prompt.notion_url).filter(url => url !== null && url !== undefined) as string[];
+            dispatch(setUsedNotionUrls(urls))
         }
-        if (messages.length === 0) {
-            dispatch(setUsedNotionUrls([]))
-        }
-    }, [messages, dispatch]);
+    }, [selectedTopic, dispatch]);
 
     return (
         <div className="flex flex-col h-full">
@@ -118,7 +116,7 @@ export default function ChatArea() {
                         </h2>
                     </div>
                     <div className="flex-shrink-0 flex gap-2 ml-2">
-                        {!hasMessageForCurrentGoal && (
+                        {!hasSentTopicContext && (
                             <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300 text-base-content p-2">
                                 <Play className="h-4 w-4" />
                             </Button>
@@ -147,13 +145,20 @@ export default function ChatArea() {
                         >
                             <Markdown>{message.content}</Markdown>
                             {message.toolInvocations?.map(toolInvocation => {
-                                const { toolName, toolCallId, state } = toolInvocation;
+                                const { toolName, toolCallId, state, args } = toolInvocation;
                                 if (state === 'result'){
                                     if (toolName === "displayCandidateSpectrum") {
                                         const { result } = toolInvocation;
                                         return (
                                             <div key={toolCallId}>
                                                 <SpectrumDisplay  {...result} />
+                                            </div>
+                                        )
+                                    } else if (toolName === "markGoalAsComplete") {
+                                        return (
+                                            <div key={toolCallId} className="flex items-center gap-2 text-success">
+                                                <Check className="h-4 w-4" />
+                                                <span className="text-sm font-medium">{args.topic}</span>
                                             </div>
                                         )
                                     }
