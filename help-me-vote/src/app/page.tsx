@@ -22,18 +22,18 @@ export default function PoliticalChat() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-4 pb-1 max-w-4xl h-screen w-screen flex flex-col overflow-hidden bg-base-300">
+    <div className="container mx-auto px-4 pt-4 pb-1 h-screen w-screen flex flex-col overflow-hidden bg-base-300">
       <TopicSelector />
       {selectedTopic ? (
         <div className="flex-grow flex flex-col overflow-hidden w-full h-full rounded-md">
             <div className="flex flex-row items-center justify-between w-full mb-2">
-              <div className="w-1/3 flex justify-start">
+              <div className="w-1/6 flex justify-start">
                 <button onClick={handleClearSelection} className="rounded-full text-base-content">
                   <CircleArrowLeft />
                 </button>
               </div>
-              <h2 className="w-1/3 text-center text-lg font-semibold sm:text-sm md:text-md text-base-content">{selectedTopic.title}</h2>
-              <div className="w-1/3 flex justify-end">
+              <h2 className="w-3/4 text-center text-lg font-semibold sm:text-sm md:text-md text-base-content whitespace-nowrap truncate">{selectedTopic.title}</h2>
+              <div className="w-1/6 flex justify-end">
                 {usedNotionUrls.length > 0 && (
                   <ChatLibrary />
                 )}

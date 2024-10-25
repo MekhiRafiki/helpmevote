@@ -110,21 +110,21 @@ export default function ChatArea() {
     return (
         <div className="flex flex-col h-full">
             {currentGoal && (
-                <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between mb-4 mt-2 bg-primary rounded-full p-2">
-                    <div className="flex flex-row items-center gap-4 w-full sm:w-auto mb-2 sm:mb-0">
+                <div className="flex-shrink-0 flex items-center justify-between mb-4 mt-2 bg-primary rounded-full p-2 w-full h-12 overflow-hidden">
+                    <div className="flex items-center gap-1 flex-grow min-w-0">
                         <PlanDisplay agenda={agenda} currentNodeIndex={currentNodeIndex} />
-                        <h2 className="text-sm font-semibold sm:text-sm md:text-md text-primary-content truncate">
+                        <h2 className="text-sm font-semibold text-primary-content whitespace-nowrap overflow-x-auto truncate">
                             {currentNode?.title || "Current Goal"}
                         </h2>
                     </div>
-                    <div className="flex flex-row gap-2 justify-center sm:justify-end w-full sm:w-auto">
+                    <div className="flex-shrink-0 flex gap-2 ml-2">
                         {!hasMessageForCurrentGoal && (
-                            <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300">
-                                <Play className="h-5 w-5" />
+                            <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300 p-1">
+                                <Play className="h-4 w-4" />
                             </Button>
                         )}
-                        <Button onClick={handleNextNode} variant="ghost" size="sm" className="rounded-full bg-primary text-primary-content">
-                            <SkipForward className="h-5 w-5" />
+                        <Button onClick={handleNextNode} variant="ghost" size="sm" className="rounded-full bg-primary text-primary-content p-1">
+                            <SkipForward className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>

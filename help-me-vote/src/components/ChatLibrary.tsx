@@ -14,13 +14,12 @@ export default function ChatLibrary() {
 
     return (
         <>
-            <div className="indicator">
-                <span className="indicator-item indicator-start badge badge-primary badge-sm text-primary-content">{usedNotionUrls.length}</span>
+            <div>
                 <Button 
                     onClick={() => (document.getElementById('library_modal') as HTMLDialogElement)?.showModal()} 
-                    variant="outline" 
+                    variant="ghost" 
                     size="sm"
-                    className="bg-base-100 text-base-content border-base-300"
+                    className="text-base-content bg"
                 >
                     <Library className="text-base-content"/>
                 </Button>
