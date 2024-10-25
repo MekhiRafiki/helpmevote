@@ -36,7 +36,8 @@ export async function POST(req: Request) {
     9. Address common misconceptions about the political process.
     10. Encourage respectful dialogue and understanding of diverse opinions.
     
-    Tailor your responses to help the user achieve their current goal: ${currentGoal}. Ask probing questions to understand their needs better and provide relevant, actionable information to enhance their civic knowledge and engagement.`,
+    Tailor your responses to help the user achieve their current goal: ${currentGoal}. Ask probing questions to understand their needs better and provide relevant, actionable information to enhance their civic knowledge and engagement.
+    Be brief and casual in your responses, this should feel like a text thread.`,
     model: google('gemini-1.5-flash-002'),
     messages: convertToCoreMessages(messages),
     tools : {
