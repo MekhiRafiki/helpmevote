@@ -68,7 +68,7 @@ export default function TopicSelector() {
                         onClick={() => handleTopicSelect(topic)}
                         variant="default"
                         size="sm"
-                        className="justify-start bg-base-200 text-base-content"
+                        className="justify-start bg-base-200 text-base-content hover:bg-base-300"
                     >
                         {topic.title}
                         {topic.children && <ChevronRight className="ml-2 h-4 w-4 text-base-content" />}
