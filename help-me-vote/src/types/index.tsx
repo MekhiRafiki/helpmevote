@@ -28,6 +28,7 @@ export interface ConversationAgendaNode {
     title: string;
     description: string;
     ai_prompt: AIPrompt;
+    canPlotSpectrum?: boolean;
 }
 
 export interface ConversationAgenda {

@@ -1,6 +1,9 @@
 "use server"
 
 import { NotionAPILoader } from "@langchain/community/document_loaders/web/notionapi"
+import { convertToCoreMessages, generateObject, Message } from "ai";
+import { google } from "@ai-sdk/google";
+import { z } from "zod";
 
 interface GetContextSupportProps {
     notion_url: string;
@@ -48,5 +51,14 @@ export async function getContextSupport({ notion_url, query }: GetContextSupport
   return contextSupport;
 }
 
-// import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-// const splitter = new RecursiveCharacterTextSplitter();
+
+export async function getSpectrumPosition(chatMessages: Message[]) {
+  const result = await generateObject({
+    model: google('gemini-1.5-flash-002'),
+    schema: z.object({
+      position: z.number().describe("A number between -1 and 1, where -1 is the furthest left (democrat/Harris agreement) and 1 is the furthest right (republican/Trump agreement) 0 is neutral or if you dont have enough information to make a determination.")
+    }),
+    messages: convertToCoreMessages(chatMessages)
+  })
+  return result.object.position;
+}

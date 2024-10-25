@@ -4,7 +4,7 @@ export default function SpectrumDisplay({ position }: { position: number }) {
     const adjustedPosition = ((position + 1) / 2) * 100; // Convert position to percentage
   
     return (
-        <div className="flex items-center justify-between bg-gray-100 rounded-lg p-4 w-full max-w-lg mx-auto min-w-48 sm:min-w-64 md:min-w-80 lg:min-w-96">
+        <div className="flex items-center justify-between bg-base-300 rounded-lg p-4 w-full max-w-lg mx-auto min-w-48 sm:min-w-64 md:min-w-80 lg:min-w-96">
         <Image
           src="/images/harris.png"
           alt="Kamala"

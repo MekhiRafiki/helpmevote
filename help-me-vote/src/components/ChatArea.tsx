@@ -3,19 +3,19 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import TextareaAutosize from 'react-textarea-autosize';
-import { Play, Send, SkipForward } from "lucide-react"
+import { Check, Radar, Play, Send, SkipForward } from "lucide-react"
 import { useChat } from 'ai/react';
 import { useEffect, useState } from "react"
 import Markdown from 'react-markdown'
 import { selectChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ConversationAgendaNode } from "@/types"
-import { addUsedNotionUrl, setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
+import { setUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
 import PlanDisplay from "./PlanDisplay"
 import { usePostHog } from "posthog-js/react"
-
+import { getSpectrumPosition } from "@/app/actions/context"
 
 export default function ChatArea() {
     const dispatch = useAppDispatch()
@@ -23,17 +23,27 @@ export default function ChatArea() {
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
     const [currentNode, setCurrentNode] = useState<ConversationAgendaNode | null>(null)
     const [currentGoal, setCurrentGoal] = useState("")
-    const [hasMessageForCurrentGoal, setHasMessageForCurrentGoal] = useState(false)
+    const [hasSentTopicContext, setHasSentTopicContext] = useState(false)
     const posthog = usePostHog();
+    const [position, setPosition] = useState<number | null>(null)
+    const [canPlotSpectrum, setCanPlotSpectrum] = useState(false)
 
 
 
     const agenda = selectedTopic?.agenda
 
     const { messages, input, handleInputChange, handleSubmit } = useChat({
-        maxSteps: 4,
+        maxSteps: 1,
         body: {
             currentGoal
+        },
+        async onToolCall(toolCall) {
+            if (toolCall.toolCall.toolName === "markGoalAsComplete") {
+                handleNextNode()
+                return {
+                    success: true
+                }
+            }
         }
     });
 
@@ -63,15 +73,13 @@ export default function ChatArea() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmitWithContext = (e: any) => {
-        if (!hasMessageForCurrentGoal && currentNode?.ai_prompt.notion_url) {
-            dispatch(addUsedNotionUrl(currentNode.ai_prompt.notion_url!))
-        }
         handleSubmit(e, {
             body: {
-                forceContext: !hasMessageForCurrentGoal,
+                forceContext: !hasSentTopicContext,
                 notion_url: currentNode?.ai_prompt.notion_url
             }
         });
+        setHasSentTopicContext(true)
         posthog.capture('message_sent', {
             topic: selectedTopic?.id,
             current_goal: currentGoal,
@@ -80,32 +88,40 @@ export default function ChatArea() {
         })
     }
 
-    useEffect(() => {
-        if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
-            setCurrentNode(agenda.plan.nodes[currentNodeIndex]);
-        } else {
-            setCurrentNode(null);
+    const handleSpectrum = async () => {
+        if (messages.length > 0) {
+            const position = await getSpectrumPosition(messages);
+            setPosition(position);
+            (document.getElementById("spectrum_modal") as HTMLDialogElement).showModal();
+            posthog.capture('spectrum_conversation_determined', {
+                topic: selectedTopic?.id,
+                position: position,
+            })
         }
-    }, [currentNodeIndex, agenda]);
+    }
 
-
+    // Set the current goal and node
     useEffect(() => {
         if (agenda?.plan.nodes && agenda.plan.nodes[currentNodeIndex]) {
             setCurrentGoal(agenda.plan.nodes[currentNodeIndex].ai_prompt.guide);
-            setHasMessageForCurrentGoal(false);
+            setCurrentNode(agenda.plan.nodes[currentNodeIndex]);
+            if (agenda.plan.nodes[currentNodeIndex].canPlotSpectrum) {
+                setCanPlotSpectrum(true)
+            }
         } else {
             setCurrentGoal("");
+            setCurrentNode(null);
         }
+        setHasSentTopicContext(false);
     }, [currentNodeIndex, agenda]);
 
+    // Display the used notion urls in the agenda
     useEffect(() => {
-        if (messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
-            setHasMessageForCurrentGoal(true);
+        if (selectedTopic?.agenda) {
+            const urls = selectedTopic.agenda.plan.nodes.map(node => node.ai_prompt.notion_url).filter(url => url !== null && url !== undefined) as string[];
+            dispatch(setUsedNotionUrls(urls))
         }
-        if (messages.length === 0) {
-            dispatch(setUsedNotionUrls([]))
-        }
-    }, [messages, dispatch]);
+    }, [selectedTopic, dispatch]);
 
     return (
         <div className="flex flex-col h-full">
@@ -118,7 +134,7 @@ export default function ChatArea() {
                         </h2>
                     </div>
                     <div className="flex-shrink-0 flex gap-2 ml-2">
-                        {!hasMessageForCurrentGoal && (
+                        {!hasSentTopicContext && (
                             <Button onClick={handleKickMeOff} variant="ghost" size="sm" className="rounded-full bg-base-300 text-base-content p-2">
                                 <Play className="h-4 w-4" />
                             </Button>
@@ -147,13 +163,20 @@ export default function ChatArea() {
                         >
                             <Markdown>{message.content}</Markdown>
                             {message.toolInvocations?.map(toolInvocation => {
-                                const { toolName, toolCallId, state } = toolInvocation;
+                                const { toolName, toolCallId, state, args } = toolInvocation;
                                 if (state === 'result'){
                                     if (toolName === "displayCandidateSpectrum") {
                                         const { result } = toolInvocation;
                                         return (
                                             <div key={toolCallId}>
                                                 <SpectrumDisplay  {...result} />
+                                            </div>
+                                        )
+                                    } else if (toolName === "markGoalAsComplete") {
+                                        return (
+                                            <div key={toolCallId} className="flex items-center gap-2 text-success">
+                                                <Check className="h-4 w-4" />
+                                                <span className="text-sm font-medium">{args.topic}</span>
                                             </div>
                                         )
                                     }
@@ -169,22 +192,56 @@ export default function ChatArea() {
                 ))
             )}
             </ScrollArea>
-            <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end mb-2">
-             <TextareaAutosize
-                    className="flex-grow p-2 rounded-md border resize-y max-h-40 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Type your message..."
-                    value={input}
-                    onChange={handleInputChange}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleSubmitWithContext(e)
-                        }
-                    }}
-                    minRows={1}
-                />
-                <Button onClick={handleSubmitWithContext} className="text-info-content rounded-full bg-info" variant="ghost" disabled={!input}>
-                    <Send className="h-4 w-4" />
-                </Button>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 justify-end">
+                    {position !== null ? (
+                        <Button onClick={() => (document.getElementById("spectrum_modal") as HTMLDialogElement).showModal()}
+                        variant="ghost" size="icon" className="rounded-md bg-base-100 text-base-content p-2"
+                        >
+                            <Radar className="h-4 w-4" />
+                        </Button>
+                    ) : (
+                        <>
+                        { canPlotSpectrum && (<Button onClick={handleSpectrum} variant="outline" size="sm" className="rounded-md bg-base-100 text-base-content p-2">
+                            <Radar className="h-4 w-4" /> <span className="text-sm font-medium">Who do I align with?</span>
+                        </Button>)}
+                        </>
+                    )}
+                    <dialog id="spectrum_modal" className="modal">
+                        <div className="modal-box">
+                        {position !== null && (
+                            <div className="flex flex-col items-center gap-2 text-base-content">
+                                <h2 className="text-lg font-semibold">Your Position on the Spectrum</h2>
+                                <SpectrumDisplay position={position} />
+                                <p className="text-sm">This is your position on the spectrum between Kamala Harris and Donald Trump based on your responses in this conversation.</p>
+                                <Button onClick={handleSpectrum} variant="outline" size="sm" className="rounded-md bg-base-100p-2">
+                                    <span className="text-sm font-medium">Refresh</span>
+                                </Button>
+                            </div>
+                        )}
+                        </div>
+                        <form method="dialog" className="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
+                </div>
+                <div className="flex-shrink-0 flex gap-2 w-full flex-row items-end mb-2">
+                <TextareaAutosize
+                        className="flex-grow p-2 rounded-md border resize-y max-h-40 bg-base-100 text-base-content focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Type your message..."
+                        value={input}
+                        onChange={handleInputChange}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSubmitWithContext(e)
+                            }
+                        }}
+                        minRows={1}
+                    />
+                    <Button onClick={handleSubmitWithContext} className="text-info-content rounded-full bg-info" variant="ghost" disabled={!input}>
+                        <Send className="h-4 w-4" />
+                    </Button>
+                </div>
             </div>
         </div>
     )
