@@ -1,4 +1,4 @@
-import { getContextSupport } from '@/app/actions/context';
+import { getContextSupport } from '@/actions/context';
 import { Sender } from '@/types';
 import { google } from '@ai-sdk/google'
 import { streamText, convertToCoreMessages } from 'ai'

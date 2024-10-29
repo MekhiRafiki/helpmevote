@@ -15,7 +15,7 @@ import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
 import PlanDisplay from "./PlanDisplay"
 import { usePostHog } from "posthog-js/react"
-import { getSpectrumPosition } from "@/app/actions/context"
+import { getSpectrumPosition } from "@/actions/context"
 
 export default function ChatArea() {
     const dispatch = useAppDispatch()

@@ -37,4 +37,17 @@ export interface ConversationAgenda {
     plan: {
       nodes: Array<ConversationAgendaNode>;
     };
-  }
+}
+
+// For embedding resources
+export interface Resource {
+  id: string;
+  content: string;
+}
+
+export interface Embedding {
+  id: string;
+  resource_id: string;
+  content: string;
+  embedding: number[];
+}
