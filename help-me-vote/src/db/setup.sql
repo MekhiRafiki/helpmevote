@@ -1,5 +1,5 @@
 CREATE TABLE resources (
-    id VARCHAR(191) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -10,10 +10,10 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 -- Create the embeddings table
 CREATE TABLE embeddings (
-    id VARCHAR(191) PRIMARY KEY,
-    resource_id VARCHAR(191) REFERENCES resources(id) ON DELETE CASCADE,
+    id SERIAL PRIMARY KEY,
+    resource_id SERIAL REFERENCES resources(id) ON DELETE CASCADE,
     content TEXT NOT NULL,
-    embedding vector(1536) NOT NULL
+    embedding vector(768) NOT NULL
 );
 
 -- Create the HNSW index for vector similarity search

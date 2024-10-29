@@ -45,9 +45,7 @@ export interface Resource {
   content: string;
 }
 
-export interface Embedding {
-  id: string;
-  resource_id: string;
+export interface EmbeddingPackage {
   content: string;
   embedding: number[];
 }

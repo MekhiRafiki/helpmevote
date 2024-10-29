@@ -1,5 +1,5 @@
+import AddUrlModal from "@/components/AddUrlModal";
 import { KNOWLEDGE_BASES } from "@/constants/topics";
-import { PlusIcon } from "lucide-react";
 
 export default function RAGBasePage({ params }: { params: { id: string } }) {
     const isNew = params.id === 'new';
@@ -44,9 +44,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
         <div className="mt-6 flex-grow">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Context Items</h2>
-            <button className="btn btn-primary btn-sm">
-              <PlusIcon className="w-4 h-4" />
-            </button>
+            <AddUrlModal />
           </div>
           <div className="space-y-3 max-h-[40vh] overflow-y-auto">
             {kb?.contextItems.map((item: any, index: number) => (
@@ -67,6 +65,8 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
             </a>
           </div>
         )}
+        
       </div>
     );
   }
+
