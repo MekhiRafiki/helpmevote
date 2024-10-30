@@ -1,9 +1,6 @@
 "use client"
 
 import { addResourceToKnowledgeBase } from "@/actions/embed";
-import { addKnowledgeBase } from "@/lib/features/knowledgeBases/kbSlice";
-import { useAppDispatch } from "@/lib/hooks";
-import { KnowledgeBase } from "@/types";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -14,16 +11,12 @@ interface AddUrlModalProps {
 export default function AddUrlModal({
   knowledgeBaseId
 }: AddUrlModalProps) {
-    const dispatch = useAppDispatch()
     const [url, setUrl] = useState('');
+    const [title, setTitle] = useState('');
 
     const handleAddUrl = () => {
-        console.log('Client: Handling add url', url);
-        void addResourceToKnowledgeBase(url, knowledgeBaseId).then((kb) => {
-          if (kb) {
-            dispatch(addKnowledgeBase(kb as KnowledgeBase));
-          }
-        });
+        const kb_id = knowledgeBaseId ?? undefined;
+        void addResourceToKnowledgeBase({url, preferredTitle: title, kb_id});
         
     }
 
@@ -45,6 +38,15 @@ export default function AddUrlModal({
             placeholder="Enter URL to add to knowledge base..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+          />
+        </div>
+        <div className="form-control mt-4">
+          <input 
+            type="text" 
+            className="input input-bordered text-base-content" 
+            placeholder="Preferred title for the resource"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="modal-action">

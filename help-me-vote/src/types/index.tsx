@@ -52,7 +52,7 @@ export interface EmbeddingPackage {
 }
 
 export interface KnowledgeBase {
-  id?: number;
+  id?: number | string;
   name?: string;
   description?: string;
 }

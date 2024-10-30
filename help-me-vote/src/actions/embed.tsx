@@ -67,7 +67,7 @@ export const findRelevantContent = async (userQuery: string, kb_id?: number) => 
 };
 
 
-export async function addResourceToKnowledgeBase(url: string, kb_id?: number) {
+export async function addResourceToKnowledgeBase({url, preferredTitle, kb_id}: {url: string, preferredTitle?: string, kb_id?: number}) {
   try {
     // Fetch the resource content
     console.log("fetching resource content", url);
@@ -85,7 +85,7 @@ export async function addResourceToKnowledgeBase(url: string, kb_id?: number) {
     const content = docs[0].pageContent;
 
     // Create the resource in the database
-    const title = docs[0].metadata.title;
+    const title = preferredTitle ?? docs[0].metadata.title;
     const resource = await createResourceInDatabase(
       title,
       url,

@@ -30,7 +30,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
         setKb(kb ?? {
           name: "General Chat",
           description: "Chat with the platform about anything",
-          id: -1
+          id: "home"
         })
     }, [knowledgeBases, params.id])
     

@@ -19,9 +19,9 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
       useEffect(() => {
         async function fetchKnowledgeBase() {
           if (!isNew) {
-            const id = parseInt(params.id)
-            if (id !== -1) {
-              await fetchKnowledgeBaseById(parseInt(params.id)).then((kb) => {
+            if (params.id !== "home") {
+              const id = parseInt(params.id)
+              await fetchKnowledgeBaseById(id).then((kb) => {
                   if (kb) {
                       setName(kb[0].name || "");
                       setDescription(kb[0].description || "");
@@ -38,7 +38,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
 
         async function fetchResourcesInKb() {
           if (!isNew) {
-            const resources = params.id === "-1" ? await getAllResources() : await getResourcesInKb(parseInt(params.id));
+            const resources = params.id === "home" ? await getAllResources() : await getResourcesInKb(parseInt(params.id));
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setContextItems(resources as any);
           }
@@ -94,10 +94,10 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
             }}>Create Knowledge Base</Button>
         </div>
        ): (<div className="mt-6 flex-grow">
-          <div className="flex justify-between items-center mb-4">
+          {process.env.NEXT_PUBLIC_ENVIRONMENT === "development" && (<div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-base-content">Context Items</h2>
             <AddUrlModal knowledgeBaseId={parseInt(params.id)}/>
-          </div>
+          </div>)}
           <div className="space-y-3 max-h-[40vh] overflow-y-auto">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {contextItems.map((item: any, index: number) => (
