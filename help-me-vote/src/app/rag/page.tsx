@@ -6,6 +6,9 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectKnowledgeBases } from "@/lib/features/knowledgeBases/kbSlice";
 import Image from "next/image";
 
+export const dynamic = 'force-dynamic';
+
+
 export default function RAG() {
   const router = useRouter();
   const knowledgeBases = useAppSelector(selectKnowledgeBases);
