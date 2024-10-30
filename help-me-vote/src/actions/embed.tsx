@@ -1,40 +1,43 @@
 "use server"
 
-import { NotionAPILoader } from "@langchain/community/document_loaders/web/notionapi";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { google } from "@ai-sdk/google";
 import { createEmbeddingsInDatabase, createResourceInDatabase } from "./resources";
 import { EmbeddingPackage } from "@/types";
 import { cosineDistance, desc, eq, gt, sql, and } from 'drizzle-orm';
 import { embeddings } from "@/lib/db/schema/embeddings";
 import { db } from "@/lib/db";
+import { getNotionPageId } from "./notion";
 
-async function getNotionPageLoader(url: string): Promise<NotionAPILoader> {
-  const match = url.match(/(?<!=)[0-9a-f]{32}/);
-  const id = match ? match[0] : null;
+const generateChunks = (input: string, maxChunkSize: number = 1000): string[] => {
+  // Split by sentence boundaries while preserving the periods
+  const sentences = input
+    .trim()
+    .split(/(?<=\.|\?|\!)\s+/)
+    .filter(sentence => sentence.trim().length > 0);
 
-  if (!id) {
-    throw new Error('Invalid Notion URL: Unable to extract page ID');
+  const chunks: string[] = [];
+  let currentChunk = '';
+
+  for (const sentence of sentences) {
+    // If adding this sentence would exceed maxChunkSize, start a new chunk
+    if (currentChunk.length + sentence.length > maxChunkSize && currentChunk.length > 0) {
+      chunks.push(currentChunk.trim());
+      currentChunk = '';
+    }
+    currentChunk += (currentChunk ? ' ' : '') + sentence;
   }
 
-  const pageLoader = new NotionAPILoader({
-    clientOptions: {
-      auth: process.env.NOTION_INTEGRATION_TOKEN,
-    },
-    id,
-    type: "page",
-  });
+  // Add the last chunk if there's anything left
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk.trim());
+  }
 
-  return pageLoader;
+  return chunks;
 }
 
 
 async function generateEmbeddings(doc: string): Promise<EmbeddingPackage[]> {
-  const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-  });
-  const splitDocs = await splitter.splitText(doc);
+  const splitDocs = generateChunks(doc);
   
   const embeddingModel = google.textEmbeddingModel('text-embedding-004'); // 768 dim embeddings
   const { embeddings } = await embeddingModel.doEmbed({
@@ -68,25 +71,26 @@ export const findRelevantContent = async (userQuery: string, kb_id?: number) => 
 
 export async function addResourceToKnowledgeBase({url, preferredTitle, kb_id, rawContent}: {url?: string, preferredTitle?: string, kb_id?: number, rawContent?: string}) {
   try {
-    // Fetch the resource content    
     let namedTitle
     let content
     if (rawContent) {
       content = rawContent
       namedTitle = preferredTitle ?? undefined
     } else {
-      let loader
       if (url && url.includes('notion.site')) {
-        loader = await getNotionPageLoader(url);
+        const page = await getNotionPageId(url);
+        content = page;
+        console.log("Fetched content from Notion", content);
       } else {
         console.log("Unsupported URL type");
-        return false;
         // const response = await fetch(url);
         // content = await response.text();
       }
-      const docs = await loader.load();
-      content = docs[0].pageContent;
-      namedTitle = preferredTitle ?? docs[0].metadata.title;
+      namedTitle = preferredTitle ?? undefined;
+    }
+
+    if (!content || !namedTitle) {
+      return null;
     }
 
     // Create the resource in the database

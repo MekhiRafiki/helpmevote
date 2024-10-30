@@ -1,4 +1,4 @@
-import { getContextSupport } from '@/actions/context';
+import { getNotionContext } from '@/actions/context';
 import { findRelevantContent } from '@/actions/embed';
 import { google } from '@ai-sdk/google'
 import { streamText, convertToCoreMessages } from 'ai'
@@ -15,8 +15,7 @@ export async function POST(req: Request) {
   let contextSupport = "";
   if (forceContext && notion_url) {
     // Static context
-    contextSupport = await getContextSupport({ notion_url });
-    console.log("Using static context", contextSupport);
+    contextSupport = await getNotionContext({ notion_url });
   } else {
     // RAG based on the last query
     const kb_id = filterKnowledgeBaseId === "home" ? undefined : filterKnowledgeBaseId
@@ -64,16 +63,6 @@ export async function POST(req: Request) {
     model: google('gemini-1.5-flash-002'),
     messages: convertToCoreMessages(messages),
     tools : {
-      getContext: {
-        description: "Retrieve information from a knowledge base to help the user and the AI have a more informed discussion. Provide a query to search for specific information, else return the entire context.",
-        parameters: z.object({
-          query: z.string().optional()
-        }),
-        execute: async ({ query }: { query?: string }) => {
-          const contextSupport = await getContextSupport({ notion_url, query });
-          return contextSupport;
-        }
-      },
       displayCandidateSpectrum: {
         description: "Display where the user falls on a spectrum of between Kamala Harris and Donald Trump on their stances on the issues/platforms. Provide a positon number between -1 and 1, where -1 is the furthest left (democrat/Harris agreement) and 1 is the furthest right (republican/Trump agreement). You, the AI assistant are to come up with the position based on the conversation.",
         parameters: z.object({
