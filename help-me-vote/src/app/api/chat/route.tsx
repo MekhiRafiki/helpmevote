@@ -61,6 +61,7 @@ export async function POST(req: Request) {
     `,
     model: google('gemini-1.5-flash-002'),
     messages: convertToCoreMessages(messages),
+    maxTokens: 300,
     tools : {
       displayCandidateSpectrum: {
         description: "Display where the user falls on a spectrum of between Kamala Harris and Donald Trump on their stances on the issues/platforms. Provide a positon number between -1 and 1, where -1 is the furthest left (democrat/Harris agreement) and 1 is the furthest right (republican/Trump agreement). You, the AI assistant are to come up with the position based on the conversation.",
