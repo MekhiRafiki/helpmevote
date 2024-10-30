@@ -15,6 +15,7 @@ export const TOPICS: Topic[] = [
                 title: "Party Platforms",
                 category: "platform",
                 children: [
+                    {id: "general", title: "General", category: "platform", knowledge_base_id: "1"},
                     { id: "presidential-overview", title: "Candidate Comparison: Find Your Match", category: "platform", agenda: PRESIDENTIAL_OVERVIEW_AGENDA },
                     { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform", agenda: KAMALA_HARRIS_DEEP_DIVE },
                     { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform", agenda: GOP_2024_DEEP_DIVE },

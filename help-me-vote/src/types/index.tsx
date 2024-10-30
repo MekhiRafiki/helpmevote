@@ -2,8 +2,9 @@ export interface Topic {
   id: string;
   title: string;
   category?: string;
-  children?: Topic[];
   agenda?: ConversationAgenda;
+  knowledge_base_id?: string;
+  children?: Topic[];
 };
 
 export enum Sender {

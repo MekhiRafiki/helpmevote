@@ -7,8 +7,10 @@ import { ChevronRight } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { selectChosenTopic, selectTopics, setChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { usePostHog } from "posthog-js/react"
+import { useRouter } from "next/navigation"
 
 export default function TopicSelector() {
+    const router = useRouter()
     const dispatch = useAppDispatch()
     const topics = useAppSelector(selectTopics)
     const selectedTopic = useAppSelector(selectChosenTopic)
@@ -24,6 +26,8 @@ export default function TopicSelector() {
             posthog.capture('topic_selected', {
                 topic: topic.title
             })
+            const knowledgeBaseId = topic.knowledge_base_id ?? "home"
+            router.push(`/chat/${knowledgeBaseId}`)
         }
     }
 

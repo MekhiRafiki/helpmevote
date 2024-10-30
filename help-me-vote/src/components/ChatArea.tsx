@@ -17,7 +17,7 @@ import PlanDisplay from "./PlanDisplay"
 import { usePostHog } from "posthog-js/react"
 import { getSpectrumPosition } from "@/actions/context"
 
-export default function ChatArea() {
+export default function ChatArea({ chatId }: { chatId?: string }) {
     const dispatch = useAppDispatch()
     const selectedTopic = useAppSelector(selectChosenTopic)
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)

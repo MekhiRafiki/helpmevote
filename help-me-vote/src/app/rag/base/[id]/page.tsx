@@ -58,7 +58,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
         {!isNew && (
           <div className="w-full flex justify-center mt-auto pt-4">
           <a 
-            href="/chat" 
+            href={`/chat/${params.id}`} 
             className="btn btn-secondary btn-md"
           >
             Chat with Knowledge Base
