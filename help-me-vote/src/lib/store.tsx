@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import topicsReducer from './features/topics/topicsSlice'
 import chatReducer from './features/chat/chatSlice'
+import kbReducer from './features/knowledgeBases/kbSlice'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
         topics: topicsReducer,
-        chat: chatReducer
+        chat: chatReducer,
+        knowledgeBases: kbReducer
     }
   })
 }

@@ -50,3 +50,9 @@ export interface EmbeddingPackage {
   content: string;
   embedding: number[];
 }
+
+export interface KnowledgeBase {
+  id?: number;
+  name?: string;
+  description?: string;
+}

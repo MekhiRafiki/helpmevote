@@ -5,10 +5,9 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { google } from "@ai-sdk/google";
 import { createEmbeddingsInDatabase, createResourceInDatabase } from "./resources";
 import { EmbeddingPackage } from "@/types";
-import { cosineDistance, desc, gt, sql } from 'drizzle-orm';
+import { cosineDistance, desc, eq, gt, sql, and } from 'drizzle-orm';
 import { embeddings } from "@/lib/db/schema/embeddings";
 import { db } from "@/lib/db";
-;
 
 async function getNotionPageLoader(url: string): Promise<NotionAPILoader> {
   const match = url.match(/(?<!=)[0-9a-f]{32}/);
@@ -46,7 +45,7 @@ async function generateEmbeddings(doc: string): Promise<EmbeddingPackage[]> {
 
 } 
 
-export const findRelevantContent = async (userQuery: string) => {
+export const findRelevantContent = async (userQuery: string, kb_id?: string) => {
   const userQueryEmbedded = (await generateEmbeddings(userQuery))[0].embedding;
   const similarity = sql<number>`1 - (${cosineDistance(
     embeddings.embedding,
@@ -56,7 +55,11 @@ export const findRelevantContent = async (userQuery: string) => {
   const similarGuides = await db
     .select({ content: embeddings.content, similarity })
     .from(embeddings)
-    .where(gt(similarity, 0.5))
+    .where(
+      kb_id 
+        ? and(gt(similarity, 0.5), eq(embeddings.kb_id, kb_id))
+        : gt(similarity, 0.5)
+    )
     .orderBy(desc(similarity))
     .limit(4);
   return similarGuides;

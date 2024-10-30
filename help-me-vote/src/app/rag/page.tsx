@@ -1,13 +1,15 @@
 "use client"
 
-import { KNOWLEDGE_BASES } from "@/constants/topics";
+import { selectKnowledgeBases } from "@/lib/features/knowledgeBases/kbSlice";
+import { useAppSelector } from "@/lib/hooks";
 import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 
 export default function RAG() {
     const router = useRouter();
-    
+    const knowledgeBases = useAppSelector(selectKnowledgeBases);
+
     return (
       <div className="p-4 min-w-full flex flex-col gap-4">        
         <div className="card bg-base-100 shadow-md">
@@ -27,13 +29,13 @@ export default function RAG() {
             />
   
             <div className="space-y-3">
-              {KNOWLEDGE_BASES.map((kb, index) => (
+              {knowledgeBases.map((kb, index) => (
                 <button
                   key={index}
                   className="btn btn-primary w-full"
                   onClick={() => router.push(`/rag/base/${kb.id}`)}
                 >
-                  {kb.title}
+                  {kb.name}
                 </button>
               ))}
             </div>

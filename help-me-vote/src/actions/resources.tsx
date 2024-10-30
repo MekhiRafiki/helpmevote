@@ -1,22 +1,32 @@
 "use server"
+import { knowledge_bases } from "@/lib/db/schema/knowledge_bases";
+import { embeddings } from "@/lib/db/schema/embeddings";
 import { EmbeddingPackage } from "@/types";
-import { db } from "@vercel/postgres";
-
+import { db } from "@/lib/db";
+import { resources } from "@/lib/db/schema/resources";
+import { eq } from "drizzle-orm";
 export async function createResourceInDatabase(content: string) {
-    const client = await db.connect();
-    const { rows } = await client.sql`INSERT INTO resources (content) VALUES (${content}) RETURNING *`;
-    return rows[0];
+    const [resource] = await db.insert(resources).values({ content }).returning();
+    return resource;
 }
   
-// ts-ignore
-export async function createEmbeddingsInDatabase(resource_id: string, embeddings: EmbeddingPackage[]) {
-    const client = await db.connect();
-    for (const embedding of embeddings) {
-      await client.sql`
-        INSERT INTO embeddings (resource_id, content, embedding) 
-        VALUES (${resource_id}, ${embedding.content}, ${JSON.stringify(embedding.embedding)}::vector)
-      `;
-    }
-    return true;
+
+export async function createEmbeddingsInDatabase(resource_id: string, embedingPackage: EmbeddingPackage[]) {
+  for (const embedding of embedingPackage) {
+    await db.insert(embeddings).values({ resource_id, content: embedding.content, embedding: embedding.embedding });
   }
-  
+  return true;
+}
+
+export async function createKnowledgeBase(name: string, description: string) {
+  const [kb] = await db.insert(knowledge_bases).values({ name, description }).returning();
+  return kb;
+}
+
+export async function fetchKnowledgeBaseById(id: number) {
+  return await db.select().from(knowledge_bases).where(eq(knowledge_bases.id, id));
+}
+
+export async function fetchAllKnowledgeBases() {
+  return await db.select().from(knowledge_bases);
+}

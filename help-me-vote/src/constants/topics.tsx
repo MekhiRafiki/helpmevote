@@ -42,7 +42,7 @@ export const TOPICS: Topic[] = [
 
 export const KNOWLEDGE_BASES = [
     {
-        title: "Kamala Harris Presidential Candidate", 
+        name: "Kamala Harris Presidential Candidate", 
         id: "kamala-harris", 
         description: "A deep dive into Kamala Harris's platform and policies as a presidential candidate.",
         contextItems: [
@@ -51,7 +51,7 @@ export const KNOWLEDGE_BASES = [
         ]
     },
     {
-        title: "Donald Trump Presidential Candidate", 
+        name: "Donald Trump Presidential Candidate", 
         id: "donald-trump", 
         description: "A deep dive into Donald Trump's platform and policies as a presidential candidate.",
         contextItems: [
@@ -60,7 +60,7 @@ export const KNOWLEDGE_BASES = [
         ]
     },
     {
-        title: "Immigration in the USA", 
+        name: "Immigration in the USA", 
         id: "immigration", 
         description: "A deep dive into immigration policies in the USA.",
         contextItems: [
@@ -69,7 +69,7 @@ export const KNOWLEDGE_BASES = [
         ]
     },
     {
-        title: "Climate Change Policies", 
+        name: "Climate Change Policies", 
         id: "climate-change", 
         description: "A deep dive into climate change policies.", 
         contextItems: [
@@ -78,7 +78,7 @@ export const KNOWLEDGE_BASES = [
         ]
     },
     {
-        title: "Economic Impact of COVID-19", 
+        name: "Economic Impact of COVID-19", 
         id: "economic-impact-of-covid-19", 
         description: "A deep dive into the economic impact of COVID-19.", 
         contextItems: [
