@@ -102,7 +102,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
               disabled={!name || !description} 
               onClick={() => {
                 createKnowledgeBase(name, description).then((kb) => {
-                  router.push(`/rag/${kb.id}`);
+                  router.push(`/rag/base/${kb.id}`);
                 });
               }}
               className="btn btn-primary"

@@ -6,9 +6,6 @@ import { useAppSelector } from "@/lib/hooks";
 import { selectKnowledgeBases } from "@/lib/features/knowledgeBases/kbSlice";
 import Image from "next/image";
 
-export const dynamic = 'force-dynamic';
-
-
 export default function RAG() {
   const router = useRouter();
   const knowledgeBases = useAppSelector(selectKnowledgeBases);
@@ -39,7 +36,7 @@ export default function RAG() {
           <button 
             className="btn btn-primary btn-sm tooltip tooltip-bottom" 
             data-tip="New Knowledge Base"
-            onClick={() => router.push('/rag/new')}
+            onClick={() => router.push('/rag/base/new')}
           >
             <PlusIcon className="w-4 h-4" />    
           </button>
@@ -71,7 +68,7 @@ export default function RAG() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
           className="btn btn-neutral btn-lg hover:scale-105 transition-transform"
-            onClick={() => router.push(`/rag/home`)}
+            onClick={() => router.push(`/rag/base/home`)}
           >
             General Chat
           </button>
@@ -80,7 +77,7 @@ export default function RAG() {
             <button
               key={index}
               className="btn btn-neutral btn-lg hover:scale-105 transition-transform"
-              onClick={() => router.push(`/rag/${kb.id}`)}
+              onClick={() => router.push(`/rag/base/${kb.id}`)}
             >
               {kb.name}
             </button>

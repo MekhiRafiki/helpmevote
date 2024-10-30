@@ -18,7 +18,7 @@ export default function KbQuickView({ kbId }: { kbId: string }) {
     }, [knowledgeBases, kbId])
 
     const visitKnowledgeBase = () => {
-        router.push(`/rag/${kbId}`)
+        router.push(`/rag/base/${kbId}`)
     }
     return (
         <div>

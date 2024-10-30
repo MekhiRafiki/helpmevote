@@ -3,5 +3,5 @@
 import { redirect } from "next/navigation";
 
 export default function RAGBasePage() {
-  redirect('/rag/home')
+  redirect('/rag/base/home')
 }
