@@ -123,6 +123,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
             </div>
 
             <div className="space-y-4 max-h-[60vh] overflow-y-auto px-2">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {contextItems.map((item: any, index: number) => (
                 <div 
                   key={index} 
