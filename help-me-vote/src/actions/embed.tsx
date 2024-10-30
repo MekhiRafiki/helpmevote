@@ -5,6 +5,10 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { google } from "@ai-sdk/google";
 import { createEmbeddingsInDatabase, createResourceInDatabase } from "./resources";
 import { EmbeddingPackage } from "@/types";
+import { cosineDistance, desc, gt, sql } from 'drizzle-orm';
+import { embeddings } from "@/lib/db/schema/embeddings";
+import { db } from "@/lib/db";
+;
 
 async function getNotionPageLoader(url: string): Promise<NotionAPILoader> {
   const match = url.match(/(?<!=)[0-9a-f]{32}/);
@@ -41,6 +45,22 @@ async function generateEmbeddings(doc: string): Promise<EmbeddingPackage[]> {
   return embeddings.map((e, i) => ({ content: splitDocs[i], embedding: e }));
 
 } 
+
+export const findRelevantContent = async (userQuery: string) => {
+  const userQueryEmbedded = (await generateEmbeddings(userQuery))[0].embedding;
+  const similarity = sql<number>`1 - (${cosineDistance(
+    embeddings.embedding,
+    userQueryEmbedded,
+  )})`;
+  
+  const similarGuides = await db
+    .select({ content: embeddings.content, similarity })
+    .from(embeddings)
+    .where(gt(similarity, 0.5))
+    .orderBy(desc(similarity))
+    .limit(4);
+  return similarGuides;
+};
 
 
 export async function addResourceToKnowledgeBase(url: string) {
