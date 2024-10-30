@@ -3,7 +3,7 @@ import { createKnowledgeBase, fetchKnowledgeBaseById, getAllResources, getResour
 import AddUrlModal from "@/components/AddUrlModal";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/lib/hooks";
-import { CircleArrowLeft } from "lucide-react";
+import { ChevronDownIcon, CircleArrowLeft, Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -98,11 +98,46 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
             <h2 className="text-xl font-bold text-base-content">Context Items</h2>
             <AddUrlModal knowledgeBaseId={parseInt(params.id)}/>
           </div>)}
-          <div className="space-y-3 max-h-[40vh] overflow-y-auto">
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto px-2">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {contextItems.map((item: any, index: number) => (
-              <div key={index} className="flex items-center gap-2 bg-base-300 p-2 rounded-md hover:bg-base-200">
-                <a href={item.webUrl} target="_blank" className="text-base-content">{item.title}</a>
+              <div 
+                key={index} 
+                className="card bg-base-300 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="card-body p-4">
+                  <div className="flex justify-between items-start">
+                    <h3 className="card-title text-base-content text-lg">{item.title}</h3>
+                    <button 
+                      className="btn btn-ghost btn-sm" 
+                      onClick={() => {
+                        const element = document.getElementById(`content-${index}`);
+                        element?.classList.toggle('hidden');
+                      }}
+                    >
+                      <ChevronDownIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                  
+                  <div id={`content-${index}`} className="hidden">
+                    <p className="text-base-content/80 text-sm line-clamp-3 mt-2">
+                      {item.content || "No preview available"}
+                    </p>
+
+                  {item.webUrl && (
+                    <div className="card-actions justify-end mt-2">
+                      <a 
+                        href={item.webUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="btn btn-primary btn-sm"
+                      >
+                        <Globe className="w-4 h-4" />
+                      </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

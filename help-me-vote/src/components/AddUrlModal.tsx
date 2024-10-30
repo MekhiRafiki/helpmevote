@@ -13,11 +13,16 @@ export default function AddUrlModal({
 }: AddUrlModalProps) {
     const [url, setUrl] = useState('');
     const [title, setTitle] = useState('');
+    const [text, setText] = useState('');
 
-    const handleAddUrl = () => {
-        const kb_id = knowledgeBaseId ?? undefined;
+    const kb_id = knowledgeBaseId ?? undefined;
+
+    const handleAddUrl = () => {    
         void addResourceToKnowledgeBase({url, preferredTitle: title, kb_id});
-        
+    }
+
+    const handleRawText = () => {
+      void addResourceToKnowledgeBase({rawContent: text, kb_id, preferredTitle: title});
     }
 
     return (
@@ -30,8 +35,15 @@ export default function AddUrlModal({
       </button>
       <dialog id="add_url_modal" className="modal">
         <div className="modal-box">
-        <h3 className="font-bold text-lg text-base-content">Add New URL</h3>
-        <div className="form-control mt-4">
+        <h3 className="font-bold text-lg text-base-content">Add New Content</h3>
+        <div className="mt-4 gap-4 flex flex-col">
+          <input 
+            type="text" 
+            className="input input-bordered text-base-content" 
+            placeholder="Preferred title for the resource"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            />
           <input 
             type="url" 
             className="input input-bordered text-base-content" 
@@ -39,20 +51,18 @@ export default function AddUrlModal({
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
-        </div>
-        <div className="form-control mt-4">
-          <input 
-            type="text" 
-            className="input input-bordered text-base-content" 
-            placeholder="Preferred title for the resource"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+          <textarea 
+            className="textarea textarea-bordered text-base-content" 
+            placeholder="Enter raw text for the resource"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
         </div>
         <div className="modal-action">
           <form method="dialog">
             <button className="btn btn-ghost text-base-content">Cancel</button>
-            <button className="btn btn-primary ml-2 text-primary-content" onClick={handleAddUrl}>Add URL</button>
+            <button className="btn btn-primary ml-2 text-primary-content" onClick={handleAddUrl} disabled={!url}>Add URL</button>
+            <button className="btn btn-primary ml-2 text-primary-content" onClick={handleRawText} disabled={!text}>Add Raw Text</button>
           </form>
         </div>
       </div>

@@ -67,28 +67,33 @@ export const findRelevantContent = async (userQuery: string, kb_id?: number) => 
 };
 
 
-export async function addResourceToKnowledgeBase({url, preferredTitle, kb_id}: {url: string, preferredTitle?: string, kb_id?: number}) {
+export async function addResourceToKnowledgeBase({url, preferredTitle, kb_id, rawContent}: {url?: string, preferredTitle?: string, kb_id?: number, rawContent?: string}) {
   try {
-    // Fetch the resource content
-    console.log("fetching resource content", url);
-    
-    let loader
-    if (url.includes('notion.site')) {
-      loader = await getNotionPageLoader(url);
+    // Fetch the resource content    
+    let namedTitle
+    let content
+    if (rawContent) {
+      content = rawContent
+      namedTitle = preferredTitle ?? undefined
     } else {
-      console.log("Unsupported URL type");
-      return false;
-      // const response = await fetch(url);
-      // content = await response.text();
+      let loader
+      if (url && url.includes('notion.site')) {
+        loader = await getNotionPageLoader(url);
+      } else {
+        console.log("Unsupported URL type");
+        return false;
+        // const response = await fetch(url);
+        // content = await response.text();
+      }
+      const docs = await loader.load();
+      content = docs[0].pageContent;
+      namedTitle = preferredTitle ?? docs[0].metadata.title;
     }
-    const docs = await loader.load();
-    const content = docs[0].pageContent;
 
     // Create the resource in the database
-    const title = preferredTitle ?? docs[0].metadata.title;
     const resource = await createResourceInDatabase(
-      title,
-      url,
+      namedTitle,
+      url ?? "",
       content,
       kb_id
     );
