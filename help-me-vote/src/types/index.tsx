@@ -2,8 +2,9 @@ export interface Topic {
   id: string;
   title: string;
   category?: string;
-  children?: Topic[];
   agenda?: ConversationAgenda;
+  knowledge_base_id?: string;
+  children?: Topic[];
 };
 
 export enum Sender {
@@ -37,4 +38,21 @@ export interface ConversationAgenda {
     plan: {
       nodes: Array<ConversationAgendaNode>;
     };
-  }
+}
+
+// For embedding resources
+export interface Resource {
+  id: string;
+  content: string;
+}
+
+export interface EmbeddingPackage {
+  content: string;
+  embedding: number[];
+}
+
+export interface KnowledgeBase {
+  id?: number | string;
+  name?: string;
+  description?: string;
+}

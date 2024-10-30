@@ -7,8 +7,10 @@ import { ChevronRight } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { selectChosenTopic, selectTopics, setChosenTopic } from "@/lib/features/topics/topicsSlice"
 import { usePostHog } from "posthog-js/react"
+import { useRouter } from "next/navigation"
 
 export default function TopicSelector() {
+    const router = useRouter()
     const dispatch = useAppDispatch()
     const topics = useAppSelector(selectTopics)
     const selectedTopic = useAppSelector(selectChosenTopic)
@@ -24,6 +26,8 @@ export default function TopicSelector() {
             posthog.capture('topic_selected', {
                 topic: topic.title
             })
+            const knowledgeBaseId = topic.knowledge_base_id ?? "home"
+            router.push(`/chat/${knowledgeBaseId}`)
         }
     }
 
@@ -38,21 +42,11 @@ export default function TopicSelector() {
     }
 
     return (
-        <div className="mb-4">
-            <header>
-                <h2 className="text-base-content font-bold">
-                    Discuss the 2024 USA Presidential Race with AI
-                </h2>
-            </header>
+        <div className="">
             <div className="flex flex-row items-center gap-2">
-                {/* {breadcrumbs.length > 0 && (
-                        <Button onClick={() => setBreadcrumbs([])} variant="ghost" size="sm" className="rounded-full text-info-content max-w-fit">
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                    )} */}
-                <div className="breadcrumbs text-sm text-base-content">
+                <div className="breadcrumbs text-base text-base-content">
                     <ul>
-                        <li><a onClick={() => setBreadcrumbs([])} className="text-base-content">Topics</a></li>
+                        <li><a onClick={() => setBreadcrumbs([])} className="text-base-content font-semibold">All</a></li>
                         {breadcrumbs.map((crumb, index) => (
                             <li key={crumb.id}>
                                 <a onClick={() => navigateToBreadcrumb(index)} className="text-base-content">{crumb.title}</a>
@@ -67,7 +61,7 @@ export default function TopicSelector() {
                         key={topic.id}
                         onClick={() => handleTopicSelect(topic)}
                         variant="default"
-                        size="sm"
+                        size="lg"
                         className="justify-start bg-base-200 text-base-content hover:bg-base-300"
                     >
                         {topic.title}

@@ -39,3 +39,51 @@ export const TOPICS: Topic[] = [
     },
     // You can add more high-level categories here if needed
 ]
+
+export const KNOWLEDGE_BASES = [
+    {
+        name: "Kamala Harris Presidential Candidate", 
+        id: "kamala-harris", 
+        description: "A deep dive into Kamala Harris's platform and policies as a presidential candidate.",
+        contextItems: [
+            { url: "https://www.kamalaharris.com" },
+            { url: "https://www.joebiden.com" },
+        ]
+    },
+    {
+        name: "Donald Trump Presidential Candidate", 
+        id: "donald-trump", 
+        description: "A deep dive into Donald Trump's platform and policies as a presidential candidate.",
+        contextItems: [
+            { url: "https://www.donaldjtrump.com" },
+            { url: "https://www.kristijennifer.com" },
+        ]
+    },
+    {
+        name: "Immigration in the USA", 
+        id: "immigration", 
+        description: "A deep dive into immigration policies in the USA.",
+        contextItems: [
+            { url: "https://www.uscis.gov" },
+            { url: "https://www.dhs.gov" },
+        ]
+    },
+    {
+        name: "Climate Change Policies", 
+        id: "climate-change", 
+        description: "A deep dive into climate change policies.", 
+        contextItems: [
+            { url: "https://www.epa.gov" },
+            { url: "https://www.whitehouse.gov" },
+        ]
+    },
+    {
+        name: "Economic Impact of COVID-19", 
+        id: "economic-impact-of-covid-19", 
+        description: "A deep dive into the economic impact of COVID-19.", 
+        contextItems: [
+            { url: "https://www.cnbc.com" },
+            { url: "https://www.nytimes.com" },
+        ]
+    }
+  ];

@@ -15,9 +15,9 @@ import SpectrumDisplay from "./ui/spectrumDisplay"
 import QuickStartGuide from "./QuickStartGuide"
 import PlanDisplay from "./PlanDisplay"
 import { usePostHog } from "posthog-js/react"
-import { getSpectrumPosition } from "@/app/actions/context"
+import { getSpectrumPosition } from "@/actions/context"
 
-export default function ChatArea() {
+export default function ChatArea({ chatId }: { chatId?: string }) {
     const dispatch = useAppDispatch()
     const selectedTopic = useAppSelector(selectChosenTopic)
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0)
@@ -35,7 +35,8 @@ export default function ChatArea() {
     const { messages, input, handleInputChange, handleSubmit } = useChat({
         maxSteps: 1,
         body: {
-            currentGoal
+            currentGoal,
+            filterKnowledgeBaseId: chatId
         },
         async onToolCall(toolCall) {
             if (toolCall.toolCall.toolName === "markGoalAsComplete") {
@@ -124,7 +125,7 @@ export default function ChatArea() {
     }, [selectedTopic, dispatch]);
 
     return (
-        <div className="flex flex-col h-full flex-grow">
+        <div className="h-full flex flex-col flex-1 overflow-scroll">
             {currentGoal && (
                 <div className="flex-shrink-0 flex items-center justify-between mb-4 mt-2 bg-base-100 rounded-full p-2 w-full h-12 overflow-hidden">
                     <div className="flex items-center gap-2 flex-grow min-w-0">
@@ -145,54 +146,54 @@ export default function ChatArea() {
                     </div>
                 </div>
             )}
-            <ScrollArea className="flex-grow overflow-auto mb-2 rounded-md">
-            {messages.length === 0 ? (
-                <QuickStartGuide />
-            ) : (
-                messages.map((message, index) => (
-                    <div
-                        key={index}
-                        className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}
-                    >
+            <ScrollArea className="flex flex-col flex-1 overflow-scroll">
+                {messages.length === 0 ? (
+                    <QuickStartGuide />
+                ) : (
+                    messages.map((message, index) => (
                         <div
-                            className={`chat-bubble ${
-                                message.role === "user"
-                                    ? "bg-info text-info-content"
-                                    : "bg-base-100 text-base-content"
-                            }`}
+                            key={index}
+                            className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}
                         >
-                            <Markdown>{message.content}</Markdown>
-                            {message.toolInvocations?.map(toolInvocation => {
-                                const { toolName, toolCallId, state, args } = toolInvocation;
-                                if (state === 'result'){
-                                    if (toolName === "displayCandidateSpectrum") {
-                                        const { result } = toolInvocation;
-                                        return (
-                                            <div key={toolCallId}>
-                                                <SpectrumDisplay  {...result} />
-                                            </div>
-                                        )
-                                    } else if (toolName === "markGoalAsComplete") {
-                                        return (
-                                            <div key={toolCallId} className="flex items-center gap-2 text-success">
-                                                <Check className="h-4 w-4" />
-                                                <span className="text-sm font-medium">{args.topic}</span>
-                                            </div>
-                                        )
+                            <div
+                                className={`chat-bubble ${
+                                    message.role === "user"
+                                        ? "bg-info text-info-content"
+                                        : "bg-base-100 text-base-content"
+                                }`}
+                            >
+                                <Markdown>{message.content}</Markdown>
+                                {message.toolInvocations?.map(toolInvocation => {
+                                    const { toolName, toolCallId, state, args } = toolInvocation;
+                                    if (state === 'result'){
+                                        if (toolName === "displayCandidateSpectrum") {
+                                            const { result } = toolInvocation;
+                                            return (
+                                                <div key={toolCallId}>
+                                                    <SpectrumDisplay  {...result} />
+                                                </div>
+                                            )
+                                        } else if (toolName === "markGoalAsComplete") {
+                                            return (
+                                                <div key={toolCallId} className="flex items-center gap-2 text-success">
+                                                    <Check className="h-4 w-4" />
+                                                    <span className="text-sm font-medium">{args.topic}</span>
+                                                </div>
+                                            )
+                                        }
                                     }
-                                }
-                                return (
-                                    <div key={index}>
-                                        <p>{JSON.stringify(toolInvocation)}</p>
-                                    </div>
-                                )
-                            })}
+                                    return (
+                                        <div key={index}>
+                                            <p>{JSON.stringify(toolInvocation)}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
-                ))
-            )}
+                    ))
+                )}
             </ScrollArea>
-            <div className="flex flex-col gap-2 mt-auto">
+            <div className="flex-shrink-0 flex flex-col gap-2 mt-2 w-full sticky bottom-0">
                 <div className="flex items-center gap-2 justify-end">
                     {position !== null ? (
                         <Button onClick={() => (document.getElementById("spectrum_modal") as HTMLDialogElement).showModal()}

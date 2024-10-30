@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import StoreProvider from "./providers/StoreProvider";
-import { CSPostHogProvider } from "./providers/PosthogProvider";
+import StoreProvider from "../providers/StoreProvider";
+import { CSPostHogProvider } from "@/providers/PosthogProvider";
+import { ReduxInitializer } from "@/providers/ReduxInitializer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <CSPostHogProvider>
         <StoreProvider>
+          <ReduxInitializer />
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
