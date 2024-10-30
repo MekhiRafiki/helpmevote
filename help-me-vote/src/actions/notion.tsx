@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 import { Client } from "@notionhq/client";
 
@@ -28,7 +29,6 @@ export async function getNotionPageId(url: string): Promise<string | null> {
   const contents = await Promise.all(contentPromises);
   
   const fullText = contents.filter(Boolean).join('\n');
-  console.log(fullText);
   return fullText;
 }
 

@@ -16,7 +16,6 @@ export function ReduxInitializer() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             fetchAllKnowledgeBases().then((kbs: any[]) => {
                 dispatch(setKnowledgeBases(kbs as KnowledgeBase[]));
-                console.log('knowledgeBases', knowledgeBases);
             });
         }
     }, [dispatch, knowledgeBases, knowledgeBases.length]);

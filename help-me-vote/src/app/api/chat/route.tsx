@@ -9,7 +9,6 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, currentGoal, notion_url, forceContext, filterKnowledgeBaseId } = await req.json()
-  console.log("Filter Knowledge Base ID", filterKnowledgeBaseId, forceContext, notion_url);
 
   const lastMessage = messages[messages.length - 1];
   let contextSupport = "";

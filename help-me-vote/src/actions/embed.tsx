@@ -38,14 +38,27 @@ const generateChunks = (input: string, maxChunkSize: number = 1000): string[] =>
 
 async function generateEmbeddings(doc: string): Promise<EmbeddingPackage[]> {
   const splitDocs = generateChunks(doc);
-  
   const embeddingModel = google.textEmbeddingModel('text-embedding-004'); // 768 dim embeddings
-  const { embeddings } = await embeddingModel.doEmbed({
-    values: splitDocs,
-  });
+  
+  // Process in batches of 100
+  const batchSize = 100;
+  const allEmbeddings: EmbeddingPackage[] = [];
+  
+  for (let i = 0; i < splitDocs.length; i += batchSize) {
+    const batch = splitDocs.slice(i, i + batchSize);
+    const { embeddings } = await embeddingModel.doEmbed({
+      values: batch,
+    });
+    
+    // Map the batch results and add to accumulated results
+    const batchResults = embeddings.map((e, idx) => ({
+      content: batch[idx],
+      embedding: e
+    }));
+    allEmbeddings.push(...batchResults);
+  }
 
-  return embeddings.map((e, i) => ({ content: splitDocs[i], embedding: e }));
-
+  return allEmbeddings;
 } 
 
 export const findRelevantContent = async (userQuery: string, kb_id?: number) => {
@@ -80,7 +93,6 @@ export async function addResourceToKnowledgeBase({url, preferredTitle, kb_id, ra
       if (url && url.includes('notion.site')) {
         const page = await getNotionPageId(url);
         content = page;
-        console.log("Fetched content from Notion", content);
       } else {
         console.log("Unsupported URL type");
         // const response = await fetch(url);

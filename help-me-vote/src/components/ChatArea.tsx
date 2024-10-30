@@ -74,7 +74,6 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmitWithContext = (e: any) => {
-        console.log("Submitting with context", !hasSentTopicContext, currentNode?.ai_prompt.notion_url);
         handleSubmit(e, {
             body: {
                 forceContext: !hasSentTopicContext,
