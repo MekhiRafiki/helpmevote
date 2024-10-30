@@ -125,7 +125,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     }, [selectedTopic, dispatch]);
 
     useEffect(() => {
-        if (messages.length > 10) {
+        if (messages.length > 8) {
             setCanPlotSpectrum(true)
         }
     }, [messages])
