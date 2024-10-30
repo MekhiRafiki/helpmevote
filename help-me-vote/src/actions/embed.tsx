@@ -45,7 +45,7 @@ async function generateEmbeddings(doc: string): Promise<EmbeddingPackage[]> {
 
 } 
 
-export const findRelevantContent = async (userQuery: string, kb_id?: string) => {
+export const findRelevantContent = async (userQuery: string, kb_id?: number) => {
   const userQueryEmbedded = (await generateEmbeddings(userQuery))[0].embedding;
   const similarity = sql<number>`1 - (${cosineDistance(
     embeddings.embedding,
@@ -62,11 +62,12 @@ export const findRelevantContent = async (userQuery: string, kb_id?: string) => 
     )
     .orderBy(desc(similarity))
     .limit(4);
+  console.log("RAG on KB ID", kb_id, similarGuides);
   return similarGuides;
 };
 
 
-export async function addResourceToKnowledgeBase(url: string) {
+export async function addResourceToKnowledgeBase(url: string, kb_id?: number) {
   try {
     // Fetch the resource content
     console.log("fetching resource content", url);
@@ -82,21 +83,24 @@ export async function addResourceToKnowledgeBase(url: string) {
     }
     const docs = await loader.load();
     const content = docs[0].pageContent;
-    console.log("content", content);
 
     // Create the resource in the database
-    const resource = await createResourceInDatabase(content);
-    console.log("resource", resource);
+    const title = docs[0].metadata.title;
+    const resource = await createResourceInDatabase(
+      title,
+      url,
+      content,
+      kb_id
+    );
   
     // Generate the embeddings
     const embeddings = await generateEmbeddings(content);
-    console.log("embeddings", embeddings);
     
     // Create the embeddings in the database
-    await createEmbeddingsInDatabase(resource.id, embeddings);
+    await createEmbeddingsInDatabase(resource.id.toString(), embeddings, kb_id);
+    return resource
   } catch (error) {
     console.error("Error adding resource to knowledge base", error);
-    return false;
+    return null;
   }
-  return true;
 }

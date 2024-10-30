@@ -5,15 +5,26 @@ import { EmbeddingPackage } from "@/types";
 import { db } from "@/lib/db";
 import { resources } from "@/lib/db/schema/resources";
 import { eq } from "drizzle-orm";
-export async function createResourceInDatabase(content: string) {
-    const [resource] = await db.insert(resources).values({ content }).returning();
-    return resource;
+
+export async function createResourceInDatabase(title: string, webUrl: string, content: string, kb_id?: number) {
+  const [resource] = await db.insert(resources).values({ 
+      title,
+      webUrl,
+      content,
+      ...(kb_id ? { kb_id } : {})
+  }).returning();
+  return resource;
 }
   
 
-export async function createEmbeddingsInDatabase(resource_id: string, embedingPackage: EmbeddingPackage[]) {
+export async function createEmbeddingsInDatabase(resource_id: string, embedingPackage: EmbeddingPackage[], kb_id?: number) {
   for (const embedding of embedingPackage) {
-    await db.insert(embeddings).values({ resource_id, content: embedding.content, embedding: embedding.embedding });
+    await db.insert(embeddings).values({ 
+      resource_id, 
+      content: embedding.content, 
+      embedding: embedding.embedding, 
+      ...(kb_id ? { kb_id } : {}) 
+    });
   }
   return true;
 }
@@ -29,4 +40,12 @@ export async function fetchKnowledgeBaseById(id: number) {
 
 export async function fetchAllKnowledgeBases() {
   return await db.select().from(knowledge_bases);
+}
+
+export async function getResourcesInKb (kb_id: number) {
+  return db.select().from(resources).where(eq(resources.kb_id, kb_id));
+}
+
+export async function getAllResources() {
+  return db.select().from(resources).limit(100);
 }

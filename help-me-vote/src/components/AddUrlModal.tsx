@@ -1,15 +1,29 @@
 "use client"
 
 import { addResourceToKnowledgeBase } from "@/actions/embed";
+import { addKnowledgeBase } from "@/lib/features/knowledgeBases/kbSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { KnowledgeBase } from "@/types";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
-export default function AddUrlModal() {
+interface AddUrlModalProps {
+  knowledgeBaseId?: number
+}
+
+export default function AddUrlModal({
+  knowledgeBaseId
+}: AddUrlModalProps) {
+    const dispatch = useAppDispatch()
     const [url, setUrl] = useState('');
 
     const handleAddUrl = () => {
         console.log('Client: Handling add url', url);
-        void addResourceToKnowledgeBase(url);
+        void addResourceToKnowledgeBase(url, knowledgeBaseId).then((kb) => {
+          if (kb) {
+            dispatch(addKnowledgeBase(kb as KnowledgeBase));
+          }
+        });
         
     }
 

@@ -1,11 +1,8 @@
 "use client"
-import { createKnowledgeBase, fetchKnowledgeBaseById } from "@/actions/resources";
+import { createKnowledgeBase, fetchKnowledgeBaseById, getAllResources, getResourcesInKb } from "@/actions/resources";
 import AddUrlModal from "@/components/AddUrlModal";
 import { Button } from "@/components/ui/button";
-import { KNOWLEDGE_BASES } from "@/constants/topics";
-import { addKnowledgeBase } from "@/lib/features/knowledgeBases/kbSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { KnowledgeBase } from "@/types";
 import { CircleArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,30 +12,39 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
     const dispatch = useAppDispatch();
     const isNew = params.id === 'new'
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [kb, setKb] = useState<any>(null)
-
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [contextItems, setContextItems] = useState<any[]>(KNOWLEDGE_BASES[0].contextItems);
-    // kb?.contextItems
+    const [contextItems, setContextItems] = useState([]);
 
       useEffect(() => {
         async function fetchKnowledgeBase() {
           if (!isNew) {
+            const id = parseInt(params.id)
+            if (id !== -1) {
               await fetchKnowledgeBaseById(parseInt(params.id)).then((kb) => {
                   if (kb) {
-                      setKb(kb[0]);
                       setName(kb[0].name || "");
                       setDescription(kb[0].description || "");
-                      dispatch(addKnowledgeBase(kb[0] as KnowledgeBase));
                   } else {
                     router.push("/rag/");
                   }
               });
+            } else {
+              setName("General Chat")
+              setDescription("Chat with the platform about anything")
+            }
           }
         }
-        fetchKnowledgeBase();
+
+        async function fetchResourcesInKb() {
+          if (!isNew) {
+            const resources = params.id === "-1" ? await getAllResources() : await getResourcesInKb(parseInt(params.id));
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            setContextItems(resources as any);
+          }
+        }
+        void fetchKnowledgeBase();
+        void fetchResourcesInKb();
       }, [params.id, isNew, router, dispatch]);
   
     return (
@@ -90,13 +96,13 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
        ): (<div className="mt-6 flex-grow">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-base-content">Context Items</h2>
-            <AddUrlModal />
+            <AddUrlModal knowledgeBaseId={parseInt(params.id)}/>
           </div>
           <div className="space-y-3 max-h-[40vh] overflow-y-auto">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {contextItems.map((item: any, index: number) => (
               <div key={index} className="flex items-center gap-2 bg-base-300 p-2 rounded-md hover:bg-base-200">
-                <a href={item.url} target="_blank" className="text-base-content">{item.url}</a>
+                <a href={item.webUrl} target="_blank" className="text-base-content">{item.title}</a>
               </div>
             ))}
           </div>

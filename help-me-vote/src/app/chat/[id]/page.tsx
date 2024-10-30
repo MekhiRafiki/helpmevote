@@ -8,19 +8,32 @@ import ChatLibrary from "@/components/ChatLibrary"
 import { usePostHog } from "posthog-js/react"
 import KbQuickView from "@/components/KnowledgeBase/KbQuickView"
 import { useRouter } from "next/navigation";
-import { KNOWLEDGE_BASES } from "@/constants/topics";
+import { selectKnowledgeBases } from "@/lib/features/knowledgeBases/kbSlice";
+import { useEffect, useState } from "react";
+import { KnowledgeBase } from "@/types";
 
 
 export default function ChatPage({ params }: { params: { id: string } }) {
+    const knowledgeBases = useAppSelector(selectKnowledgeBases)
     const router = useRouter()
     const dispatch = useAppDispatch()
     const selectedTopic = useAppSelector(selectChosenTopic)
     const usedNotionUrls = useAppSelector(selectUsedNotionUrls)
     const posthog = usePostHog();
 
-    const knowledgeBase = params.id ?? "home"
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const kb = KNOWLEDGE_BASES.find((kb: any) => kb.id === knowledgeBase)
+    const [kb, setKb] = useState<KnowledgeBase | null>(null)
+
+    useEffect(() => {
+        const id = params.id ?? "home"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const kb = knowledgeBases.find((kb: any) => kb.id === parseInt(id))
+        setKb(kb ?? {
+          name: "General Chat",
+          description: "Chat with the platform about anything",
+          id: -1
+        })
+    }, [knowledgeBases, params.id])
+    
   
     const handleClearSelection = () => {
       dispatch(setChosenTopic(null))
@@ -39,11 +52,11 @@ export default function ChatPage({ params }: { params: { id: string } }) {
               <h2
                 className="w-3/4 text-center text-lg font-semibold sm:text-sm md:text-md text-base-content whitespace-nowrap truncate"
               >
-                {selectedTopic?.title ?? kb?.title ?? "Home"}
+                {selectedTopic?.title ?? kb?.name ?? "Home"}
               </h2>
               <div className="w-1/6 flex justify-end">
                 {kb ? (
-                 <KbQuickView kbId={kb.id}/>
+                 <KbQuickView kbId={kb.id?.toString() ?? ""}/>
                 ) : usedNotionUrls.length > 0 && (
                   <ChatLibrary />
                 )}

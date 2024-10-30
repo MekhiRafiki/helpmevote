@@ -8,7 +8,7 @@ import { z } from 'zod';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages, currentGoal, notion_url, forceContext } = await req.json()
+  const { messages, currentGoal, notion_url, forceContext, filterKnowledgeBaseId } = await req.json()
 
   const lastMessage = messages[messages.length - 1];
   let contextSupport = "";
@@ -17,7 +17,10 @@ export async function POST(req: Request) {
     contextSupport = await getContextSupport({ notion_url });
   } else {
     // RAG based on the last query
-    const relevantContent = await findRelevantContent(lastMessage.content);
+    const relevantContent = await findRelevantContent(
+      lastMessage.content, 
+      filterKnowledgeBaseId ?? undefined
+    );
     if (relevantContent.length > 0) {
       contextSupport = relevantContent.map(c => c.content).join("\n\n");
     }

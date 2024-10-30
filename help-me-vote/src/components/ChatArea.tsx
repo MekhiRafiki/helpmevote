@@ -35,7 +35,8 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     const { messages, input, handleInputChange, handleSubmit } = useChat({
         maxSteps: 1,
         body: {
-            currentGoal
+            currentGoal,
+            filterKnowledgeBaseId: chatId
         },
         async onToolCall(toolCall) {
             if (toolCall.toolCall.toolName === "markGoalAsComplete") {
