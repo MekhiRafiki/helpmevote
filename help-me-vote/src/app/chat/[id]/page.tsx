@@ -42,7 +42,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
     }
   
     return (
-        <div className="min-h-screen flex flex-col bg-base-300">
+        <div className="min-h-screen flex flex-col bg-base-300 overflow-clip h-full max-h-screen">
             <div className="px-4 pt-4 flex flex-row items-center justify-between w-full mb-2 flex-shrink-0">
               <div className="w-1/6 flex justify-start">
                 <button onClick={handleClearSelection} className="rounded-full text-base-content">

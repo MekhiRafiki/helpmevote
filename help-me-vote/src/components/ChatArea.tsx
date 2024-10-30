@@ -124,8 +124,14 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
         }
     }, [selectedTopic, dispatch]);
 
+    useEffect(() => {
+        if (messages.length > 8) {
+            setCanPlotSpectrum(true)
+        }
+    }, [messages])
+
     return (
-        <div className="h-full flex flex-col flex-1 overflow-scroll">
+        <div className="h-full flex flex-col flex-1 overflow-hidden">
             {currentGoal && (
                 <div className="flex-shrink-0 flex items-center justify-between mb-4 mt-2 bg-base-100 rounded-full p-2 w-full h-12 overflow-hidden">
                     <div className="flex items-center gap-2 flex-grow min-w-0">
