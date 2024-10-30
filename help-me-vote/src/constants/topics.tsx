@@ -15,7 +15,6 @@ export const TOPICS: Topic[] = [
                 title: "Party Platforms",
                 category: "platform",
                 children: [
-                    {id: "general", title: "General", category: "platform", knowledge_base_id: "1"},
                     { id: "presidential-overview", title: "Candidate Comparison: Find Your Match", category: "platform", agenda: PRESIDENTIAL_OVERVIEW_AGENDA },
                     { id: "harris-walz", title: "Harris | Walz Campaign", category: "platform", agenda: KAMALA_HARRIS_DEEP_DIVE },
                     { id: "trump-vance", title: "Trump | Vance Campaign", category: "platform", agenda: GOP_2024_DEEP_DIVE },
@@ -44,7 +43,7 @@ export const TOPICS: Topic[] = [
 export const KNOWLEDGE_BASES = [
     {
         title: "Kamala Harris Presidential Candidate", 
-        id: "1", 
+        id: "kamala-harris", 
         description: "A deep dive into Kamala Harris's platform and policies as a presidential candidate.",
         contextItems: [
             { url: "https://www.kamalaharris.com" },
@@ -53,7 +52,7 @@ export const KNOWLEDGE_BASES = [
     },
     {
         title: "Donald Trump Presidential Candidate", 
-        id: "2", 
+        id: "donald-trump", 
         description: "A deep dive into Donald Trump's platform and policies as a presidential candidate.",
         contextItems: [
             { url: "https://www.donaldjtrump.com" },
@@ -62,7 +61,7 @@ export const KNOWLEDGE_BASES = [
     },
     {
         title: "Immigration in the USA", 
-        id: "3", 
+        id: "immigration", 
         description: "A deep dive into immigration policies in the USA.",
         contextItems: [
             { url: "https://www.uscis.gov" },
@@ -71,7 +70,7 @@ export const KNOWLEDGE_BASES = [
     },
     {
         title: "Climate Change Policies", 
-        id: "4", 
+        id: "climate-change", 
         description: "A deep dive into climate change policies.", 
         contextItems: [
             { url: "https://www.epa.gov" },
@@ -80,7 +79,7 @@ export const KNOWLEDGE_BASES = [
     },
     {
         title: "Economic Impact of COVID-19", 
-        id: "5", 
+        id: "economic-impact-of-covid-19", 
         description: "A deep dive into the economic impact of COVID-19.", 
         contextItems: [
             { url: "https://www.cnbc.com" },

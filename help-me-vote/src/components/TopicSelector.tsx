@@ -43,20 +43,10 @@ export default function TopicSelector() {
 
     return (
         <div className="mb-4">
-            <header>
-                <h2 className="text-base-content font-bold">
-                    Discuss the 2024 USA Presidential Race with AI
-                </h2>
-            </header>
             <div className="flex flex-row items-center gap-2">
-                {/* {breadcrumbs.length > 0 && (
-                        <Button onClick={() => setBreadcrumbs([])} variant="ghost" size="sm" className="rounded-full text-info-content max-w-fit">
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                    )} */}
                 <div className="breadcrumbs text-sm text-base-content">
                     <ul>
-                        <li><a onClick={() => setBreadcrumbs([])} className="text-base-content">Topics</a></li>
+                        <li><a onClick={() => setBreadcrumbs([])} className="text-base-content text-lg font-semibold">All</a></li>
                         {breadcrumbs.map((crumb, index) => (
                             <li key={crumb.id}>
                                 <a onClick={() => navigateToBreadcrumb(index)} className="text-base-content">{crumb.title}</a>
