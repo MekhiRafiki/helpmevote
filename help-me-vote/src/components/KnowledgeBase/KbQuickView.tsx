@@ -35,8 +35,8 @@ export default function KbQuickView({ kbId }: { kbId: string }) {
                     <div className="flex flex-col gap-2">
                         
                         <div className="flex flex-col gap-2">
-                            <h4 className="font-bold text-lg text-base-content">{kb?.name ?? "All Context"}</h4>
-                            <p className="text-sm text-base-content">{kb?.description ?? "All context items from our Help Me Vote knowledge base"}</p>
+                            <h4 className="font-bold text-lg text-base-content">{kb?.name ?? "Entire Knowledge Base"}</h4>
+                            <p className="text-sm text-base-content">{kb?.description ?? "Any relevant context from our Help Me Vote knowledge base"}</p>
                         </div>
                         
                     </div>

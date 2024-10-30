@@ -105,7 +105,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
                   router.push(`/rag/base/${kb.id}`);
                 });
               }}
-              className="btn btn-primary"
+              className="btn btn-primary text-primary-content"
             >
               Create Knowledge Base
             </Button>
@@ -122,7 +122,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
               )}
             </div>
 
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto px-2">
+            <div className="space-y-4 max-h-[45vh] overflow-y-scroll px-2">
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {contextItems.map((item: any, index: number) => (
                 <div 
@@ -139,7 +139,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
                           element?.classList.toggle('hidden');
                         }}
                       >
-                        <ChevronDownIcon className="w-4 h-4" />
+                        <ChevronDownIcon className="w-4 h-4 text-base-content" />
                       </button>
                     </div>
                     
