@@ -6,7 +6,7 @@ import { selectChosenTopic, setChosenTopic } from "@/lib/features/topics/topicsS
 import { selectUsedNotionUrls } from "@/lib/features/chat/chatSlice"
 import ChatLibrary from "@/components/ChatLibrary"
 import { usePostHog } from "posthog-js/react"
-import KnowledgeBase from "@/components/KnowledgeBase"
+import KbQuickView from "@/components/KnowledgeBase/KbQuickView"
 import { useRouter } from "next/navigation";
 import { KNOWLEDGE_BASES } from "@/constants/topics";
 
@@ -19,6 +19,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
     const posthog = usePostHog();
 
     const knowledgeBase = params.id ?? "home"
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const kb = KNOWLEDGE_BASES.find((kb: any) => kb.id === knowledgeBase)
   
     const handleClearSelection = () => {
@@ -41,8 +42,8 @@ export default function ChatPage({ params }: { params: { id: string } }) {
                 {selectedTopic?.title ?? kb?.title ?? "Home"}
               </h2>
               <div className="w-1/6 flex justify-end">
-                {selectedTopic?.knowledge_base_id ? (
-                 <KnowledgeBase />
+                {kb ? (
+                 <KbQuickView kbId={kb.id}/>
                 ) : usedNotionUrls.length > 0 && (
                   <ChatLibrary />
                 )}

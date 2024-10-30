@@ -1,16 +1,15 @@
 import { BookOpenIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { KNOWLEDGE_BASES } from "@/constants/topics";
 import { useRouter } from "next/navigation";
 
 
-export default function KnowledgeBase() {
+export default function KbQuickView({ kbId }: { kbId: string }) {
     const router = useRouter()
-    const currentKnowledgeBaseId = "1"
-    const kb = KNOWLEDGE_BASES.find((kb) => kb.id === currentKnowledgeBaseId)
+    const kb = KNOWLEDGE_BASES.find((kb) => kb.id === kbId)
 
     const visitKnowledgeBase = () => {
-        router.push(`/rag/base/${currentKnowledgeBaseId}`)
+        router.push(`/rag/base/${kbId}`)
     }
     return (
         <div>
