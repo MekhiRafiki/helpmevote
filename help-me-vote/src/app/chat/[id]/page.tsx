@@ -42,8 +42,8 @@ export default function ChatPage({ params }: { params: { id: string } }) {
     }
   
     return (
-        <div className="min-w-screen min-h-screen px-4 pt-4 pb-1 flex flex-col overflow-hidden bg-base-300">
-             <div className="flex flex-row items-center justify-between w-full mb-2">
+        <div className="min-h-screen flex flex-col bg-base-300">
+            <div className="px-4 pt-4 flex flex-row items-center justify-between w-full mb-2 flex-shrink-0">
               <div className="w-1/6 flex justify-start">
                 <button onClick={handleClearSelection} className="rounded-full text-base-content">
                   <CircleArrowLeft />
@@ -62,7 +62,9 @@ export default function ChatPage({ params }: { params: { id: string } }) {
                 )}
               </div>
             </div>
-            <ChatArea chatId={params.id} />
+            <div className="px-4 pb-1 flex flex-col flex-1 overflow-hidden">
+                <ChatArea chatId={params.id} />
+            </div>
         </div>
     )
 }

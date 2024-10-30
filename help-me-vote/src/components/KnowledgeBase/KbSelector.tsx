@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 export default function KnowledgeBaseSelector() {
     const knowledgeBases = useAppSelector(selectKnowledgeBases);
     return (
-        <div className="flex flex-col p-3 hover:bg-base-200 cursor-pointer rounded-lg">
+        <div className="flex flex-col gap-2">
             <KnowledgeBaseCard key={-1} kb={{
                 name: "General Chat",
                 description: "Chat with the platform about anything",
-                id: -1
+                id: "home"
             }} />
             {knowledgeBases.map((kb) => (
                 <KnowledgeBaseCard key={kb.id} kb={kb} />
@@ -21,12 +21,8 @@ export default function KnowledgeBaseSelector() {
 
 function KnowledgeBaseCard({ kb }: { kb: KnowledgeBase }) {
     const router = useRouter();
-    const handleKnowledgeBaseSelect = (kbId: number) => {
-        if (kbId === -1) {
-            router.push(`/chat/`);
-        } else {
-            router.push(`/chat/${kbId}`);
-        }
+    const handleKnowledgeBaseSelect = (kbId: number | string) => {
+        router.push(`/chat/${kbId}`);
     }
     return (
         <div className="flex flex-col p-3 hover:bg-base-200 cursor-pointer rounded-lg"

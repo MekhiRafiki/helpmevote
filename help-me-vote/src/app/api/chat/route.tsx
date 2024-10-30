@@ -9,17 +9,20 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, currentGoal, notion_url, forceContext, filterKnowledgeBaseId } = await req.json()
+  console.log("Filter Knowledge Base ID", filterKnowledgeBaseId, forceContext, notion_url);
 
   const lastMessage = messages[messages.length - 1];
   let contextSupport = "";
   if (forceContext && notion_url) {
     // Static context
     contextSupport = await getContextSupport({ notion_url });
+    console.log("Using static context", contextSupport);
   } else {
     // RAG based on the last query
+    const kb_id = filterKnowledgeBaseId === "home" ? undefined : filterKnowledgeBaseId
     const relevantContent = await findRelevantContent(
       lastMessage.content, 
-      filterKnowledgeBaseId ?? undefined
+      kb_id
     );
     if (relevantContent.length > 0) {
       contextSupport = relevantContent.map(c => c.content).join("\n\n");

@@ -62,7 +62,6 @@ export const findRelevantContent = async (userQuery: string, kb_id?: number) => 
     )
     .orderBy(desc(similarity))
     .limit(4);
-  console.log("RAG on KB ID", kb_id, similarGuides);
   return similarGuides;
 };
 
