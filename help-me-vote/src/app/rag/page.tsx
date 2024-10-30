@@ -16,7 +16,7 @@ export default function RAG() {
           <div className="card-body">
             <div className="flex justify-between items-center">
               <h2 className="card-title">Knowledge Bases</h2>
-              <button className="btn btn-primary btn-sm" onClick={() => router.push('/rag/base/new')}>
+              <button className="btn btn-primary btn-sm" onClick={() => router.push('/rag/new')}>
                 <PlusIcon className="w-4 h-4" />    
               </button>
             </div>

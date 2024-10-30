@@ -89,7 +89,7 @@ export default function RAGBasePage({ params }: { params: { id: string } }) {
         <div className="w-full flex  flex-row justify-end">
             <Button disabled={!name || !description} onClick={() => {
                 createKnowledgeBase(name, description).then((kb) => {
-                    router.push(`/rag/base/${kb.id}`);
+                    router.push(`/rag/${kb.id}`);
                 });
             }}>Create Knowledge Base</Button>
         </div>

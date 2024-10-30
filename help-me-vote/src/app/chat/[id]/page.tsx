@@ -38,7 +38,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
     const handleClearSelection = () => {
       dispatch(setChosenTopic(null))
       posthog.capture('conversation_exited')
-      router.back()
+      router.push(`/`)
     }
   
     return (
@@ -56,7 +56,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
               </h2>
               <div className="w-1/6 flex justify-end">
                 {kb ? (
-                 <KbQuickView kbId={kb.id?.toString() ?? ""}/>
+                 <KbQuickView kbId={params.id ?? "home"}/>
                 ) : usedNotionUrls.length > 0 && (
                   <ChatLibrary />
                 )}

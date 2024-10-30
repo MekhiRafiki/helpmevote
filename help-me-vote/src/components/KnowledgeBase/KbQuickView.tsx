@@ -1,15 +1,24 @@
-import { BookOpenIcon } from "lucide-react";
+import { ArrowRightIcon, BookOpenIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { KNOWLEDGE_BASES } from "@/constants/topics";
 import { useRouter } from "next/navigation";
+import { selectKnowledgeBases } from "@/lib/features/knowledgeBases/kbSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { useState } from "react";
+import { KnowledgeBase } from "@/types";
+import { useEffect } from "react";
 
 
 export default function KbQuickView({ kbId }: { kbId: string }) {
     const router = useRouter()
-    const kb = KNOWLEDGE_BASES.find((kb) => kb.id === kbId)
+    const knowledgeBases = useAppSelector(selectKnowledgeBases)
+    const [kb, setKb] = useState<KnowledgeBase | null>(null)
+
+    useEffect(() => {
+        setKb(knowledgeBases.find((kb) => kb.id === parseInt(kbId)) ?? null)
+    }, [knowledgeBases, kbId])
 
     const visitKnowledgeBase = () => {
-        router.push(`/rag/base/${kbId}`)
+        router.push(`/rag/${kbId}`)
     }
     return (
         <div>
@@ -23,16 +32,19 @@ export default function KbQuickView({ kbId }: { kbId: string }) {
             </Button>
             <dialog id="library_modal" className="modal">
                 <div className="modal-box flex flex-col gap-2">
-                    <h3 className="font-bold text-lg text-base-content">Knowledge Base</h3>
                     <div className="flex flex-col gap-2">
-                        {kb && (
-                            <div key={kb.id} className="flex flex-col gap-2">
-                                <h4 className="font-bold text-lg text-base-content">{kb.title}</h4>
-                                <p className="text-sm text-base-content">{kb.description}</p>
-                            </div>
-                        )}
+                        
+                        <div className="flex flex-col gap-2">
+                            <h4 className="font-bold text-lg text-base-content">{kb?.name ?? "All Context"}</h4>
+                            <p className="text-sm text-base-content">{kb?.description ?? "All context items from our Help Me Vote knowledge base"}</p>
+                        </div>
+                        
                     </div>
-                    <button className="btn btn-primary" onClick={visitKnowledgeBase}>Visit Knowledge Base</button>
+                    <div className="flex justify-end">
+                        <button className="btn btn-primary btn-md" onClick={visitKnowledgeBase}>
+                            <ArrowRightIcon className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>
