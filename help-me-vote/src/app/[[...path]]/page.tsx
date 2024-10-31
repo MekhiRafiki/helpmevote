@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function DynamicPath() {
   return (
-    <>
+    <div className="px-2">
         <div className="flex flex-row items-center justify-start gap-4">
             <Image 
                 src="/logo.png" 
@@ -17,6 +17,6 @@ export default function DynamicPath() {
             </h1>
         </div>
         <KnowledgeBaseSelector />
-    </>
+    </div>
   )
 }

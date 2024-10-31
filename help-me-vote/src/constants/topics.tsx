@@ -72,63 +72,103 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
     },
     {
         id: 'states',
-        name: 'State Ballots',
+        name: 'State Senate Races',
         description: 'View information about state elections',
         children: [
             {
-                id: 'ny',
-                name: 'New York',
-                description: 'New York State Elections',
+                id: 'ny-senator',
+                name: 'New York Senator',
+                description: 'Senate Election Candidates',
                 children: [
                     {
-                        id: 'ny-races',
-                        name: 'Races',
-                        description: 'Election Races',
-                        children: [
-                            {
-                                id: 'ny-senator',
-                                name: 'United States Senator',
-                                description: 'Senate Election Candidates',
-                                children: [
-                                    {
-                                        id: '5',
-                                        name: 'Kirsten E. Gillibrand',
-                                        description: 'Democratic & Working Families',
-                                    },
-                                    {
-                                        id: '6',
-                                        name: 'Michael D. Sapraicone',
-                                        description: 'Republican & Conservative',
-                                    },
-                                    {
-                                        id: '7',
-                                        name: 'Diane Sare',
-                                        description: 'LaRouche',
-                                    },
-                                ],
-                            },
-                            {
-                                id: 'ny-supreme-court',
-                                name: 'Justice of Supreme Court 2nd District',
-                                description: 'Supreme Court Justice Election',
-                            },
-                        ]
+                        id: '5',
+                        name: 'Kirsten E. Gillibrand',
+                        description: 'Democratic & Working Families',
                     },
                     {
-                        id: 'ny-proposals',
-                        name: 'Proposals',
-                        description: 'State Proposals and Referendums',
-                    }
-                ]
+                        id: '6',
+                        name: 'Michael D. Sapraicone',
+                        description: 'Republican & Conservative',
+                    },
+                    {
+                        id: '7',
+                        name: 'Diane Sare',
+                        description: 'LaRouche',
+                    },
+                ],
             },
             {
-                id: 'pa',
-                name: 'Pennsylvania',
-                description: 'Pennsylvania State Elections',
+                id: 'pa-senator',
+                name: 'Pennsylvania Senator',
+                description: 'Senate Election Candidates',
                 children: [
-                    // Similar structure as NY
-                ]
-            }
+                    {
+                        id: '8',
+                        name: 'Bob Casey',
+                        description: 'Democratic',
+                    },
+                    {
+                        id: '9',
+                        name: 'Dave McCormick',
+                        description: 'Republican',
+                    },
+                    {
+                        id: '10',
+                        name: 'Leila Hazou',
+                        description: 'Green Party',
+                    },
+                    {
+                        id: '11',
+                        name: 'Marty Selker',
+                        description: 'Constitution Party',
+                    },
+                    {
+                        id: '12',
+                        name: 'John C. Thomas',
+                        description: 'Libertarian',
+                    },
+                ],
+            },
+            // {
+            //     id: 'ny',
+            //     name: 'New York',
+            //     description: 'New York State Elections',
+            //     children: [
+            //         {
+            //             id: 'ny-races',
+            //             name: 'Races',
+            //             description: 'Election Races',
+            //             children: [
+                            
+            //             ]
+            //         },
+            //         {
+            //             id: 'ny-proposals',
+            //             name: 'Proposals',
+            //             description: 'State Proposals and Referendums',
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'pa',
+            //     name: 'Pennsylvania',
+            //     description: 'Pennsylvania State Elections',
+            //     children: [
+            //         {
+            //             id: 'pa-races',
+            //             name: 'Races',
+            //             description: 'Election Races',
+            //             children: [
+                            
+            //             ]
+            //         },
+            //         {
+            //             id: 'pa-proposals',
+            //             name: 'Proposals',
+            //             description: 'State Proposals and Referendums',
+            //         }
+            //     ]
+            // }
         ]
     }
 ];
