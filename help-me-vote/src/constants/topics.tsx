@@ -98,6 +98,9 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                         description: 'LaRouche',
                     },
                 ],
+                topics: [
+                    { id: "ny-senate-overview", title: "New York Senate - Find Your Match", agenda: NY_SENATE_OVERVIEW_AGENDA },
+                ]
             },
             {
                 id: 'pa-senator',
@@ -130,6 +133,9 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                         description: 'Libertarian',
                     },
                 ],
+                topics: [
+                    { id: "pa-senate-overview", title: "Pennsylvania Senate - Find Your Match", agenda: PA_SENATE_OVERVIEW_AGENDA },
+                ]
             },
             // {
             //     id: 'ny',
@@ -172,9 +178,5 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
             //     ]
             // }
         ],
-        topics: [
-            { id: "ny-senate-overview", title: "New York Senate - Find Your Match", agenda: NY_SENATE_OVERVIEW_AGENDA },
-            { id: "pa-senate-overview", title: "Pennsylvania Senate - Find Your Match", agenda: PA_SENATE_OVERVIEW_AGENDA },
-        ]
     }
 ];
