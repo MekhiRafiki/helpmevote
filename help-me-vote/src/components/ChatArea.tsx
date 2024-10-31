@@ -65,6 +65,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     const handleKickMeOff = () => {
         handleInputChange({ target: { value: currentGoal } } as React.ChangeEvent<HTMLInputElement>);
         posthog.capture('conversation_kicked_off', {
+            chatId: chatId,
             topic: selectedTopic?.id,
             current_goal: currentGoal,
             current_node: currentNode?.title,
@@ -82,6 +83,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
         });
         setHasSentTopicContext(true)
         posthog.capture('message_sent', {
+            chatId: chatId,
             topic: selectedTopic?.id,
             current_goal: currentGoal,
             current_node: currentNode?.title,
@@ -125,10 +127,10 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     }, [selectedTopic, dispatch]);
 
     useEffect(() => {
-        if (messages.length > 1) {
+        if (selectedTopic && messages.length > 8) {
             setCanPlotSpectrum(true)
         }
-    }, [messages])
+    }, [selectedTopic,messages])
 
     return (
         <div className="h-full flex flex-col flex-1 overflow-hidden">

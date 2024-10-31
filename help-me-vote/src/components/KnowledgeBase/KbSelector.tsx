@@ -44,7 +44,7 @@ export default function KnowledgeBaseSelector() {
         if (item.children) {
             router.push(`/${newPath}`)
         } else {
-            posthog.capture('knowledge_base_selected', {
+            posthog.capture('kb_chat_selected', {
                 item: item.name
             })
             router.push(`/chat/${item.id}`)
@@ -52,7 +52,7 @@ export default function KnowledgeBaseSelector() {
     }
 
     const handleTopicSelect = (topic: Topic) => {
-        posthog.capture('knowledge_base_topic_selected', {
+        posthog.capture('conversation_selected', {
             topic: topic.title
         })
         dispatch(setChosenTopic(topic))

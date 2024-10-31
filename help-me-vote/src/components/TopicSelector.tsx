@@ -23,7 +23,7 @@ export default function TopicSelector() {
             setBreadcrumbs([...breadcrumbs, topic])
         } else {
             dispatch(setChosenTopic(topic))
-            posthog.capture('topic_selected', {
+            posthog.capture('conversation_selected', {
                 topic: topic.title
             })
             const knowledgeBaseId = topic.knowledge_base_id ?? "home"
