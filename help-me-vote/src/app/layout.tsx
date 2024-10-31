@@ -34,7 +34,9 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            {children}
+            <div className="min-w-screen min-h-screen p-1 flex flex-col overflow-hidden bg-gradient-to-br from-base-300 to-base-200">
+              {children}
+            </div>
           </body>
         </StoreProvider>
       </CSPostHogProvider>

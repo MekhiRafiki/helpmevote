@@ -1,4 +1,4 @@
-import { Topic } from "@/types";
+import { BallotItem, Topic } from "@/types";
 import { IMMIGRATION_AGENDA } from "./agendas/policy/immigration";
 import { PRESIDENTIAL_OVERVIEW_AGENDA } from "./agendas/platform/overview";
 import { KAMALA_HARRIS_DEEP_DIVE } from "./agendas/platform/harrisWalz";
@@ -40,50 +40,80 @@ export const TOPICS: Topic[] = [
     // You can add more high-level categories here if needed
 ]
 
-export const KNOWLEDGE_BASES = [
+
+// Sample static data
+export const BALLOT_STRUCTURE: BallotItem[] = [
     {
-        name: "Kamala Harris Presidential Candidate", 
-        id: "kamala-harris", 
-        description: "A deep dive into Kamala Harris's platform and policies as a presidential candidate.",
-        contextItems: [
-            { url: "https://www.kamalaharris.com" },
-            { url: "https://www.joebiden.com" },
+        id: 'home',
+        name: 'General Chat',
+        description: 'Chat with the platform about anything',
+    },
+    {
+        id: 'federal',
+        name: 'Federal Ballot',
+        description: 'View information about federal elections',
+        children: [
+            {
+                id: 'usa-presidential-race',
+                name: 'Presidential Race',
+                description: 'View information about the USA Presidential Race 2024',
+                children: [
+                    {
+                        id: '1',
+                        name: 'Harris',
+                        description: 'Kamala Harris',
+                    },
+                    {
+                        id: '3',
+                        name: 'Trump',
+                        description: 'Donald Trump',
+                    },
+                ]
+            }
         ]
     },
     {
-        name: "Donald Trump Presidential Candidate", 
-        id: "donald-trump", 
-        description: "A deep dive into Donald Trump's platform and policies as a presidential candidate.",
-        contextItems: [
-            { url: "https://www.donaldjtrump.com" },
-            { url: "https://www.kristijennifer.com" },
-        ]
-    },
-    {
-        name: "Immigration in the USA", 
-        id: "immigration", 
-        description: "A deep dive into immigration policies in the USA.",
-        contextItems: [
-            { url: "https://www.uscis.gov" },
-            { url: "https://www.dhs.gov" },
-        ]
-    },
-    {
-        name: "Climate Change Policies", 
-        id: "climate-change", 
-        description: "A deep dive into climate change policies.", 
-        contextItems: [
-            { url: "https://www.epa.gov" },
-            { url: "https://www.whitehouse.gov" },
-        ]
-    },
-    {
-        name: "Economic Impact of COVID-19", 
-        id: "economic-impact-of-covid-19", 
-        description: "A deep dive into the economic impact of COVID-19.", 
-        contextItems: [
-            { url: "https://www.cnbc.com" },
-            { url: "https://www.nytimes.com" },
+        id: 'states',
+        name: 'State Ballots',
+        description: 'View information about state elections',
+        children: [
+            {
+                id: 'ny',
+                name: 'New York',
+                description: 'New York State Elections',
+                children: [
+                    {
+                        id: 'ny-races',
+                        name: 'Races',
+                        description: 'Election Races',
+                        children: [
+                            {
+                                id: 'ny-senator',
+                                name: 'United States Senator',
+                                description: 'Senate Election Candidates',
+                            },
+                            {
+                                id: 'ny-supreme-court',
+                                name: 'Justice of Supreme Court 2nd District',
+                                description: 'Supreme Court Justice Election',
+                            },
+                        ]
+                    },
+                    {
+                        id: 'ny-proposals',
+                        name: 'Proposals',
+                        description: 'State Proposals and Referendums',
+                    }
+                ]
+            },
+            {
+                id: 'pa',
+                name: 'Pennsylvania',
+                description: 'Pennsylvania State Elections',
+                children: [
+                    // Similar structure as NY
+                ]
+            }
         ]
     }
-  ];
+];

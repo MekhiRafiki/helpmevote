@@ -56,3 +56,10 @@ export interface KnowledgeBase {
   name?: string;
   description?: string;
 }
+
+export interface BallotItem {
+  id: string;
+  name: string;
+  description: string;
+  children?: BallotItem[];
+}
