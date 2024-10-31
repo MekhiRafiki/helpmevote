@@ -91,17 +91,17 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                                 description: 'Senate Election Candidates',
                                 children: [
                                     {
-                                        id: 'gillibrand',
+                                        id: '5',
                                         name: 'Kirsten E. Gillibrand',
                                         description: 'Democratic & Working Families',
                                     },
                                     {
-                                        id: 'sapraicone',
+                                        id: '6',
                                         name: 'Michael D. Sapraicone',
                                         description: 'Republican & Conservative',
                                     },
                                     {
-                                        id: 'sare',
+                                        id: '7',
                                         name: 'Diane Sare',
                                         description: 'LaRouche',
                                     },
