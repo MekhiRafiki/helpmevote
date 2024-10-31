@@ -62,4 +62,5 @@ export interface BallotItem {
   name: string;
   description: string;
   children?: BallotItem[];
+  topics?: Topic[];
 }

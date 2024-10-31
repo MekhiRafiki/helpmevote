@@ -1,17 +1,20 @@
 "use client"
 
-import { BallotItem } from "@/types";
+import { BallotItem, Topic } from "@/types";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePostHog } from "posthog-js/react";
 import { BALLOT_STRUCTURE } from "@/constants/topics";
 import { ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { setChosenTopic } from "@/lib/features/topics/topicsSlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 export default function KnowledgeBaseSelector() {
     const router = useRouter()
     const pathname = usePathname()
     const posthog = usePostHog()
+    const dispatch = useAppDispatch()
     const [breadcrumbs, setBreadcrumbs] = useState<BallotItem[]>([])
 
     // New function to find item by path
@@ -48,6 +51,14 @@ export default function KnowledgeBaseSelector() {
         }
     }
 
+    const handleTopicSelect = (topic: Topic) => {
+        posthog.capture('knowledge_base_topic_selected', {
+            topic: topic.title
+        })
+        dispatch(setChosenTopic(topic))
+        router.push(`/chat/home`)
+    }
+
     const navigateToBreadcrumb = (index: number) => {
         const newBreadcrumbs = breadcrumbs.slice(0, index + 1)
         const newPath = newBreadcrumbs.map(b => b.id).join('/')
@@ -57,6 +68,10 @@ export default function KnowledgeBaseSelector() {
     const currentItems = breadcrumbs.length > 0 
         ? breadcrumbs[breadcrumbs.length - 1].children || []
         : BALLOT_STRUCTURE
+    
+    const currentTopics = breadcrumbs.length > 0 
+        ? breadcrumbs[breadcrumbs.length - 1].topics || []
+        : []
 
     return (
         <div className="">
@@ -94,10 +109,25 @@ export default function KnowledgeBaseSelector() {
                         className="justify-start bg-base-200 text-base-content hover:bg-base-300"
                     >
                         {item.name}
+                        {item.description && <span className="text-xs text-base-content/50">{item.description}</span>}
                         {item.children && <ChevronRight className="ml-2 h-4 w-4 text-base-content" />}
                     </Button>
                 ))}
             </div>
+            {currentTopics.length > 0 && (<div className="mt-4">
+                <h3 className="text-lg font-semibold">Curated AI Conversations</h3>
+                <div className="flex flex-col gap-2 justify-start">
+                    {currentTopics.map((topic) => (
+                        <Button
+                            key={topic.id}
+                            onClick={() => handleTopicSelect(topic)}
+                            className="btn-md"
+                        >
+                            {topic.title}
+                        </Button>
+                    ))}
+                </div>
+            </div>)}
         </div>
     )
 }

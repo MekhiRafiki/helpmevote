@@ -45,31 +45,29 @@ export const TOPICS: Topic[] = [
 export const BALLOT_STRUCTURE: BallotItem[] = [
     {
         id: 'home',
-        name: 'General Chat',
-        description: 'Chat with the platform about anything',
+        name: 'General',
+        description: 'Chat with the Help Me Vote assistant about anything',
     },
     {
-        id: 'federal',
-        name: 'Federal Ballot',
-        description: 'View information about federal elections',
+        id: 'usa-presidential-race',
+        name: 'Presidential Race',
+        description: 'View information about the USA Presidential Race 2024',
         children: [
             {
-                id: 'usa-presidential-race',
-                name: 'Presidential Race',
-                description: 'View information about the USA Presidential Race 2024',
-                children: [
-                    {
-                        id: '1',
-                        name: 'Harris',
-                        description: 'Kamala Harris',
-                    },
-                    {
-                        id: '3',
-                        name: 'Trump',
-                        description: 'Donald Trump',
-                    },
-                ]
-            }
+                id: '1',
+                name: 'Kamala Harris | Tim Walz',
+                description: 'Democratic',
+            },
+            {
+                id: '3',
+                name: 'Donald Trump | JD Vance',
+                description: 'Republican',
+            },
+        ],
+        topics: [
+            { id: "presidential-overview", title: "Presidential Candidate Comparison: Find Your Match", agenda: PRESIDENTIAL_OVERVIEW_AGENDA },
+            { id: "harris-walz", title: "Harris | Walz Campaign Deep Dive", agenda: KAMALA_HARRIS_DEEP_DIVE },
+            { id: "trump-vance", title: "Trump | Vance Campaign Deep Dive", agenda: GOP_2024_DEEP_DIVE },
         ]
     },
     {
@@ -91,6 +89,23 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                                 id: 'ny-senator',
                                 name: 'United States Senator',
                                 description: 'Senate Election Candidates',
+                                children: [
+                                    {
+                                        id: 'gillibrand',
+                                        name: 'Kirsten E. Gillibrand',
+                                        description: 'Democratic & Working Families',
+                                    },
+                                    {
+                                        id: 'sapraicone',
+                                        name: 'Michael D. Sapraicone',
+                                        description: 'Republican & Conservative',
+                                    },
+                                    {
+                                        id: 'sare',
+                                        name: 'Diane Sare',
+                                        description: 'LaRouche',
+                                    },
+                                ],
                             },
                             {
                                 id: 'ny-supreme-court',
