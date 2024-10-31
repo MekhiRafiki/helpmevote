@@ -3,6 +3,14 @@ import { ConversationAgenda } from "@/types";
 export const GOP_2024_DEEP_DIVE: ConversationAgenda = {
     id: "gop-2024-deep-dive",
     title: "2024 GOP Platform Deep Dive",
+    demCandidate: {
+        name: "Kamala Harris",
+        image: "/images/harris.png",
+    },
+    repCandidate: {
+        name: "Donald Trump",
+        image: "/images/trump.png",
+    },
     plan: {
         nodes: [
             {

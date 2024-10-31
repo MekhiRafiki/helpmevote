@@ -2,17 +2,27 @@ import Image from "next/image";
 
 interface SpectrumDisplayProps {
     position: number;
-    demCandidate: {
+    demCandidate?: {
         name: string;
         image: string;
     };
-    repCandidate: {
+    repCandidate?: {
         name: string;
         image: string;
     };
 }
 
-export default function SpectrumDisplay({ position, demCandidate, repCandidate }: SpectrumDisplayProps) {
+const defaultDemCandidate = {
+    name: "Kamala Harris",
+    image: "/images/harris.png",
+}
+
+const defaultRepCandidate = {
+    name: "Donald Trump",
+    image: "/images/trump.png",
+}
+
+export default function SpectrumDisplay({ position, demCandidate=defaultDemCandidate, repCandidate=defaultRepCandidate }: SpectrumDisplayProps) {
     const adjustedPosition = ((position + 1) / 2) * 100; // Convert position to percentage
   
     return (

@@ -35,11 +35,11 @@ export interface ConversationAgendaNode {
 export interface ConversationAgenda {
     id: string;
     title: string;
-    demCandidate: {
+    demCandidate?: {
         name: string;
         image: string;
     };
-    repCandidate: {
+    repCandidate?: {
         name: string;
         image: string;
     };
