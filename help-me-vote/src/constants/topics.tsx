@@ -1,4 +1,4 @@
-import { Topic } from "@/types";
+import { BallotItem, Topic } from "@/types";
 import { IMMIGRATION_AGENDA } from "./agendas/policy/immigration";
 import { PRESIDENTIAL_OVERVIEW_AGENDA } from "./agendas/platform/overview";
 import { KAMALA_HARRIS_DEEP_DIVE } from "./agendas/platform/harrisWalz";
@@ -40,50 +40,135 @@ export const TOPICS: Topic[] = [
     // You can add more high-level categories here if needed
 ]
 
-export const KNOWLEDGE_BASES = [
+
+// Sample static data
+export const BALLOT_STRUCTURE: BallotItem[] = [
     {
-        name: "Kamala Harris Presidential Candidate", 
-        id: "kamala-harris", 
-        description: "A deep dive into Kamala Harris's platform and policies as a presidential candidate.",
-        contextItems: [
-            { url: "https://www.kamalaharris.com" },
-            { url: "https://www.joebiden.com" },
+        id: 'home',
+        name: 'General',
+        description: 'Chat with the Help Me Vote assistant about anything',
+    },
+    {
+        id: 'usa-presidential-race',
+        name: 'Presidential Race',
+        description: 'View information about the USA Presidential Race 2024',
+        children: [
+            {
+                id: '1',
+                name: 'Kamala Harris | Tim Walz',
+                description: 'Democratic',
+            },
+            {
+                id: '3',
+                name: 'Donald Trump | JD Vance',
+                description: 'Republican',
+            },
+        ],
+        topics: [
+            { id: "presidential-overview", title: "Presidential Candidate Comparison: Find Your Match", agenda: PRESIDENTIAL_OVERVIEW_AGENDA },
+            { id: "harris-walz", title: "Harris | Walz Campaign Deep Dive", agenda: KAMALA_HARRIS_DEEP_DIVE },
+            { id: "trump-vance", title: "Trump | Vance Campaign Deep Dive", agenda: GOP_2024_DEEP_DIVE },
         ]
     },
     {
-        name: "Donald Trump Presidential Candidate", 
-        id: "donald-trump", 
-        description: "A deep dive into Donald Trump's platform and policies as a presidential candidate.",
-        contextItems: [
-            { url: "https://www.donaldjtrump.com" },
-            { url: "https://www.kristijennifer.com" },
-        ]
-    },
-    {
-        name: "Immigration in the USA", 
-        id: "immigration", 
-        description: "A deep dive into immigration policies in the USA.",
-        contextItems: [
-            { url: "https://www.uscis.gov" },
-            { url: "https://www.dhs.gov" },
-        ]
-    },
-    {
-        name: "Climate Change Policies", 
-        id: "climate-change", 
-        description: "A deep dive into climate change policies.", 
-        contextItems: [
-            { url: "https://www.epa.gov" },
-            { url: "https://www.whitehouse.gov" },
-        ]
-    },
-    {
-        name: "Economic Impact of COVID-19", 
-        id: "economic-impact-of-covid-19", 
-        description: "A deep dive into the economic impact of COVID-19.", 
-        contextItems: [
-            { url: "https://www.cnbc.com" },
-            { url: "https://www.nytimes.com" },
+        id: 'states',
+        name: 'State Senate Races',
+        description: 'View information about state elections',
+        children: [
+            {
+                id: 'ny-senator',
+                name: 'New York Senator',
+                description: 'Senate Election Candidates',
+                children: [
+                    {
+                        id: '5',
+                        name: 'Kirsten E. Gillibrand',
+                        description: 'Democratic & Working Families',
+                    },
+                    {
+                        id: '6',
+                        name: 'Michael D. Sapraicone',
+                        description: 'Republican & Conservative',
+                    },
+                    {
+                        id: '7',
+                        name: 'Diane Sare',
+                        description: 'LaRouche',
+                    },
+                ],
+            },
+            {
+                id: 'pa-senator',
+                name: 'Pennsylvania Senator',
+                description: 'Senate Election Candidates',
+                children: [
+                    {
+                        id: '8',
+                        name: 'Bob Casey',
+                        description: 'Democratic',
+                    },
+                    {
+                        id: '9',
+                        name: 'Dave McCormick',
+                        description: 'Republican',
+                    },
+                    {
+                        id: '10',
+                        name: 'Leila Hazou',
+                        description: 'Green Party',
+                    },
+                    {
+                        id: '11',
+                        name: 'Marty Selker',
+                        description: 'Constitution Party',
+                    },
+                    {
+                        id: '12',
+                        name: 'John C. Thomas',
+                        description: 'Libertarian',
+                    },
+                ],
+            },
+            // {
+            //     id: 'ny',
+            //     name: 'New York',
+            //     description: 'New York State Elections',
+            //     children: [
+            //         {
+            //             id: 'ny-races',
+            //             name: 'Races',
+            //             description: 'Election Races',
+            //             children: [
+                            
+            //             ]
+            //         },
+            //         {
+            //             id: 'ny-proposals',
+            //             name: 'Proposals',
+            //             description: 'State Proposals and Referendums',
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'pa',
+            //     name: 'Pennsylvania',
+            //     description: 'Pennsylvania State Elections',
+            //     children: [
+            //         {
+            //             id: 'pa-races',
+            //             name: 'Races',
+            //             description: 'Election Races',
+            //             children: [
+                            
+            //             ]
+            //         },
+            //         {
+            //             id: 'pa-proposals',
+            //             name: 'Proposals',
+            //             description: 'State Proposals and Referendums',
+            //         }
+            //     ]
+            // }
         ]
     }
-  ];
+];
