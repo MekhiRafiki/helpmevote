@@ -35,6 +35,14 @@ export interface ConversationAgendaNode {
 export interface ConversationAgenda {
     id: string;
     title: string;
+    demCandidate?: {
+        name: string;
+        image: string;
+    };
+    repCandidate?: {
+        name: string;
+        image: string;
+    };
     plan: {
       nodes: Array<ConversationAgendaNode>;
     };

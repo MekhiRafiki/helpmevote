@@ -3,6 +3,14 @@ import { ConversationAgenda } from "@/types";
 export const PRESIDENTIAL_OVERVIEW_AGENDA: ConversationAgenda = {
     id: "presidential-overview-agenda",
     title: "Presidential Overview Agenda",
+    demCandidate: {
+        name: "Kamala Harris",
+        image: "/images/harris.png",
+    },
+    repCandidate: {
+        name: "Donald Trump",
+        image: "/images/trump.png",
+    },
     plan: {
         nodes: [
             {

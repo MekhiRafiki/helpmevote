@@ -44,7 +44,7 @@ export default function KnowledgeBaseSelector() {
         if (item.children) {
             router.push(`/${newPath}`)
         } else {
-            posthog.capture('knowledge_base_selected', {
+            posthog.capture('kb_chat_selected', {
                 item: item.name
             })
             router.push(`/chat/${item.id}`)
@@ -52,7 +52,7 @@ export default function KnowledgeBaseSelector() {
     }
 
     const handleTopicSelect = (topic: Topic) => {
-        posthog.capture('knowledge_base_topic_selected', {
+        posthog.capture('conversation_selected', {
             topic: topic.title
         })
         dispatch(setChosenTopic(topic))
@@ -80,7 +80,10 @@ export default function KnowledgeBaseSelector() {
                     <ul>
                         <li>
                             <a 
-                                onClick={() => setBreadcrumbs([])} 
+                                onClick={() => {
+                                    setBreadcrumbs([])
+                                    router.push(`/`)
+                                }} 
                                 className="text-base-content font-semibold"
                             >
                                 All
@@ -115,13 +118,14 @@ export default function KnowledgeBaseSelector() {
                 ))}
             </div>
             {currentTopics.length > 0 && (<div className="mt-4">
-                <h3 className="text-lg font-semibold">Curated AI Conversations</h3>
+                <h3 className="text-lg font-semibold mb-2">Curated AI Conversations</h3>
                 <div className="flex flex-col gap-2 justify-start">
                     {currentTopics.map((topic) => (
                         <Button
                             key={topic.id}
                             onClick={() => handleTopicSelect(topic)}
-                            className="btn-md"
+                            size="lg"
+                            className="justify-start bg-base-200 text-base-content hover:bg-base-300"
                         >
                             {topic.title}
                         </Button>

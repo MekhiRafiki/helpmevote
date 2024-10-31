@@ -65,6 +65,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     const handleKickMeOff = () => {
         handleInputChange({ target: { value: currentGoal } } as React.ChangeEvent<HTMLInputElement>);
         posthog.capture('conversation_kicked_off', {
+            chatId: chatId,
             topic: selectedTopic?.id,
             current_goal: currentGoal,
             current_node: currentNode?.title,
@@ -82,6 +83,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
         });
         setHasSentTopicContext(true)
         posthog.capture('message_sent', {
+            chatId: chatId,
             topic: selectedTopic?.id,
             current_goal: currentGoal,
             current_node: currentNode?.title,
@@ -125,10 +127,10 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
     }, [selectedTopic, dispatch]);
 
     useEffect(() => {
-        if (messages.length > 8) {
+        if (selectedTopic && messages.length > 8) {
             setCanPlotSpectrum(true)
         }
-    }, [messages])
+    }, [selectedTopic,messages])
 
     return (
         <div className="h-full flex flex-col flex-1 overflow-hidden">
@@ -176,7 +178,7 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
                                             const { result } = toolInvocation;
                                             return (
                                                 <div key={toolCallId}>
-                                                    <SpectrumDisplay  {...result} />
+                                                    <SpectrumDisplay  {...result} demCandidate={agenda?.demCandidate} repCandidate={agenda?.repCandidate} />
                                                 </div>
                                             )
                                         } else if (toolName === "markGoalAsComplete") {
@@ -216,11 +218,11 @@ export default function ChatArea({ chatId }: { chatId?: string }) {
                     )}
                     <dialog id="spectrum_modal" className="modal">
                         <div className="modal-box">
-                        {position !== null && (
+                        {position !== null && agenda?.demCandidate && agenda?.repCandidate && (
                             <div className="flex flex-col items-center gap-2 text-base-content">
                                 <h2 className="text-lg font-semibold">Your Position on the Spectrum</h2>
-                                <SpectrumDisplay position={position} />
-                                <p className="text-sm">This is your position on the spectrum between Kamala Harris and Donald Trump based on your responses in this conversation.</p>
+                                <SpectrumDisplay position={position} demCandidate={agenda.demCandidate} repCandidate={agenda.repCandidate} />
+                                <p className="text-sm">This is your position on the spectrum between the {agenda.demCandidate.name} and {agenda.repCandidate.name} based on your responses in this conversation.</p>
                                 <Button onClick={handleSpectrum} variant="outline" size="sm" className="rounded-md bg-base-100p-2">
                                     <span className="text-sm font-medium">Refresh</span>
                                 </Button>

@@ -3,6 +3,8 @@ import { IMMIGRATION_AGENDA } from "./agendas/policy/immigration";
 import { PRESIDENTIAL_OVERVIEW_AGENDA } from "./agendas/platform/overview";
 import { KAMALA_HARRIS_DEEP_DIVE } from "./agendas/platform/harrisWalz";
 import { GOP_2024_DEEP_DIVE } from "./agendas/platform/trumpVance";
+import { NY_SENATE_OVERVIEW_AGENDA } from "./agendas/platform/nySenateOverview";
+import { PA_SENATE_OVERVIEW_AGENDA } from "./agendas/platform/paSenateOverview";
 
 
 export const TOPICS: Topic[] = [
@@ -96,6 +98,9 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                         description: 'LaRouche',
                     },
                 ],
+                topics: [
+                    { id: "ny-senate-overview", title: "New York Senate - Find Your Match", agenda: NY_SENATE_OVERVIEW_AGENDA },
+                ]
             },
             {
                 id: 'pa-senator',
@@ -128,6 +133,9 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
                         description: 'Libertarian',
                     },
                 ],
+                topics: [
+                    { id: "pa-senate-overview", title: "Pennsylvania Senate - Find Your Match", agenda: PA_SENATE_OVERVIEW_AGENDA },
+                ]
             },
             // {
             //     id: 'ny',
@@ -169,6 +177,6 @@ export const BALLOT_STRUCTURE: BallotItem[] = [
             //         }
             //     ]
             // }
-        ]
+        ],
     }
 ];

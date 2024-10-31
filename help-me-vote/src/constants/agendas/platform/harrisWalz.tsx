@@ -3,6 +3,14 @@ import { ConversationAgenda } from "@/types";
 export const KAMALA_HARRIS_DEEP_DIVE: ConversationAgenda = {
     id: "kamala-harris-deep-dive",
     title: "Kamala Harris Campaign Deep Dive",
+    demCandidate: {
+        name: "Kamala Harris",
+        image: "/images/harris.png",
+    },
+    repCandidate: {
+        name: "Donald Trump",
+        image: "/images/trump.png",
+    },
     plan: {
         nodes: [
             {

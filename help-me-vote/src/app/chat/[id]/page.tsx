@@ -37,7 +37,7 @@ export default function ChatPage({ params }: { params: { id: string } }) {
   
     const handleClearSelection = () => {
       dispatch(setChosenTopic(null))
-      posthog.capture('conversation_exited')
+      posthog.capture('chat_exited')
       router.back()
     }
   
