@@ -80,7 +80,10 @@ export default function KnowledgeBaseSelector() {
                     <ul>
                         <li>
                             <a 
-                                onClick={() => setBreadcrumbs([])} 
+                                onClick={() => {
+                                    setBreadcrumbs([])
+                                    router.push(`/`)
+                                }} 
                                 className="text-base-content font-semibold"
                             >
                                 All
